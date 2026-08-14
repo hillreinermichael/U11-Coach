@@ -1,12 +1,12 @@
 {
-  "name": "U11 Coach",
-  "short_name": "U11 Coach",
-  "start_url": "./",
-  "scope": "./",
-  "display": "standalone",
-  "background_color": "#151515",
-  "theme_color": "#d5122f",
-  "icons": [
+  "name":"U11 Coach",
+  "short_name":"U11 Coach",
+  "start_url":"./",
+  "scope":"./",
+  "display":"standalone",
+  "background_color":"#151515",
+  "theme_color":"#d5122f",
+  "icons":[
     {"src":"u11-coach-icon-192.png","sizes":"192x192","type":"image/png","purpose":"any maskable"},
     {"src":"u11-coach-icon-512.png","sizes":"512x512","type":"image/png","purpose":"any maskable"}
   ]
