@@ -1215,7 +1215,7 @@ color:#fff;
 
 </main>
 
-<div class="install-hint">SpVgg Erdweg U11 (V1.074 by Mike)</div>
+<div class="install-hint">SpVgg Erdweg U11 (V1.075 by Mike)</div>
 
 <div class="overlay" id="editOverlay">
   <div class="dialog">
@@ -1244,6 +1244,13 @@ color:#fff;
           <button type="button" class="timer-action secondary" id="strengthGroupClearAllBtn">Alle abwählen</button>
         </div>
         <div id="strengthGroupPlayerList" class="team-player-list"></div>
+      </div>
+      <div class="team-mode-select">
+        <label for="strengthGroupCountSelect">Gruppen</label>
+        <select id="strengthGroupCountSelect">
+          <option value="3">3 Gruppen</option>
+          <option value="2">2 Gruppen</option>
+        </select>
       </div>
       <div class="team-calc-actions">
         <button type="button" class="primary" id="createStrengthGroupsBtn">Gruppen erstellen</button>
@@ -3457,8 +3464,11 @@ const TIMER_WHISTLE_AUDIO = "data:audio/mpeg;base64,SUQzBAAAAAAAI1RTU0UAAAAPAAAD
     const selected=[...document.querySelectorAll("#strengthGroupPlayerList input[type=checkbox]:checked")].map(cb=>cb.value);
     if(!selected.length){
       result.innerHTML='<div class="material-empty">Bitte zuerst Spieler auswählen.</div>';
+      result.className="team-split-result";
       return;
     }
+
+    const groupCount=parseInt(document.getElementById("strengthGroupCountSelect")?.value || "3",10) === 2 ? 2 : 3;
 
     const sorted=selected.slice().sort((a,b)=>{
       const d=playerTeamStrength(b)-playerTeamStrength(a);
@@ -3466,26 +3476,32 @@ const TIMER_WHISTLE_AUDIO = "data:audio/mpeg;base64,SUQzBAAAAAAAI1RTU0UAAAAPAAAD
     });
 
     const count=sorted.length;
-    const base=Math.floor(count/3);
-    const remainder=count%3;
-    const sizes=[base,base,base];
-    // Bei Restspielern bekommt zuerst Gruppe 1, dann Gruppe 2 den zusätzlichen Spieler.
-    for(let i=0;i<remainder;i++) sizes[i]++;
+    const sizes=[];
+    if(groupCount===2){
+      // Stärkste Hälfte in Gruppe 1, schwächste Hälfte in Gruppe 2.
+      sizes.push(Math.ceil(count/2), Math.floor(count/2));
+    }else{
+      const base=Math.floor(count/3);
+      const remainder=count%3;
+      sizes.push(base,base,base);
+      for(let i=0;i<remainder;i++) sizes[i]++;
+    }
 
-    const groups=[[],[],[]];
+    const groups=[];
     let offset=0;
-    sizes.forEach((size,i)=>{
-      groups[i]=sorted.slice(offset,offset+size);
-      offset+=size;
-    });
+    for(let i=0;i<groupCount;i++){
+      groups.push(sorted.slice(offset,offset+sizes[i]));
+      offset+=sizes[i];
+    }
 
-    const names=["Gruppe 1 – Stärkste","Gruppe 2 – Mittel","Gruppe 3 – Schwächste"];
-    result.className="team-split-result team-count-3";
+    const names = groupCount===2
+      ? ["Gruppe 1 – Stärkste","Gruppe 2 – Schwächste"]
+      : ["Gruppe 1 – Stärkste","Gruppe 2 – Mittel","Gruppe 3 – Schwächste"];
+
+    result.className = "team-split-result team-count-" + groupCount;
     result.innerHTML=groups.map((group,i)=>{
-      const strength=group.reduce((sum,p)=>sum+playerTeamStrength(p),0);
       return `<div class="team-card">
         <h3>${names[i]}</h3>
-        <div class="team-strength">Stärke: ${displayTeamStrength(strength)} · ${group.length} Spieler</div>
         <div class="team-section-title">Spieler</div>
         <div class="team-members">
           ${group.map((p)=>`<div class="team-member-line"><span>${displayName(p)}</span></div>`).join("")}
@@ -3493,6 +3509,12 @@ const TIMER_WHISTLE_AUDIO = "data:audio/mpeg;base64,SUQzBAAAAAAAI1RTU0UAAAAPAAAD
       </div>`;
     }).join("");
   }
+
+
+  document.getElementById("strengthGroupCountSelect")?.addEventListener("change",()=>{
+    document.getElementById("strengthGroupResult").innerHTML="";
+    document.getElementById("strengthGroupResult").className="team-split-result";
+  });
 
   document.getElementById("createStrengthGroupsBtn")?.addEventListener("click",createStrengthGroups);
   document.getElementById("strengthGroupSelectAllBtn")?.addEventListener("click",()=>{
