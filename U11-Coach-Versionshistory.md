@@ -24,7 +24,7 @@ Diese Punkte sind ausdrücklich als „nicht eindeutig" markiert.
     verschiedene Versionen erstellt wurden.
 -   Daher sollte die nächste Version V1.065 sein.
 -   Aktueller dokumentierter Stand: V1.085.
--   Nächste Version: V1.088.
+-   Nächste Version: V1.091.
 
 ## V30.40
 
@@ -322,9 +322,9 @@ zusätzlich in der App
 
 ## Aktueller Stand
 
-**Aktuelle bekannte Version: V1.087**
+**Aktuelle bekannte Version: V1.090**
 
-**Nächste Version: V1.088**
+**Nächste Version: V1.091**
 
 
 ## V1.086
@@ -335,3 +335,14 @@ zusätzlich in der App
 
 ## V1.087
 - Versionshistory-Kachel auf der Startseite an das Ende des Startseiteninhalts verschoben, direkt unterhalb der „Nächstes Spiel“-Anzeige.
+
+
+## V1.088
+- Versionshistory-Kachel von der Startseite entfernt.
+- Die untere Versionsangabe „SpVgg Erdweg U11 (V1.088 by Mike)“ öffnet jetzt die Versionshistory.
+
+
+## V1.090
+- Die Versionshistory-Kachel wurde entfernt.
+- Nur die Versionsnummer „V1.090“ im Footer ist anklickbar und öffnet die mitgelieferte Versionshistory-Datei.
+- Die Linkfarbe bleibt weiß bzw. übernimmt die bestehende Footer-Farbe.
