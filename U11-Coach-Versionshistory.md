@@ -24,7 +24,7 @@ Diese Punkte sind ausdrücklich als „nicht eindeutig" markiert.
     verschiedene Versionen erstellt wurden.
 -   Daher sollte die nächste Version V1.065 sein.
 -   Aktueller dokumentierter Stand: V1.085.
--   Nächste Version: V1.095.
+-   Nächste Version: V1.096.
 
 ## V30.40
 
@@ -322,9 +322,9 @@ zusätzlich in der App
 
 ## Aktueller Stand
 
-**Aktuelle bekannte Version: V1.094**
+**Aktuelle bekannte Version: V1.095**
 
-**Nächste Version: V1.095**
+**Nächste Version: V1.096**
 
 
 ## V1.086
@@ -367,3 +367,9 @@ zusätzlich in der App
 ## V1.094
 - Zusätzlichen oberen Abstand der Seite „Trainingsgruppen“ entfernt.
 - Die Trainingsgruppen-Seite steht wieder auf derselben vertikalen Ausgangsposition wie die übrigen Unterseiten.
+
+
+## V1.095
+- Übungsbilder und App-Icons auf die GitHub-Dateien im Ordner `bilder/` umgestellt.
+- Die unveränderten Bilder und Icons sind nicht mehr Bestandteil der Versions-ZIP.
+- `manifest.webmanifest` wurde aktualisiert, damit die App-Icons aus dem GitHub-Ordner geladen werden.
