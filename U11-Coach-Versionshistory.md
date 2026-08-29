@@ -24,7 +24,7 @@ Diese Punkte sind ausdrücklich als „nicht eindeutig" markiert.
     verschiedene Versionen erstellt wurden.
 -   Daher sollte die nächste Version V1.065 sein.
 -   Aktueller dokumentierter Stand: V1.085.
--   Nächste Version: V1.091.
+-   Nächste Version: V1.092.
 
 ## V30.40
 
@@ -322,9 +322,9 @@ zusätzlich in der App
 
 ## Aktueller Stand
 
-**Aktuelle bekannte Version: V1.090**
+**Aktuelle bekannte Version: V1.091**
 
-**Nächste Version: V1.091**
+**Nächste Version: V1.092**
 
 
 ## V1.086
@@ -346,3 +346,8 @@ zusätzlich in der App
 - Die Versionshistory-Kachel wurde entfernt.
 - Nur die Versionsnummer „V1.090“ im Footer ist anklickbar und öffnet die mitgelieferte Versionshistory-Datei.
 - Die Linkfarbe bleibt weiß bzw. übernimmt die bestehende Footer-Farbe.
+
+
+## V1.091
+- Breadcrumb-Navigation erhält einen eleganten Rahmen im Stil der Kacheln.
+- Die Breadcrumb bleibt schmaler als eine normale Kachel.
