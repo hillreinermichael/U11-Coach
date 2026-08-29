@@ -24,7 +24,7 @@ Diese Punkte sind ausdrücklich als „nicht eindeutig" markiert.
     verschiedene Versionen erstellt wurden.
 -   Daher sollte die nächste Version V1.065 sein.
 -   Aktueller dokumentierter Stand: V1.085.
--   Nächste Version: V1.092.
+-   Nächste Version: V1.095.
 
 ## V30.40
 
@@ -322,9 +322,9 @@ zusätzlich in der App
 
 ## Aktueller Stand
 
-**Aktuelle bekannte Version: V1.091**
+**Aktuelle bekannte Version: V1.094**
 
-**Nächste Version: V1.092**
+**Nächste Version: V1.095**
 
 
 ## V1.086
@@ -349,5 +349,21 @@ zusätzlich in der App
 
 
 ## V1.091
-- Breadcrumb-Navigation erhält einen eleganten Rahmen im Stil der Kacheln.
-- Die Breadcrumb bleibt schmaler als eine normale Kachel.
+- Fehlerhafte verschachtelte Verlinkung der unteren Versionsangabe behoben.
+- Nur die Versionsnummer V1.091 ist anklickbar und öffnet die Versionshistory.
+- Die übrige Fußnote bleibt unverlinkt und weiß.
+
+
+## V1.092
+- Untere Versionsfußnote an das Ende der Seite verschoben, damit sie nicht oben bei einzelnen Unterseiten erscheint.
+
+
+## V1.093
+- Den reservierten Breadcrumb-Platz aus V1.092 wieder entfernt.
+- Die Trainingsgruppen-Seite und andere Seiten springen dadurch nicht mehr unnötig nach unten.
+- Breadcrumb-Änderungen aus V1.092 verworfen.
+
+
+## V1.094
+- Zusätzlichen oberen Abstand der Seite „Trainingsgruppen“ entfernt.
+- Die Trainingsgruppen-Seite steht wieder auf derselben vertikalen Ausgangsposition wie die übrigen Unterseiten.
