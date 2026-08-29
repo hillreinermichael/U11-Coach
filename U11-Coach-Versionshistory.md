@@ -24,7 +24,7 @@ Diese Punkte sind ausdrücklich als „nicht eindeutig" markiert.
     verschiedene Versionen erstellt wurden.
 -   Daher sollte die nächste Version V1.065 sein.
 -   Aktueller dokumentierter Stand: V1.085.
--   Nächste Version: V1.096.
+-   Nächste Version: V1.098.
 
 ## V30.40
 
@@ -322,9 +322,9 @@ zusätzlich in der App
 
 ## Aktueller Stand
 
-**Aktuelle bekannte Version: V1.095**
+**Aktuelle bekannte Version: V1.097**
 
-**Nächste Version: V1.096**
+**Nächste Version: V1.098**
 
 
 ## V1.086
@@ -373,3 +373,9 @@ zusätzlich in der App
 - Übungsbilder und App-Icons auf die GitHub-Dateien im Ordner `bilder/` umgestellt.
 - Die unveränderten Bilder und Icons sind nicht mehr Bestandteil der Versions-ZIP.
 - `manifest.webmanifest` wurde aktualisiert, damit die App-Icons aus dem GitHub-Ordner geladen werden.
+
+
+## V1.097
+- Nur die Startseiten-Hauptkachel erhält oberhalb einen zusätzlichen Abstand von 20 px.
+- Andere Seiten bleiben unverändert und werden nicht nach unten verschoben.
+- Der Abstand entspricht optisch dem Platz des „← Auswahl“-Elements auf Unterseiten.
