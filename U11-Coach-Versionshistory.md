@@ -24,7 +24,7 @@ Diese Punkte sind ausdrücklich als „nicht eindeutig" markiert.
     verschiedene Versionen erstellt wurden.
 -   Daher sollte die nächste Version V1.065 sein.
 -   Aktueller dokumentierter Stand: V1.085.
--   Nächste Version: V1.098.
+-   Nächste Version: V1.103.
 
 ## V30.40
 
@@ -322,9 +322,9 @@ zusätzlich in der App
 
 ## Aktueller Stand
 
-**Aktuelle bekannte Version: V1.097**
+**Aktuelle bekannte Version: V1.102**
 
-**Nächste Version: V1.098**
+**Nächste Version: V1.103**
 
 
 ## V1.086
@@ -379,3 +379,32 @@ zusätzlich in der App
 - Nur die Startseiten-Hauptkachel erhält oberhalb einen zusätzlichen Abstand von 20 px.
 - Andere Seiten bleiben unverändert und werden nicht nach unten verschoben.
 - Der Abstand entspricht optisch dem Platz des „← Auswahl“-Elements auf Unterseiten.
+
+
+## V1.098
+- Neue Startseiten-Kachel „Spielerkader“ vor „Timer & Stoppuhr“ hinzugefügt.
+- Eigene Spielerkader-Seite mit 10 Kaderspielern und 4 Ersatzspielern hinzugefügt.
+
+
+## V1.099
+- Spielerkader auf die bereits im U11 Coach verwendeten vollständigen Spielernamen angepasst.
+- Kaderspieler nach Stärke absteigend angeordnet.
+- Stärkewerte werden nicht angezeigt.
+- Ersatzspieler bleiben separat unter „Ersatz“.
+
+
+## V1.100
+- In der Spielerkader-Ansicht stehen Bastian, Maximilian Rohbeck und Lucas Stegmair unabhängig von ihrem Stärkewert immer an erster Stelle.
+- Die Stärkewerte bleiben ausgeblendet.
+
+
+## V1.101
+- `Spielerwerte.xlsx` ist jetzt die zentrale Quelle für die Spielerwerte.
+- Die App lädt die aktuelle Excel-Datei aus dem GitHub-Repository.
+- Die Spielerkader-Ansicht zeigt pro Spieler alle 7 Werte: Torwart, Abwehr, Mittelfeld, Sturm, Spielmacher, Ausdauer und Körper.
+- Bastian, Maximilian Rohbeck und Lucas Stegmair bleiben im Kader immer ganz oben.
+
+
+## V1.102
+- In der Spielerkader-Ansicht werden keine Spielerwerte mehr angezeigt.
+- `Spielerwerte.xlsx` bleibt die zentrale Quelle der Werte und wird intern für Spielerbewertung, positionsbezogene Stärke und Aufstellungs-/Berechnungslogik verwendet.
