@@ -24,7 +24,7 @@ Diese Punkte sind ausdrücklich als „nicht eindeutig" markiert.
     verschiedene Versionen erstellt wurden.
 -   Daher sollte die nächste Version V1.065 sein.
 -   Aktueller dokumentierter Stand: V1.085.
--   Nächste Version: V1.103.
+-   Nächste Version: V1.104.
 
 ## V30.40
 
@@ -322,9 +322,9 @@ zusätzlich in der App
 
 ## Aktueller Stand
 
-**Aktuelle bekannte Version: V1.102**
+**Aktuelle bekannte Version: V1.103**
 
-**Nächste Version: V1.103**
+**Nächste Version: V1.104**
 
 
 ## V1.086
@@ -408,3 +408,8 @@ zusätzlich in der App
 ## V1.102
 - In der Spielerkader-Ansicht werden keine Spielerwerte mehr angezeigt.
 - `Spielerwerte.xlsx` bleibt die zentrale Quelle der Werte und wird intern für Spielerbewertung, positionsbezogene Stärke und Aufstellungs-/Berechnungslogik verwendet.
+
+
+## V1.103
+- Fehler beim Zurückkehren von „Spielerkader“ zur Startseite behoben.
+- `playerRosterMode` wird beim Öffnen der Startseite jetzt ebenfalls ausgeblendet.
