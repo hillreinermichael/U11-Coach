@@ -24,7 +24,7 @@ Diese Punkte sind ausdrücklich als „nicht eindeutig" markiert.
     verschiedene Versionen erstellt wurden.
 -   Daher sollte die nächste Version V1.065 sein.
 -   Aktueller dokumentierter Stand: V1.085.
--   Nächste Version: V1.104.
+-   Nächste Version: V1.105.
 
 ## V30.40
 
@@ -322,9 +322,9 @@ zusätzlich in der App
 
 ## Aktueller Stand
 
-**Aktuelle bekannte Version: V1.103**
+**Aktuelle bekannte Version: V1.104**
 
-**Nächste Version: V1.104**
+**Nächste Version: V1.105**
 
 
 ## V1.086
@@ -413,3 +413,9 @@ zusätzlich in der App
 ## V1.103
 - Fehler beim Zurückkehren von „Spielerkader“ zur Startseite behoben.
 - `playerRosterMode` wird beim Öffnen der Startseite jetzt ebenfalls ausgeblendet.
+
+
+## V1.104
+- In der Spieltags-Kachel „Anwesende Spieler & Positionen“ wurde die Bearbeitungsmöglichkeit der einzelnen Spieler entfernt.
+- Spielerwerte werden dort weder angezeigt noch sind sie dort anpassbar.
+- Positionsangaben und Anwesenheitsauswahl bleiben erhalten.
