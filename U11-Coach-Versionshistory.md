@@ -24,7 +24,7 @@ Diese Punkte sind ausdrücklich als „nicht eindeutig" markiert.
     verschiedene Versionen erstellt wurden.
 -   Daher sollte die nächste Version V1.065 sein.
 -   Aktueller dokumentierter Stand: V1.085.
--   Nächste Version: V1.111.
+-   Nächste Version: V1.112.
 
 ## V30.40
 
@@ -322,9 +322,9 @@ zusätzlich in der App
 
 ## Aktueller Stand
 
-**Aktuelle bekannte Version: V1.110**
+**Aktuelle bekannte Version: V1.111**
 
-**Nächste Version: V1.111**
+**Nächste Version: V1.112**
 
 
 ## V1.086
@@ -455,3 +455,11 @@ zusätzlich in der App
 - Nach dem asynchronen Laden der `Spielerwerte.xlsx` wird die Spielerliste des Spieltags erneut gerendert.
 - Dadurch werden die aus Excel geladenen Positionsprioritäten/Positionen auch im Spieltag korrekt angezeigt.
 - Spielerwerte und Bearbeitungsmöglichkeit bleiben dort weiterhin ausgeblendet.
+
+
+## V1.111
+- Automatische Aktualisierung des Service Workers beim Start ergänzt.
+- Bei einer neuen Service-Worker-Version wird die Seite nach dem Aktivieren automatisch neu geladen.
+- `index.html` wird beim Seitenaufruf bevorzugt direkt aus dem Netzwerk geladen; der Cache dient als Fallback für Offline-Betrieb.
+- `Spielerwerte.xlsx` wird vom Service Worker nicht mehr zwischengespeichert und bei jedem Laden frisch angefordert.
+- Bilder, Icons und sonstige statische Ressourcen bleiben für geringe Ladezeit und Datenverbrauch im Cache.
