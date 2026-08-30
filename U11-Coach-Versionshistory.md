@@ -24,7 +24,7 @@ Diese Punkte sind ausdrücklich als „nicht eindeutig" markiert.
     verschiedene Versionen erstellt wurden.
 -   Daher sollte die nächste Version V1.065 sein.
 -   Aktueller dokumentierter Stand: V1.085.
--   Nächste Version: V1.105.
+-   Nächste Version: V1.111.
 
 ## V30.40
 
@@ -322,9 +322,9 @@ zusätzlich in der App
 
 ## Aktueller Stand
 
-**Aktuelle bekannte Version: V1.104**
+**Aktuelle bekannte Version: V1.110**
 
-**Nächste Version: V1.105**
+**Nächste Version: V1.111**
 
 
 ## V1.086
@@ -419,3 +419,39 @@ zusätzlich in der App
 - In der Spieltags-Kachel „Anwesende Spieler & Positionen“ wurde die Bearbeitungsmöglichkeit der einzelnen Spieler entfernt.
 - Spielerwerte werden dort weder angezeigt noch sind sie dort anpassbar.
 - Positionsangaben und Anwesenheitsauswahl bleiben erhalten.
+
+
+## V1.105
+- Positionsprioritäten werden jetzt aus dem zweiten Tabellenblatt `Positionspriorität` der GitHub-Datei `Spielerwerte.xlsx` geladen.
+- In der Seite „Spielerkader“ wird die Positionspriorität jedes Spielers als Reihenfolge angezeigt.
+- Spielerwerte bleiben in dieser Ansicht ausgeblendet.
+
+
+## V1.106
+- In der Spielerkader-Ansicht wird pro Spieler nur noch die erste Positionspriorität angezeigt.
+- Die weiteren Prioritäten bleiben intern für Berechnungen verfügbar.
+
+
+## V1.107
+- Positionsprioritäten werden ausschließlich aus dem Tabellenblatt `Positionspriorität` der `Spielerwerte.xlsx` gelesen.
+- Die Aufstellung, der Spieltag und der Wechsel-Assistent verwenden damit dieselbe Excel-Prioritätsquelle.
+- Fest im Code hinterlegte Spieler-Positionslisten dienen nicht mehr als Prioritätsquelle.
+
+
+## V1.108
+- Fehler beim Einlesen des Tabellenblatts `Positionspriorität` behoben.
+- Spaltennamen der Prioritätstabelle werden nun robust gegen Groß-/Kleinschreibung, Leerzeichen und Umlaute erkannt.
+- Das zweite Tabellenblatt wird als Fallback automatisch für die Positionsprioritäten verwendet.
+
+
+## V1.109
+- Einlesen der Positionsprioritäten aus `Spielerwerte.xlsx` korrigiert.
+- Die Tabelle im Blatt `Positionspriorität` wird nun anhand der tatsächlichen Kopfzeile gesucht, auch wenn Titel und Hinweiszeilen darüber stehen.
+- Priorität 1–3 wird dadurch korrekt aus Excel übernommen.
+
+
+## V1.110
+- Fehler in der Spieltagsanzeige „Anwesende Spieler & Positionen“ behoben.
+- Nach dem asynchronen Laden der `Spielerwerte.xlsx` wird die Spielerliste des Spieltags erneut gerendert.
+- Dadurch werden die aus Excel geladenen Positionsprioritäten/Positionen auch im Spieltag korrekt angezeigt.
+- Spielerwerte und Bearbeitungsmöglichkeit bleiben dort weiterhin ausgeblendet.
