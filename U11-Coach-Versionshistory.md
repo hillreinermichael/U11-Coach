@@ -24,7 +24,7 @@ Diese Punkte sind ausdrücklich als „nicht eindeutig" markiert.
     verschiedene Versionen erstellt wurden.
 -   Daher sollte die nächste Version V1.065 sein.
 -   Aktueller dokumentierter Stand: V1.085.
--   Nächste Version: V1.112.
+-   Nächste Version: V1.113.
 
 ## V30.40
 
@@ -322,9 +322,9 @@ zusätzlich in der App
 
 ## Aktueller Stand
 
-**Aktuelle bekannte Version: V1.111**
+**Aktuelle bekannte Version: V1.112**
 
-**Nächste Version: V1.112**
+**Nächste Version: V1.113**
 
 
 ## V1.086
@@ -463,3 +463,8 @@ zusätzlich in der App
 - `index.html` wird beim Seitenaufruf bevorzugt direkt aus dem Netzwerk geladen; der Cache dient als Fallback für Offline-Betrieb.
 - `Spielerwerte.xlsx` wird vom Service Worker nicht mehr zwischengespeichert und bei jedem Laden frisch angefordert.
 - Bilder, Icons und sonstige statische Ressourcen bleiben für geringe Ladezeit und Datenverbrauch im Cache.
+
+
+## V1.112
+- Bei „2.8 – Reaction Chase Game“ wurde die doppelte Quellenangabe aus der Beschreibung entfernt.
+- Die vorhandene anklickbare Quelle „Instagram-Reel“ bleibt erhalten.
