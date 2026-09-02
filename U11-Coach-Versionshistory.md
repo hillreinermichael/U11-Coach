@@ -3,6 +3,14 @@
 Diese Datei dient als Referenz für die bisher bekannten Änderungen am
 U11 Coach.
 
+## V1.113
+
+- Spielerkader: Trikotnummern werden direkt hinter dem Spielernamen angezeigt.
+- Maximilian Rohbeck wird mit **1 / 9** angezeigt (Torwart / Feldspieler).
+- Noah wird mit **9** angezeigt.
+- Weitere aktuell festgelegte Trikotnummern: Bastian 7, Lucas Stegmair 15, Lukas Bühling 2, Emin 3, Maximilian Mätzig 4, Frederik 11, Lukas Kreitmair 12, Ludwig 5.
+- Offene Nummern bleiben 6, 8, 10, 13 und 14; die 9 ist bei Rohbeck und Noah bewusst möglich.
+
 **Hinweis:** Bei älteren Änderungen ist die exakte Versionsnummer
 teilweise nicht eindeutig aus dem bisherigen Gespräch rekonstruierbar.
 Diese Punkte sind ausdrücklich als „nicht eindeutig" markiert.
@@ -23,8 +31,8 @@ Diese Punkte sind ausdrücklich als „nicht eindeutig" markiert.
 -   Es wurde festgestellt, dass inklusive früherer Versionen bereits 64
     verschiedene Versionen erstellt wurden.
 -   Daher sollte die nächste Version V1.065 sein.
--   Aktueller dokumentierter Stand: V1.085.
--   Nächste Version: V1.113.
+-   Aktueller dokumentierter Stand: V1.113.
+-   Nächste Version: offen.
 
 ## V30.40
 
@@ -324,7 +332,7 @@ zusätzlich in der App
 
 **Aktuelle bekannte Version: V1.112**
 
-**Nächste Version: V1.113**
+**Nächste Version: offen**
 
 
 ## V1.086
