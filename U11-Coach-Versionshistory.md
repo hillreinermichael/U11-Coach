@@ -1,5 +1,12 @@
 # U11 Coach -- Versionshistorie
 
+## V1.114
+
+- Spielerkader: Trikotnummern stehen jetzt in Klammern direkt hinter dem Spielernamen.
+- Beispiel: **Bastian (7)** und **Maximilian Rohbeck (1 / 9)**.
+- Noah wird als **Noah (9)** angezeigt.
+
+
 Diese Datei dient als Referenz für die bisher bekannten Änderungen am
 U11 Coach.
 
@@ -31,7 +38,7 @@ Diese Punkte sind ausdrücklich als „nicht eindeutig" markiert.
 -   Es wurde festgestellt, dass inklusive früherer Versionen bereits 64
     verschiedene Versionen erstellt wurden.
 -   Daher sollte die nächste Version V1.065 sein.
--   Aktueller dokumentierter Stand: V1.113.
+-   Aktueller dokumentierter Stand: V1.114.
 -   Nächste Version: offen.
 
 ## V30.40
