@@ -1,5 +1,12 @@
 # U11 Coach -- Versionshistorie
 
+## V1.115
+
+- Trainingseinheiten-Seite: Überschrift von **Training – 3 Stationen** auf **Trainingseinheiten – 3 Stationen** geändert.
+- Die Bezeichnungen **Einheit 1/2/3** wurden auf der Trainingseinheiten-Seite durch **Station 1/2/3** ersetzt.
+- Auch Trainingsvorlage, Trainingsaufbau und Auswahl-/Hinweistexte verwenden jetzt **Station** statt **Einheit**.
+
+
 ## V1.114
 
 - Spielerkader: Trikotnummern stehen jetzt in Klammern direkt hinter dem Spielernamen.
