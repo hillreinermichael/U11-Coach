@@ -1,5 +1,13 @@
 # U11 Coach -- Versionshistorie
 
+## V1.117
+
+- Spielerkader auf genau **10 feste Kaderplätze** angepasst.
+- Trainerkinder **Bastian, Maximilian Rohbeck und Lucas Stegmair** bleiben immer im Kader.
+- Aktueller Spielerkader: Bastian, Maximilian Rohbeck, Lucas Stegmair, Emin, Frederik, Maximilian Mätzig, Ludwig, Lukas Bühling, Lukas Kreitmair und Noah.
+- Die übrigen sechs Spieler werden separat unter **Ersatz (6)** angezeigt: Daniel, Kristof, Kenan, Maxim, Johannes Suppmair und Ali.
+- Hinweis auf der Startseite des Spielerkaders: **10 Spieler im Kader und 6 Ersatzspieler**.
+
 ## V1.115
 
 - Trainingseinheiten-Seite: Überschrift von **Training – 3 Stationen** auf **Trainingseinheiten – 3 Stationen** geändert.
@@ -45,7 +53,7 @@ Diese Punkte sind ausdrücklich als „nicht eindeutig" markiert.
 -   Es wurde festgestellt, dass inklusive früherer Versionen bereits 64
     verschiedene Versionen erstellt wurden.
 -   Daher sollte die nächste Version V1.065 sein.
--   Aktueller dokumentierter Stand: V1.114.
+-   Aktueller dokumentierter Stand: V1.117.
 -   Nächste Version: offen.
 
 ## V30.40
@@ -490,3 +498,10 @@ zusätzlich in der App
 ## V1.112
 - Bei „2.8 – Reaction Chase Game“ wurde die doppelte Quellenangabe aus der Beschreibung entfernt.
 - Die vorhandene anklickbare Quelle „Instagram-Reel“ bleibt erhalten.
+
+
+## V1.116
+- Der aktuelle Spielerkader wurde auf 16 Spieler aktualisiert.
+- Die drei Trainerkinder Bastian, Maximilian Rohbeck und Lucas Stegmair stehen immer an erster Stelle im Spielerkader.
+- Die übrigen Spieler sind Emin, Frederik, Maximilian Mätzig, Ludwig, Lukas Bühling, Lukas Kreitmair, Noah, Daniel, Kristof, Kenan, Maxim, Johannes Suppmair und Ali.
+- Die separate Rubrik „Ersatz“ wurde entfernt; alle genannten Spieler werden gemeinsam unter „Spielerkader“ angezeigt.
