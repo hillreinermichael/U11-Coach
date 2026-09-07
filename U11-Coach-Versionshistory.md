@@ -1,9 +1,9 @@
+## V1.121
+- Neue Kachel „Aufwärmen“ auf der Training-Übersichtsseite ergänzt.
+- Die Kachel steht als zweite Option nach „Trainingseinheiten“ und vor „Trainingsgruppen“.
+- Die Aufwärmseite enthält die festgelegte 5-Übungen-Routine mit Merksatz.
+
 # U11 Coach -- Versionshistorie
-
-## V1.120
-
-- Die Versionsanzeige unter der Überschrift „U11 Coach“ wurde entfernt.
-- Die Version wird weiterhin ausschließlich unten über die Versionshistorie angezeigt.
 
 ## V1.119
 

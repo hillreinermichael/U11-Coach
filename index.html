@@ -501,6 +501,14 @@
     .start-menu-buttons{grid-template-columns:1fr;}
   }
 
+  .warmup-exercise-card{border:1px solid var(--line);border-radius:12px;padding:13px;margin-bottom:10px;background:#fff;}
+  .warmup-exercise-card h3{margin:0 0 5px;font-size:15px;color:var(--erdweg-black);}
+  .warmup-exercise-time{font-size:11px;font-weight:800;color:var(--erdweg-red);text-transform:uppercase;letter-spacing:.04em;margin-bottom:5px;}
+  .warmup-exercise-desc{font-size:12px;line-height:1.45;color:var(--ink-soft);}
+  .warmup-memory{margin-top:14px;padding:12px;border-radius:10px;background:#fff7f7;border:1px solid #f0c4c8;text-align:center;}
+  .warmup-memory strong{display:block;color:var(--erdweg-black);margin-bottom:4px;}
+  .warmup-memory-text{font-size:13px;font-weight:700;line-height:1.4;color:var(--erdweg-black);}
+
   .training-group-card{border:1px solid var(--line);border-radius:12px;padding:12px;margin-bottom:14px;background:#fff;}
   .training-group-card h3{margin:0;font-size:15px;color:var(--erdweg-black);}
   .training-group-controls{display:flex;align-items:center;justify-content:center;gap:8px;margin:12px 0;}
@@ -915,6 +923,10 @@ color:#fff;
           <strong>Trainingseinheiten</strong>
           <span>3 Stationen auswählen und vorbereiten</span>
         </button>
+        <button type="button" class="start-choice" id="trainingWarmupBtn">
+          <strong>Aufwärmen</strong>
+          <span>5 einfache Übungen für ca. 3 Minuten</span>
+        </button>
         <button type="button" class="start-choice" id="trainingStrengthGroupsBtn">
           <strong>Trainingsgruppen</strong>
           <span>Spieler auswählen und nach Stärke gruppieren</span>
@@ -935,6 +947,45 @@ color:#fff;
           <strong>Trainingsnotizen</strong>
           <span>Notizen zum Training speichern</span>
         </button>
+      </div>
+    </div>
+  </div>
+
+  <div id="trainingWarmupMode" class="mode-section" style="display:none;">
+    <button type="button" class="mode-back" data-back="trainingHub">← Training</button>
+    <div class="card start-menu">
+      <h2>Aufwärmen</h2>
+      <div class="start-menu-sub">5 einfache Übungen für ca. 3 Minuten</div>
+
+      <div class="warmup-exercise-card">
+        <div class="warmup-exercise-time">1 Runde</div>
+        <h3>1. Kniehebelauf</h3>
+        <div class="warmup-exercise-desc">Locker laufen, Knie abwechselnd bis etwa Hüfthöhe.</div>
+      </div>
+      <div class="warmup-exercise-card">
+        <div class="warmup-exercise-time">1 Runde</div>
+        <h3>2. Anfersen</h3>
+        <div class="warmup-exercise-desc">Locker laufen und die Fersen abwechselnd zum Po führen.</div>
+      </div>
+      <div class="warmup-exercise-card">
+        <div class="warmup-exercise-time">1 Runde</div>
+        <h3>3. Ausfallschritt + Drehung</h3>
+        <div class="warmup-exercise-desc">Schritt nach vorne, kurz absenken, Oberkörper zum vorderen Bein drehen, hochkommen und Bein wechseln.</div>
+      </div>
+      <div class="warmup-exercise-card">
+        <div class="warmup-exercise-time">30 Sek.</div>
+        <h3>4. Beinpendeln</h3>
+        <div class="warmup-exercise-desc">Ein Bein locker vor und zurück schwingen, nach etwa 15 Sek. Bein wechseln.</div>
+      </div>
+      <div class="warmup-exercise-card">
+        <div class="warmup-exercise-time">20 Sek.</div>
+        <h3>5. Seitliche Schritte</h3>
+        <div class="warmup-exercise-desc">Seitlich 3 Schritte nach rechts und anschließend nach links. Dabei locker bleiben.</div>
+      </div>
+
+      <div class="warmup-memory">
+        <strong>Merksatz</strong>
+        <div class="warmup-memory-text">„Knie – Fersen – Ausfallschritt – Beine schwingen – Seitwärts.“</div>
       </div>
     </div>
   </div>
@@ -2981,6 +3032,7 @@ function pickRandomTraining(list, unit){
   /* ===================== Startauswahl ===================== */
   const startMenu = document.getElementById("startMenu");
   const trainingHubMode = document.getElementById("trainingHubMode");
+  const trainingWarmupMode = document.getElementById("trainingWarmupMode");
   const lineupMode = document.getElementById("lineupMode");
   const matchdayHubMode = document.getElementById("matchdayHubMode");
   const trainingMode = document.getElementById("trainingMode");
@@ -3000,6 +3052,7 @@ function pickRandomTraining(list, unit){
   const matchdaySubstitutionBtn = document.getElementById("matchdaySubstitutionBtn");
   const startTrainingBtn = document.getElementById("startTrainingBtn");
   const trainingUnitsBtn = document.getElementById("trainingUnitsBtn");
+  const trainingWarmupBtn = document.getElementById("trainingWarmupBtn");
   const trainingGroupsBtn = document.getElementById("trainingGroupsBtn");
   const trainingStrengthGroupsBtn = document.getElementById("trainingStrengthGroupsBtn");
   const startHistoryBtn = document.getElementById("startHistoryBtn");
@@ -3075,6 +3128,7 @@ function pickRandomTraining(list, unit){
 function showMode(mode){
     startMenu.style.display = "none";
     trainingHubMode.style.display = mode === "trainingHub" ? "block" : "none";
+    trainingWarmupMode.style.display = mode === "trainingWarmup" ? "block" : "none";
     matchdayHubMode.style.display = mode === "matchdayHub" ? "block" : "none";
     lineupMode.style.display = mode === "lineup" ? "block" : "none";
     trainingMode.style.display = mode === "training" ? "block" : "none";
@@ -3102,6 +3156,7 @@ function showMode(mode){
   function showStartMenu(){
     startMenu.style.display = "block";
     trainingHubMode.style.display = "none";
+    trainingWarmupMode.style.display = "none";
     matchdayHubMode.style.display = "none";
     lineupMode.style.display = "none";
     trainingMode.style.display = "none";
@@ -3127,6 +3182,7 @@ function showMode(mode){
   matchdaySubstitutionBtn.addEventListener("click", () => showMode("substitution"));
   startTrainingBtn.addEventListener("click", () => showMode("trainingHub"));
   trainingUnitsBtn.addEventListener("click", () => showMode("training"));
+  trainingWarmupBtn.addEventListener("click", () => showMode("trainingWarmup"));
   trainingGroupsBtn.addEventListener("click", () => showMode("teams"));
   trainingStrengthGroupsBtn.addEventListener("click", () => showMode("trainingStrengthGroups"));
   startHistoryBtn.addEventListener("click", () => showMode("history"));
@@ -4230,6 +4286,6 @@ if ("serviceWorker" in navigator) {
 }
 </script>
 
-<div class="install-hint">SpVgg Erdweg U11 (<a href="./U11-Coach-Versionshistory.md" target="_blank" rel="noopener noreferrer" class="footer-version-link" aria-label="Versionshistory">V1.120</a> by Mike)</div>
+<div class="install-hint">SpVgg Erdweg U11 (<a href="./U11-Coach-Versionshistory.md" target="_blank" rel="noopener noreferrer" class="footer-version-link" aria-label="Versionshistory">V1.121</a> by Mike)</div>
 </body>
 </html>
