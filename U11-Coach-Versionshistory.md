@@ -1,5 +1,10 @@
 # U11 Coach -- Versionshistorie
 
+## V1.119
+
+- In den „Trainingsgruppen“ ausgewählte Kinder werden beim ersten Öffnen der „Spielgruppen“ automatisch vorausgewählt.
+- Die Vorauswahl wird nur einmal übernommen; danach können die Auswahlen in „Trainingsgruppen“ und „Spielgruppen“ unabhängig voneinander geändert werden.
+
 ## V1.118
 
 - Trainingseinheiten, Station 1 „Parcours“: zweites Bild ergänzt.

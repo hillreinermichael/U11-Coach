@@ -3592,6 +3592,32 @@ const TIMER_WHISTLE_AUDIO = "data:audio/mpeg;base64,SUQzBAAAAAAAI1RTU0UAAAAPAAAD
 
   function displayTeamStrength(value){ return value.toFixed(1); }
 
+  // Die in „Trainingsgruppen“ ausgewählten Kinder werden beim ersten
+  // Öffnen der „Spielgruppen“ automatisch als anwesend vorausgewählt.
+  // Danach bleiben die beiden Auswahlen unabhängig voneinander.
+  window.u11TeamSelectionInitializedFromTraining = window.u11TeamSelectionInitializedFromTraining || false;
+
+  function syncTeamSelectionFromTrainingGroups(){
+    if(window.u11TeamSelectionInitializedFromTraining) return;
+
+    const trainingChecked=[...document.querySelectorAll("#strengthGroupPlayerList input[type=checkbox]:checked")]
+      .map(cb=>cb.value);
+    if(!trainingChecked.length) return;
+
+    const teamCheckboxes=[...document.querySelectorAll("#teamPlayerList input[type=checkbox]")];
+    if(!teamCheckboxes.length) return;
+
+    const alreadySelected=teamCheckboxes.some(cb=>cb.checked);
+    if(alreadySelected){
+      window.u11TeamSelectionInitializedFromTraining=true;
+      return;
+    }
+
+    const selectedSet=new Set(trainingChecked);
+    teamCheckboxes.forEach(cb=>{ cb.checked=selectedSet.has(cb.value); });
+    window.u11TeamSelectionInitializedFromTraining=true;
+  }
+
   function renderTeamPlayerSelection(){
     const box=document.getElementById("teamPlayerList");
     if(!box) return;
@@ -3611,8 +3637,13 @@ const TIMER_WHISTLE_AUDIO = "data:audio/mpeg;base64,SUQzBAAAAAAAI1RTU0UAAAAPAAAD
       cb.type="checkbox"; cb.id="teamPlayer"+i; cb.value=name; cb.checked=old.has(name);
       const label=document.createElement("label");
       label.htmlFor=cb.id; label.textContent=displayName(name);
+      cb.addEventListener("change",()=>{
+        window.u11TeamSelectionInitializedFromTraining=true;
+        window.u11LastTeamSignature=null;
+      });
       row.append(cb,label); box.appendChild(row);
     });
+    syncTeamSelectionFromTrainingGroups();
   }
 
   function createBalancedTeams(players, teamCount){
@@ -3836,11 +3867,13 @@ const TIMER_WHISTLE_AUDIO = "data:audio/mpeg;base64,SUQzBAAAAAAAI1RTU0UAAAAPAAAD
     document.getElementById("reshuffleTeamsBtn").disabled=true;
   });
   document.getElementById("teamSelectAllBtn").addEventListener("click",()=>{
+    window.u11TeamSelectionInitializedFromTraining=true;
     document.querySelectorAll("#teamPlayerList input[type=checkbox]").forEach(cb=>cb.checked=true);
     window.u11LastTeamSignature=null;
     document.getElementById("reshuffleTeamsBtn").disabled=true;
   });
   document.getElementById("teamClearAllBtn").addEventListener("click",()=>{
+    window.u11TeamSelectionInitializedFromTraining=true;
     document.querySelectorAll("#teamPlayerList input[type=checkbox]").forEach(cb=>cb.checked=false);
     document.getElementById("teamSplitResult").innerHTML="";
     window.u11LastTeamSignature=null;
@@ -4198,6 +4231,6 @@ if ("serviceWorker" in navigator) {
 }
 </script>
 
-<div class="install-hint">SpVgg Erdweg U11 (<a href="./U11-Coach-Versionshistory.md" target="_blank" rel="noopener noreferrer" class="footer-version-link" aria-label="Versionshistory">V1.118</a> by Mike)</div>
+<div class="install-hint">SpVgg Erdweg U11 (<a href="./U11-Coach-Versionshistory.md" target="_blank" rel="noopener noreferrer" class="footer-version-link" aria-label="Versionshistory">V1.119</a> by Mike)</div>
 </body>
 </html>
