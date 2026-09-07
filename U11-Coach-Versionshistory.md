@@ -1,5 +1,13 @@
 # U11 Coach -- Versionshistorie
 
+## V1.118
+
+- Trainingseinheiten, Station 1 „Parcours“: zweites Bild ergänzt.
+- Die beiden Parcours-Bilder werden jetzt als horizontal wischbare Bildergalerie angezeigt.
+- Das neue Foto des aufgebauten Parcours wurde als `bilder/u11-parcours-foto.jpg` ergänzt.
+- Service Worker und Versionsanzeigen auf V1.118 aktualisiert.
+
+
 ## V1.117
 
 - Spielerkader auf genau **10 feste Kaderplätze** angepasst.

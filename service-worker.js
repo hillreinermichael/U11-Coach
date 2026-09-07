@@ -1,4 +1,4 @@
-const CACHE_NAME = "u11-coach-v1.117";
+const CACHE_NAME = "u11-coach-v1.118";
 const APP_SHELL = [
   "./",
   "./index.html",
@@ -7,6 +7,7 @@ const APP_SHELL = [
   "./u11-coach-icon-512.png",
   "./U11-Coach-Versionshistory.md",
   "./u11-parcours-aufbau.png",
+  "./bilder/u11-parcours-foto.jpg",
   "./u11-beschleunigen-abbremser.png",
   "./u11-reaction-chase-game.png",
   "./u11-shoot-defense.png"
