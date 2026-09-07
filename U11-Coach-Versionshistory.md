@@ -1,5 +1,10 @@
 # U11 Coach -- Versionshistorie
 
+## V1.120
+
+- Die Versionsanzeige unter der Überschrift „U11 Coach“ wurde entfernt.
+- Die Version wird weiterhin ausschließlich unten über die Versionshistorie angezeigt.
+
 ## V1.119
 
 - In den „Trainingsgruppen“ ausgewählte Kinder werden beim ersten Öffnen der „Spielgruppen“ automatisch vorausgewählt.
