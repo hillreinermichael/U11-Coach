@@ -1,4 +1,10 @@
 ## V1.121
+
+### V1.122
+- Spielerlisten werden in allen nicht-taktischen Listen alphabetisch nach Spielernamen sortiert.
+- Spielerkader und Ersatzspieler sind alphabetisch angeordnet.
+- Trainings-/Spieler-Auswahllisten und angezeigte Gruppen-/Bank-/Spielzeitlisten werden alphabetisch dargestellt.
+
 - Neue Kachel „Aufwärmen“ auf der Training-Übersichtsseite ergänzt.
 - Die Kachel steht als zweite Option nach „Trainingseinheiten“ und vor „Trainingsgruppen“.
 - Die Aufwärmseite enthält die festgelegte 5-Übungen-Routine mit Merksatz.

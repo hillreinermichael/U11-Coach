@@ -1946,7 +1946,7 @@ function getSM(p){
 
 const sortedPlayers = Object.keys(PLAYERS)
   .filter(p => !GROUP_ONLY_PLAYERS.has(p))
-  .sort((a,b) => getMaxRating(b) - getMaxRating(a) || a.localeCompare(b));
+  .sort((a,b) => displayName(a).localeCompare(displayName(b), "de"));
 
 function renderRoster(){
   rosterList.innerHTML = "";
@@ -2396,7 +2396,7 @@ function renderRotation(rotation, formation){
     const field = document.createElement("div");
     field.className = "slot-line";
     field.innerHTML = "<span class='pos'>Spielen</span><div class='who-container'><span class='who'>" +
-      Object.values(assign).map(p=>displayName(p)).join(", ") + "</span></div>";
+      Object.values(assign).slice().sort((a,b)=>displayName(a).localeCompare(displayName(b),"de")).map(p=>displayName(p)).join(", ") + "</span></div>";
     box.appendChild(field);
 
     const bench = document.createElement("div");
@@ -2404,7 +2404,7 @@ function renderRotation(rotation, formation){
     const playing = new Set(Object.values(assign));
     const onBench = Object.keys(rotation.played).filter(p=>!playing.has(p));
     bench.innerHTML = "<span class='pos'>Bank</span><div class='who-container'><span class='who'>" +
-      (onBench.length ? onBench.map(p=>displayName(p)).join(", ") : "keine") + "</span></div>";
+      (onBench.length ? onBench.slice().sort((a,b)=>displayName(a).localeCompare(displayName(b),"de")).map(p=>displayName(p)).join(", ") : "keine") + "</span></div>";
     box.appendChild(bench);
 
     if(q>0){
@@ -2425,7 +2425,7 @@ function renderRotation(rotation, formation){
   const summary = document.createElement("div");
   summary.className = "footnote";
   summary.innerHTML = "<strong>Spielzeit:</strong> " + Object.keys(rotation.played)
-    .sort((a,b)=>rotation.played[b]-rotation.played[a] || a.localeCompare(b))
+    .sort((a,b)=>displayName(a).localeCompare(displayName(b),"de"))
     .map(p=>displayName(p) + ": " + (rotation.played[p]*15) + " Min.")
     .join(" · ");
   body.appendChild(summary);
@@ -3065,25 +3065,25 @@ function pickRandomTraining(list, unit){
   // Aktueller Spielerkader: Genau 10 Spieler. Die Trainerkinder sind immer im Kader und stehen an erster Stelle.
   const ROSTER_PLAYERS = [
     "Bastian",
-    "Maximilian Rohbeck",
-    "Lucas Stegmair",
     "Emin",
     "Frederik",
-    "Maximilian Mätzig",
     "Ludwig",
+    "Lucas Stegmair",
     "Lukas Bühling",
     "Lukas Kreitmair",
+    "Maximilian Mätzig",
+    "Maximilian Rohbeck",
     "Noah"
   ];
 
   // Ersatzspieler für den aktuellen Spieltag.
   const ROSTER_BENCH = [
+    "Ali",
     "Daniel",
-    "Kristof",
-    "Kenan",
-    "Maxim",
     "Johannes Suppmair",
-    "Ali"
+    "Kenan",
+    "Kristof",
+    "Maxim"
   ];
 
   // Kenan entspricht im bestehenden internen Spielerdatensatz aktuell "Kenny".
@@ -3998,7 +3998,7 @@ const TIMER_WHISTLE_AUDIO = "data:audio/mpeg;base64,SUQzBAAAAAAAI1RTU0UAAAAPAAAD
         <h3>${names[i]}</h3>
         <div class="team-section-title">Spieler</div>
         <div class="team-members">
-          ${group.map((p)=>`<div class="team-member-line"><span>${displayName(p)}</span></div>`).join("")}
+          ${group.slice().sort((a,b)=>displayName(a).localeCompare(displayName(b),"de")).map((p)=>`<div class="team-member-line"><span>${displayName(p)}</span></div>`).join("")}
         </div>
       </div>`;
     }).join("");
@@ -4286,6 +4286,6 @@ if ("serviceWorker" in navigator) {
 }
 </script>
 
-<div class="install-hint">SpVgg Erdweg U11 (<a href="./U11-Coach-Versionshistory.md" target="_blank" rel="noopener noreferrer" class="footer-version-link" aria-label="Versionshistory">V1.121</a> by Mike)</div>
+<div class="install-hint">SpVgg Erdweg U11 (<a href="./U11-Coach-Versionshistory.md" target="_blank" rel="noopener noreferrer" class="footer-version-link" aria-label="Versionshistory">V1.122</a> by Mike)</div>
 </body>
 </html>
