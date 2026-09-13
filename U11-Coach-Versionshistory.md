@@ -1,3 +1,13 @@
+## V1.125
+- Spielerwerte.xlsx um das Tabellenblatt „Trikotnummern“ ergänzt und in der App als Quelle für Trikotnummern eingebunden.
+
+## V1.124
+
+- Neue Excel-Seite **„Trikotnummern“** als zentrale Quelle für die Trikotnummern ergänzt.
+- Die App liest die Trikotnummern aus `Spielerwerte.xlsx` und zeigt sie im Spielerkader in Klammern hinter dem Namen an.
+- Maximilian Rohbeck bleibt damit als **(1 / 9)** hinterlegt; Noah als **(13)**.
+- Die bisher fest im HTML hinterlegten Trikotnummern wurden entfernt.
+
 ## V1.121
 
 ### V1.122
@@ -529,3 +539,7 @@ zusätzlich in der App
 - Die drei Trainerkinder Bastian, Maximilian Rohbeck und Lucas Stegmair stehen immer an erster Stelle im Spielerkader.
 - Die übrigen Spieler sind Emin, Frederik, Maximilian Mätzig, Ludwig, Lukas Bühling, Lukas Kreitmair, Noah, Daniel, Kristof, Kenan, Maxim, Johannes Suppmair und Ali.
 - Die separate Rubrik „Ersatz“ wurde entfernt; alle genannten Spieler werden gemeinsam unter „Spielerkader“ angezeigt.
+
+## V1.123
+- Trikotnummer von Noah im Spielerkader von 9 auf 13 geändert.
+

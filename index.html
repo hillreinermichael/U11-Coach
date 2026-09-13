@@ -1632,6 +1632,55 @@ async function loadPlayersFromExcel(){
       console.warn("Blatt 'Positionspriorität' nicht gefunden.");
     }
 
+    // Sheet 3: Trikotnummern
+    // Die Tabelle wird automatisch anhand ihrer Kopfzeile erkannt, damit Titel-/Hinweiszeilen
+    // oberhalb der eigentlichen Tabelle problemlos möglich sind.
+    const jerseySheetName = book.SheetNames.find(n =>
+      normalizeExcelHeader(n) === "trikotnummern"
+    ) || book.SheetNames[2];
+
+    const jerseys = {};
+    if(jerseySheetName){
+      const jerseySheet = book.Sheets[jerseySheetName];
+      const matrix = XLSX.utils.sheet_to_json(jerseySheet,{header:1,defval:null});
+      let headerIndex = -1;
+
+      for(let i=0;i<matrix.length;i++){
+        const row = matrix[i] || [];
+        const normalizedRow = row.map(normalizeExcelHeader);
+        if(normalizedRow.includes("spieler") && normalizedRow.includes("trikotnummer")){
+          headerIndex = i;
+          break;
+        }
+      }
+
+      if(headerIndex >= 0){
+        const headers = matrix[headerIndex].map(normalizeExcelHeader);
+        const col = key => headers.indexOf(key);
+        const playerCol = col("spieler");
+        const jerseyCol = col("trikotnummer");
+
+        for(let i=headerIndex+1;i<matrix.length;i++){
+          const row = matrix[i] || [];
+          const name = String(playerCol >= 0 ? (row[playerCol] ?? "") : "").trim();
+          if(!name) continue;
+          const jersey = String(jerseyCol >= 0 ? (row[jerseyCol] ?? "") : "").trim();
+          jerseys[name] = jersey;
+        }
+      }else{
+        console.warn("Keine Kopfzeile im Blatt 'Trikotnummern' gefunden.");
+      }
+    }else{
+      console.warn("Blatt 'Trikotnummern' nicht gefunden.");
+    }
+
+    // Anzeige-name "Kenan" verwendet weiterhin intern den Excel-/Spielerdatensatz "Kenny".
+    JERSEY_NUMBERS = {};
+    for(const [name, jersey] of Object.entries(jerseys)){
+      const displayName = Object.entries(ROSTER_DATA_NAMES || {}).find(([,dataName]) => dataName === name)?.[0] || name;
+      if(jersey) JERSEY_NUMBERS[displayName] = jersey;
+    }
+
     window.u11PlayersFromExcel = Object.keys(updated).length;
     window.u11PriorityFromExcel = Boolean(prioritySheetName);
 
@@ -3091,19 +3140,8 @@ function pickRandomTraining(list, unit){
     "Kenan": "Kenny"
   };
 
-  // Trikotnummern: Maximilian Rohbeck trägt als Torwart die 1 und als Feldspieler die 9.
-  const JERSEY_NUMBERS = {
-    "Bastian": "7",
-    "Maximilian Rohbeck": "1 / 9",
-    "Lucas Stegmair": "15",
-    "Lukas Bühling": "2",
-    "Emin": "3",
-    "Maximilian Mätzig": "4",
-    "Frederik": "11",
-    "Lukas Kreitmair": "12",
-    "Ludwig": "5",
-    "Noah": "9"
-  };
+  // Trikotnummern werden ausschließlich aus dem Excel-Blatt „Trikotnummern“ geladen.
+  let JERSEY_NUMBERS = {};
 
   function rosterPlayerHtml(name){
     const dataName = ROSTER_DATA_NAMES[name] || name;
@@ -4286,6 +4324,6 @@ if ("serviceWorker" in navigator) {
 }
 </script>
 
-<div class="install-hint">SpVgg Erdweg U11 (<a href="./U11-Coach-Versionshistory.md" target="_blank" rel="noopener noreferrer" class="footer-version-link" aria-label="Versionshistory">V1.122</a> by Mike)</div>
+<div class="install-hint">SpVgg Erdweg U11 (<a href="./U11-Coach-Versionshistory.md" target="_blank" rel="noopener noreferrer" class="footer-version-link" aria-label="Versionshistory">V1.125</a> by Mike)</div>
 </body>
 </html>
