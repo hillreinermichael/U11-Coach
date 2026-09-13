@@ -1111,6 +1111,10 @@ color:#fff;
         <div class="material-title">Ersatz (6)</div>
         <div id="playerRosterBenchList" class="roster-list"></div>
       </div>
+      <div class="roster-section roster-open-numbers">
+        <div class="material-title">Offene Trikotnummern</div>
+        <div id="openJerseyNumbers" class="roster-player-priority">Wird aus der Excel-Datei geladen.</div>
+      </div>
     </div>
   </div>
   <div id="timerMode" class="mode-section" style="display:none;">
@@ -3148,11 +3152,13 @@ function pickRandomTraining(list, unit){
     const positions = (PLAYERS[dataName] && Array.isArray(PLAYERS[dataName].positions))
       ? PLAYERS[dataName].positions
       : [];
-    const priority = positions.length ? (POS_NAMES[positions[0]] || positions[0]) : "Keine Positionspriorität hinterlegt";
+    const positionLabels = positions.length
+      ? positions.map(pos => POS_NAMES[pos] || pos).join(" · ")
+      : "Keine Positionspriorität hinterlegt";
     const jersey = JERSEY_NUMBERS[name] ? ` <span class="roster-player-number">(${JERSEY_NUMBERS[name]})</span>` : "";
     return `<div class="roster-player-card">
       <div class="roster-player-name">${name}${jersey}</div>
-      <div class="roster-player-priority">${priority}</div>
+      <div class="roster-player-priority">${positionLabels}</div>
     </div>`;
   }
 
@@ -3161,6 +3167,18 @@ function pickRandomTraining(list, unit){
     const bench=document.getElementById("playerRosterBenchList");
     if(list) list.innerHTML=ROSTER_PLAYERS.map(rosterPlayerHtml).join("");
     if(bench) bench.innerHTML=ROSTER_BENCH.map(rosterPlayerHtml).join("");
+
+    const openNumbersEl=document.getElementById("openJerseyNumbers");
+    if(openNumbersEl){
+      const availableNumbers = Array.from({length:15}, (_,i) => String(i+1));
+      // Mehrfachnummern wie "1 / 9" oder "1+9" belegen beide Nummern.
+      const assignedNumbers = Object.values(JERSEY_NUMBERS)
+        .flatMap(value => String(value).match(/\d+/g) || [])
+        .filter(n => Number(n) >= 1 && Number(n) <= 15);
+      const existingNumbers = new Set(assignedNumbers);
+      const openNumbers = availableNumbers.filter(n => !existingNumbers.has(n) && n !== "6" && n !== "10");
+      openNumbersEl.textContent = openNumbers.length ? openNumbers.join(", ") : "Keine offenen Nummern";
+    }
   }
 
 function showMode(mode){
@@ -4324,6 +4342,6 @@ if ("serviceWorker" in navigator) {
 }
 </script>
 
-<div class="install-hint">SpVgg Erdweg U11 (<a href="./U11-Coach-Versionshistory.md" target="_blank" rel="noopener noreferrer" class="footer-version-link" aria-label="Versionshistory">V1.125</a> by Mike)</div>
+<div class="install-hint">SpVgg Erdweg U11 (<a href="./U11-Coach-Versionshistory.md" target="_blank" rel="noopener noreferrer" class="footer-version-link" aria-label="Versionshistory">V1.127</a> by Mike)</div>
 </body>
 </html>

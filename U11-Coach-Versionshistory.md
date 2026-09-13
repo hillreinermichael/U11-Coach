@@ -543,3 +543,15 @@ zusätzlich in der App
 ## V1.123
 - Trikotnummer von Noah im Spielerkader von 9 auf 13 geändert.
 
+
+## V1.126
+- Auf der Spielerkader-Seite werden bei jedem Spieler alle drei aus Excel geladenen Positionsprioritäten angezeigt.
+- Die offenen Trikotnummern werden am unteren Ende des Spielerkaders angezeigt.
+- Im Excel-Blatt `Trikotnummern` werden die offenen Nummern 8 und 14 ausgewiesen.
+- Trikotnummern und Positionsprioritäten bleiben weiterhin vollständig über `Spielerwerte.xlsx` steuerbar.
+
+
+## V1.127
+- Die Ermittlung der offenen Trikotnummern erkennt Mehrfachnummern robust, z. B. "1 / 9" oder "1+9".
+- Dadurch werden bei Maximilian Rohbeck sowohl die 1 als auch die 9 als vergeben berücksichtigt.
+- Aktuell offene Nummern bleiben 8 und 14.
