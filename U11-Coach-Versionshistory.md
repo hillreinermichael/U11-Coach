@@ -1,3 +1,16 @@
+## V1.129
+
+- Neues U11-Coach-Logo links oben in der App verwendet.
+- Neues U11-Coach-Logo als Favicon und als App-Symbol für die Installation auf Mobilgeräten verwendet.
+- Transparente Logo-Version als `u11-coach-icon-192.png` und `u11-coach-icon-512.png` eingebunden.
+
+## V1.129
+
+- Neues U11-Coach-Logo links oben in der App.
+- Neues Logo als Favicon und als App-Icon für die Installation auf dem Smartphone.
+- Neue App-Icons `u11-coach-icon-192.png` und `u11-coach-icon-512.png`.
+- Manifest auf die neuen Icons aktualisiert.
+
 ## V1.125
 - Spielerwerte.xlsx um das Tabellenblatt „Trikotnummern“ ergänzt und in der App als Quelle für Trikotnummern eingebunden.
 
@@ -551,7 +564,7 @@ zusätzlich in der App
 - Trikotnummern und Positionsprioritäten bleiben weiterhin vollständig über `Spielerwerte.xlsx` steuerbar.
 
 
-## V1.127
+## V1.128
 - Die Ermittlung der offenen Trikotnummern erkennt Mehrfachnummern robust, z. B. "1 / 9" oder "1+9".
 - Dadurch werden bei Maximilian Rohbeck sowohl die 1 als auch die 9 als vergeben berücksichtigt.
 - Aktuell offene Nummern bleiben 8 und 14.
