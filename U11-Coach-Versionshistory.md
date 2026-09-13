@@ -1,3 +1,9 @@
+## V1.130
+
+- Linkes U11-Coach-Logo im Kopfbereich als eigenständige transparente Header-Grafik eingebunden.
+- Das Logo wird im Header größer und passend skaliert dargestellt, damit es nicht wie ein kleines App-Icon wirkt.
+- Favicon und App-Icons bleiben unverändert.
+
 ## V1.129
 
 - Neues U11-Coach-Logo links oben in der App verwendet.

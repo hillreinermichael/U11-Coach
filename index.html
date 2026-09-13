@@ -93,7 +93,7 @@
     padding:0 14px;
     display:flex;
     flex-direction:column;
-    gap:16px;
+    gap:10px;
   }
   .card{
     background:var(--erdweg-white);
@@ -807,7 +807,7 @@
 <style>
 .club-header{
   display:grid;
-  grid-template-columns:86px minmax(0,1fr) 86px;
+  grid-template-columns:88px minmax(0,1fr) 76px;
   align-items:center;
   justify-items:center;
   gap:16px;
@@ -838,17 +838,17 @@ color:#fff;
 .club-logo-button:focus-visible{outline:3px solid #fff;outline-offset:4px;}
 .club-logo-button:active{transform:scale(.96);}
 
-.club-logo{
-  width:76px;
-  height:76px;
+ .club-logo{
+  width:82px;
+  height:82px;
   object-fit:contain;
   display:block;
 }
 .club-logo-left{justify-self:end;}
 .club-logo-right{justify-self:start;}
 @media(max-width:700px){
-  .club-header{grid-template-columns:58px minmax(0,1fr) 58px;gap:8px;}
-  .club-logo{width:52px;height:52px;}
+  .club-header{grid-template-columns:70px minmax(0,1fr) 58px;gap:6px;}
+  .club-logo{width:64px;height:64px;}
   .club-header-title{font-size:21px;}
 }
   .training-template-summary{margin:12px 0;padding:10px;border:1px solid var(--line);border-radius:10px;background:#fafafa;}
@@ -869,7 +869,7 @@ color:#fff;
   <div class="badge">SpVgg Erdweg</div>
   <div class="club-header">
   <button type="button" class="club-logo-button club-logo-left" id="clubLogoLeft" aria-label="Zur Startseite">
-    <img class="club-logo" src="./u11-coach-icon-192.png" alt="U11 Coach Logo">
+    <img class="club-logo" src="./u11-coach-logo-header.png" alt="U11 Coach Logo">
   </button>
   <div class="club-header-title">U11 Coach</div>
   <button type="button" class="club-logo-button club-logo-right" id="clubLogoRight" aria-label="Zur Startseite">
@@ -4342,6 +4342,6 @@ if ("serviceWorker" in navigator) {
 }
 </script>
 
-<div class="install-hint">SpVgg Erdweg U11 (<a href="./U11-Coach-Versionshistory.md" target="_blank" rel="noopener noreferrer" class="footer-version-link" aria-label="Versionshistory">V1.129</a> by Mike)</div>
+<div class="install-hint">SpVgg Erdweg U11 (<a href="./U11-Coach-Versionshistory.md" target="_blank" rel="noopener noreferrer" class="footer-version-link" aria-label="Versionshistory">V1.130</a> by Mike)</div>
 </body>
 </html>
