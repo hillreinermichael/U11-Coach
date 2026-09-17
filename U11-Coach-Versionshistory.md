@@ -1,3 +1,15 @@
+## V1.137
+
+- Spielhistorie verwendet für das Spiel vom **17.09.2026** den offiziellen Gegnernamen **(SG) Niederroth/Arnbach U11**.
+- Anzeige der Begegnung: **(SG) Niederroth/Arnbach U11 - SpVgg Erdweg U11** für das Auswärtsspiel.
+- Logo links oben wird weiterhin über `./bilder/u11-coach-logo-header.png` geladen; der Bild-Cachebuster wurde auf V1.137 aktualisiert.
+
+## V1.136
+
+- Spielhistorie verwendet die korrekten BFV-Mannschaftsnamen.
+- Das Spiel vom 17.09.2026 wird als **(SG) Niederroth/Arnbach U11 - SpVgg Erdweg U11** angezeigt.
+- Heimspiele werden als **SpVgg Erdweg U11 - Gegner**, Auswärtsspiele als **Gegner - SpVgg Erdweg U11** dargestellt.
+
 ## V1.135
 
 - **Spielhistorie:** Gegner werden immer mit `SpVgg` angezeigt.

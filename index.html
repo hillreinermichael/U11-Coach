@@ -880,7 +880,7 @@ color:#fff;
   <div class="badge">SpVgg Erdweg</div>
   <div class="club-header">
   <button type="button" class="club-logo-button club-logo-left" id="clubLogoLeft" aria-label="Zur Startseite">
-    <img class="club-logo" src="./bilder/u11-coach-logo-header.png?v=1135" alt="U11 Coach Logo">
+    <img class="club-logo" src="./bilder/u11-coach-logo-header.png?v=1137" alt="U11 Coach Logo">
   </button>
   <div class="club-header-title">U11 Coach</div>
   <button type="button" class="club-logo-button club-logo-right" id="clubLogoRight" aria-label="Zur Startseite">
@@ -3208,7 +3208,7 @@ function pickRandomTraining(list, unit){
   }
 
   const MATCH_HISTORY = [
-    { date: "2026-09-17", opponent: "Arnbach/Niederroth", type: "Testspiel", venue: "Auswärts", goalsFor: 6, goalsAgainst: 4 }
+    { date: "2026-09-17", opponent: "(SG) Niederroth/Arnbach U11", type: "Testspiel", venue: "Auswärts", goalsFor: 6, goalsAgainst: 4 }
   ];
 
   function formatMatchDate(isoDate){
@@ -3217,16 +3217,15 @@ function pickRandomTraining(list, unit){
   }
 
   function formatOpponentName(opponent){
-    const name = String(opponent || "Gegner").trim();
-    if(!name) return "SpVgg Gegner";
-    return /^spvgg\s/i.test(name) ? name : `SpVgg ${name}`;
+    return String(opponent || "Gegner").trim() || "Gegner";
   }
 
   function formatMatchTeams(game){
     const opponent = formatOpponentName(game.opponent);
+    const homeTeam = "SpVgg Erdweg U11";
     return game.venue === "Auswärts"
-      ? `${opponent} - Erdweg`
-      : `Erdweg - ${opponent}`;
+      ? `${opponent} - ${homeTeam}`
+      : `${homeTeam} - ${opponent}`;
   }
 
   function renderMatchHistory(){
@@ -4420,6 +4419,6 @@ if ("serviceWorker" in navigator) {
 }
 </script>
 
-<div class="install-hint">SpVgg Erdweg U11 (<a href="./U11-Coach-Versionshistory.md" target="_blank" rel="noopener noreferrer" class="footer-version-link" aria-label="Versionshistory">V1.135</a> by Mike)</div>
+<div class="install-hint">SpVgg Erdweg U11 (<a href="./U11-Coach-Versionshistory.md" target="_blank" rel="noopener noreferrer" class="footer-version-link" aria-label="Versionshistory">V1.137</a> by Mike)</div>
 </body>
 </html>
