@@ -1,3 +1,9 @@
+## V1.135
+
+- **Spielhistorie:** Gegner werden immer mit `SpVgg` angezeigt.
+- Heimspiele werden als **Erdweg - SpVgg Gegner** dargestellt.
+- Auswärtsspiele werden als **SpVgg Gegner - Erdweg** dargestellt.
+
 ## V1.133
 
 - Spielhistorie: Spiele werden je nach Ergebnis farblich hinterlegt: **grün bei Sieg**, **rot bei Niederlage** und **gelb bei Unentschieden**.

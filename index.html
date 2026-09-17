@@ -880,7 +880,7 @@ color:#fff;
   <div class="badge">SpVgg Erdweg</div>
   <div class="club-header">
   <button type="button" class="club-logo-button club-logo-left" id="clubLogoLeft" aria-label="Zur Startseite">
-    <img class="club-logo" src="./bilder/u11-coach-logo-header.png?v=1132" alt="U11 Coach Logo">
+    <img class="club-logo" src="./bilder/u11-coach-logo-header.png?v=1135" alt="U11 Coach Logo">
   </button>
   <div class="club-header-title">U11 Coach</div>
   <button type="button" class="club-logo-button club-logo-right" id="clubLogoRight" aria-label="Zur Startseite">
@@ -3216,6 +3216,19 @@ function pickRandomTraining(list, unit){
     return (day && month && year) ? `${day}.${month}.${year}` : isoDate;
   }
 
+  function formatOpponentName(opponent){
+    const name = String(opponent || "Gegner").trim();
+    if(!name) return "SpVgg Gegner";
+    return /^spvgg\s/i.test(name) ? name : `SpVgg ${name}`;
+  }
+
+  function formatMatchTeams(game){
+    const opponent = formatOpponentName(game.opponent);
+    return game.venue === "Auswärts"
+      ? `${opponent} - Erdweg`
+      : `Erdweg - ${opponent}`;
+  }
+
   function renderMatchHistory(){
     const el = document.getElementById("matchHistoryList");
     if(!el) return;
@@ -3234,7 +3247,7 @@ function pickRandomTraining(list, unit){
         <div class="match-history-entry ${resultClass}">
           <div class="match-history-date">${formatMatchDate(game.date)}</div>
           <div class="match-history-main">
-            <div class="match-history-opponent">${game.opponent}</div>
+            <div class="match-history-opponent">${formatMatchTeams(game)}</div>
             <div class="match-history-result">${score}</div>
             <div class="match-history-meta">${game.type || "Spiel"} · ${game.venue} · ${result}</div>
           </div>
@@ -4407,6 +4420,6 @@ if ("serviceWorker" in navigator) {
 }
 </script>
 
-<div class="install-hint">SpVgg Erdweg U11 (<a href="./U11-Coach-Versionshistory.md" target="_blank" rel="noopener noreferrer" class="footer-version-link" aria-label="Versionshistory">V1.134</a> by Mike)</div>
+<div class="install-hint">SpVgg Erdweg U11 (<a href="./U11-Coach-Versionshistory.md" target="_blank" rel="noopener noreferrer" class="footer-version-link" aria-label="Versionshistory">V1.135</a> by Mike)</div>
 </body>
 </html>
