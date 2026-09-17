@@ -1,3 +1,19 @@
+## V1.133
+
+- Spielhistorie: Spiele werden je nach Ergebnis farblich hinterlegt: **grün bei Sieg**, **rot bei Niederlage** und **gelb bei Unentschieden**.
+
+## V1.132
+
+- Logo links oben im Header zusätzlich als Datei `u11-coach-logo-header.png` in die Release-Dateien aufgenommen, damit es beim GitHub-Upload sicher vorhanden ist.
+- In der **Spielhistorie** wird nun auch die **Spielart** angezeigt.
+- Das Spiel vom **17.09.2026 gegen Arnbach/Niederroth** ist als **Testspiel** gekennzeichnet.
+
+## V1.131
+
+- Neue Startseiten-Kachel **„Spielhistorie“** direkt vor „Timer & Stoppuhr“ ergänzt.
+- Neue Seite „Spielhistorie“ zur Anzeige der bisher eingetragenen Spiele mit Datum, Heim-/Auswärtsstatus und Ergebnis.
+- Das Auswärtsspiel vom **17.09.2026 gegen Arnbach/Niederroth** wurde mit **4:6** (Sieg für SpVgg Erdweg U11) eingetragen.
+
 ## V1.130
 
 - Linkes U11-Coach-Logo im Kopfbereich als eigenständige transparente Header-Grafik eingebunden.
