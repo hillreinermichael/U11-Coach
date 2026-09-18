@@ -880,7 +880,7 @@ color:#fff;
   <div class="badge">SpVgg Erdweg</div>
   <div class="club-header">
   <button type="button" class="club-logo-button club-logo-left" id="clubLogoLeft" aria-label="Zur Startseite">
-    <img class="club-logo" src="./bilder/u11-coach-logo-header.png?v=1137" alt="U11 Coach Logo">
+    <img class="club-logo" src="./bilder/u11-coach-logo-header.png?v=1138" alt="U11 Coach Logo">
   </button>
   <div class="club-header-title">U11 Coach</div>
   <button type="button" class="club-logo-button club-logo-right" id="clubLogoRight" aria-label="Zur Startseite">
@@ -2038,24 +2038,9 @@ function renderRoster(){
     const info = document.createElement("div"); info.className = "roster-info";
     const name = document.createElement("div"); name.className = "roster-name"; name.textContent = displayName(p);
     
-    const badges = document.createElement("div"); badges.className = "roster-pos-badges";
-    if(PLAYERS[p].positions.length){
-      PLAYERS[p].positions.forEach(pos => {
-        const tag = document.createElement("span");
-        tag.className = "pos-tag active";
-        tag.textContent = POS_NAMES[pos] || pos;
-        badges.appendChild(tag);
-      });
-    } else {
-      const tag = document.createElement("span");
-      tag.className = "pos-tag";
-      tag.textContent = "keine Position hinterlegt";
-      badges.appendChild(tag);
-    }
-
-    // Positionspriorität und Werte bleiben intern für Berechnungen erhalten,
-    // werden in dieser Spieltags-Kachel aber nicht angezeigt.
-    info.append(name, badges);
+    // Positionsprioritäten und Werte bleiben intern für Berechnungen erhalten,
+    // werden in der Spieltags-Auswahlliste aber nicht angezeigt.
+    info.append(name);
 
     // Im Spieltag dürfen Spielerwerte nicht angezeigt oder bearbeitet werden.
     row.append(cb, info);
@@ -2157,9 +2142,7 @@ function drawPitch(assign){
       const t1 = el("text",{x:x,y:y-3,"text-anchor":"middle","font-size":"10","font-weight":"800",fill:"#ffffff","font-family":"Inter,sans-serif"});
       t1.textContent = displayName(player);
       
-      const t2 = el("text",{x:x,y:y+11,"text-anchor":"middle","font-size":"8.5","font-weight":"700",fill:"#ffeb3b","font-family":"Inter,sans-serif"});
-      t2.textContent = ptype(slot);
-      g.appendChild(t1); g.appendChild(t2);
+      g.appendChild(t1);
     } else {
       g.appendChild(el("circle",{cx:x,cy:y,r:r,fill:"rgba(18, 18, 18, 0.75)",stroke:"#ffffff","stroke-width":1.5, "stroke-dasharray":"3,2"}));
       const t = el("text",{x:x,y:y+3,"text-anchor":"middle","font-size":"9","font-weight":"700",fill:"#ffffff","font-family":"Inter,sans-serif"});
@@ -3202,7 +3185,7 @@ function pickRandomTraining(list, unit){
         .flatMap(value => String(value).match(/\d+/g) || [])
         .filter(n => Number(n) >= 1 && Number(n) <= 15);
       const existingNumbers = new Set(assignedNumbers);
-      const openNumbers = availableNumbers.filter(n => !existingNumbers.has(n) && n !== "6" && n !== "10");
+      const openNumbers = availableNumbers.filter(n => !existingNumbers.has(n));
       openNumbersEl.textContent = openNumbers.length ? openNumbers.join(", ") : "Keine offenen Nummern";
     }
   }
@@ -3559,7 +3542,7 @@ const TIMER_WHISTLE_AUDIO = "data:audio/mpeg;base64,SUQzBAAAAAAAI1RTU0UAAAAPAAAD
     const state=window.u11CurrentLineup; if(!state){controls.style.display="none";empty.textContent="Bitte zuerst auf der Aufstellungsseite eine Aufstellung berechnen.";return;}
     controls.style.display="block";empty.textContent="Aktuelle Formation: "+state.formation;
     const fieldPlayers=Object.entries(state.assignment).filter(([slot])=>ptype(slot)!=="TW");
-    out.innerHTML=fieldPlayers.map(([slot,p])=>`<option value="${p}" data-slot="${slot}">${displayName(p)} · ${LABEL[slot]}</option>`).join(""); renderSubstitutionSuggestions();
+    out.innerHTML=fieldPlayers.map(([slot,p])=>`<option value="${p}" data-slot="${slot}">${displayName(p)}</option>`).join(""); renderSubstitutionSuggestions();
   }
   function renderSubstitutionSuggestions(){
     const state=window.u11CurrentLineup,out=document.getElementById("subOutSelect"),box=document.getElementById("substitutionSuggestions");if(!state||!out||!box)return;
@@ -3567,7 +3550,7 @@ const TIMER_WHISTLE_AUDIO = "data:audio/mpeg;base64,SUQzBAAAAAAAI1RTU0UAAAAPAAAD
     const slot=entry[0],pos=ptype(slot),starters=new Set(Object.values(state.assignment));
     const candidates=(state.available||[]).filter(p=>!starters.has(p)&&!GROUP_ONLY_PLAYERS.has(p)).map(p=>({player:p,score:playerScoreForPosition(p,pos)})).sort((a,b)=>b.score-a.score||displayName(a.player).localeCompare(displayName(b.player),"de")).slice(0,3);
     if(!candidates.length){box.innerHTML='<div class="material-empty">Keine geeignete Einwechslung von der Bank gefunden.</div>';return;}
-    box.innerHTML=candidates.map(c=>`<div class="substitution-suggestion"><div class="substitution-suggestion-main"><strong>${displayName(c.player)}</strong><span>${POS_NAMES[pos]||pos} · Passung ${c.score.toFixed(1)}</span></div><button type="button" class="timer-action secondary" data-sub-player="${String(c.player).replace(/"/g,"&quot;")}">Einwechseln</button></div>`).join("");
+    box.innerHTML=candidates.map(c=>`<div class="substitution-suggestion"><div class="substitution-suggestion-main"><strong>${displayName(c.player)}</strong><span>Passung ${c.score.toFixed(1)}</span></div><button type="button" class="timer-action secondary" data-sub-player="${String(c.player).replace(/"/g,"&quot;")}">Einwechseln</button></div>`).join("");
     box.querySelectorAll("[data-sub-player]").forEach(btn=>btn.addEventListener("click",()=>applySubstitution(selected,btn.dataset.subPlayer)));
   }
   function applySubstitution(playerOut,playerIn){
@@ -4419,6 +4402,6 @@ if ("serviceWorker" in navigator) {
 }
 </script>
 
-<div class="install-hint">SpVgg Erdweg U11 (<a href="./U11-Coach-Versionshistory.md" target="_blank" rel="noopener noreferrer" class="footer-version-link" aria-label="Versionshistory">V1.137</a> by Mike)</div>
+<div class="install-hint">SpVgg Erdweg U11 (<a href="./U11-Coach-Versionshistory.md" target="_blank" rel="noopener noreferrer" class="footer-version-link" aria-label="Versionshistory">V1.138</a> by Mike)</div>
 </body>
 </html>

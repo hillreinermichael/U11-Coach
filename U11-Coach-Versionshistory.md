@@ -1,3 +1,10 @@
+## V1.138
+
+- Im **Spieltag** werden die Positionsangaben unter den Spielernamen entfernt, damit die Spielerauswahl kompakter dargestellt wird.
+- In der **Aufstellung** werden die Positionskürzel unter den Spielernamen auf dem Spielfeld entfernt.
+- Die offenen Trikotnummern werden wieder aus allen freien Nummern **1–15** berechnet; die Nummern 6 und 10 werden nicht mehr künstlich ausgeschlossen.
+- Logo bleibt unter `./bilder/u11-coach-logo-header.png` eingebunden; Cachebuster auf V1.138 aktualisiert.
+
 ## V1.137
 
 - Spielhistorie verwendet für das Spiel vom **17.09.2026** den offiziellen Gegnernamen **(SG) Niederroth/Arnbach U11**.
