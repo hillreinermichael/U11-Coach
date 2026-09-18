@@ -1194,8 +1194,8 @@ color:#fff;
         <input id="trainingTemplateTitle" type="text" maxlength="80" placeholder="z. B. Schnelligkeit + Torschuss">
       </div>
       <div class="field-row">
-        <label class="small" for="templateUnit2Select">Station 2</label>
-        <select id="templateUnit2Select"></select>
+        <label class="small">Station 2</label>
+        <div class="training-template-summary" style="margin:0;">Pass- und Ballübung</div>
       </div>
       <div class="field-row">
         <label class="small" for="templateUnit3Select">Station 3</label>
@@ -1357,20 +1357,13 @@ color:#fff;
       <div class="training-station-head">
         <div>
           <div class="training-kicker" id="trainingUnit2Kicker">Station 2</div>
-          <h3 id="trainingUnit2Heading">Kraft / Koordination</h3>
+          <h3 id="trainingUnit2Heading">Pass- und Ballübung</h3>
         </div>
         <span class="training-duration">10–15 Min.</span>
       </div>
-      <div class="training-random-row">
-        <div>
-          <div class="training-random-label">Heute:</div>
-          <div id="trainingUnit2Name" class="training-selected">Noch keine Übung gezogen</div>
-        </div>
-        <button type="button" class="training-draw-btn" id="drawUnit2Btn">Zufällig wählen</button>
+      <div class="training-details" style="display:block;">
+        <div class="training-selected">Übung wird noch festgelegt.</div>
       </div>
-      <button type="button" class="training-details-btn" data-toggle="trainingDetails2">Details anzeigen</button>
-      <div class="training-details" id="trainingDetails2"></div>
-      <div class="training-material" id="trainingMaterial2"><div class="material-empty">Noch keine Übung gewählt.</div></div>
     </div>
 
     <div class="training-station" id="trainingStation3Card">
@@ -2595,49 +2588,7 @@ document.getElementById("calcBtn").addEventListener("click", () => {
 });
 
   /* ===================== Training – 3 Stationen ===================== */
-  const TRAINING_UNIT_2 = [
-    {
-      no:"2.1",
-      name:"Reifen-/Hütchen-Kraftparcours",
-      duration:"ca. 15 Min.",
-      details:"Aufbau: 5 Stationen als Rundkurs.\nAblauf:\n1. 5 Kniebeugen\n2. 5 Liegestütze (auch auf Knien möglich; wer kann -> Burpees)\n3. 5 Froschsprünge\n4. 10 Sekunden Plank\n5. Sprint zum Start\n3–4 Durchgänge."
-    },
-    {
-      no:"2.2",
-      name:"Schattenlauf mit Partner",
-      duration:"ca. 10–15 Min.",
-      details:"Zwei Spieler zusammen. Evtl. mit Medizinbällen.\nA läuft vor: seitwärts, rückwärts und schnelle Richtungswechsel.\nB macht alles nach.\nNach 30 Sekunden Wechsel.\nHinweis: gerade Anzahl an Spielern."
-    },
-    {
-      no:"2.3",
-      name:"Bärenlauf-Parcours",
-      duration:"ca. 10–15 Min.",
-      details:"Aufbau: Hütchenstrecke.\nHinweg: Bärenlauf.\nRückweg: Sprint.\nVarianten: Krebsgang, Froschsprünge, Seitwärtssprünge."
-    },
-    {
-      no:"2.5",
-      name:"Staffel mit Kraftaufgaben",
-      duration:"ca. 10–15 Min.",
-      details:"2–3 Teams.\nLaufen zum Hütchen, dort:\n5 Hampelmänner\n5 Kniebeugen\nZurück sprinten."
-    },
-    {
-      no:"2.6",
-      name:"Sprint + Ballkontrolle",
-      duration:"ca. 10–15 Min.",
-      details:"Aufbau:\n4 Hütchen in einer Reihe.\n1 Ball.\nImmer nur ein Spieler gleichzeitig aktiv.\n\nAblauf:\n1. Hütchen 1 → Hütchen 2 mit Ball.\n2. Hütchen 2 → Hütchen 1 ohne Ball.\n3. Hütchen 1 → Hütchen 3 mit Ball.\n4. Hütchen 3 → Hütchen 1 ohne Ball.\n5. Hütchen 1 → Hütchen 3 → Hütchen 4 mit Ball.\n6. Hütchen 4 → Hütchen 1 mit Ball im Slalom.\n7. Danach startet der nächste Spieler.\n\nSpielerzahl: variabel; immer nur 1 Spieler gleichzeitig aktiv."
-    },
-    {
-      no:"2.7",
-      name:"Beschleunigen & Abbremsen",
-      duration:"ca. 10–15 Min.",
-      details:"Aufbau:\nHütchen markieren die Laufstrecke und die Wendepunkte. Die Übung wird ohne Ball durchgeführt.\n\nAblauf:\n1. Aus der Startposition explosiv vorwärts beschleunigen.\n2. An der Markierung kontrolliert abbremsen.\n3. Rückwärts zur Ausgangsposition laufen.\n4. Erneut vorwärts beschleunigen zum nächsten Kegel.\n5. Das bis zum letzten Kegel wiederholen.\n6. Im Slalom zurück zur Startposition.\n\nSpielerzahl: variabel; die Spieler starten nacheinander."
-    },
-    {
-      no:"2.8",
-      name:"Reaction Chase Game",
-      duration:"ca. 10–15 Min.",
-      details:"Aufbau:\n4 Hütchen. 1 Leibchen.\n\nAblauf:\nZwei Spieler starten gleichzeitig, beide halten das Leibchen.\nBeide bewegen sich zunächst in Richtung des Fängers.\nEiner der Spieler behält das Leibchen und wird zum Fluchtspieler.\nDer Fänger reagiert und versucht, ihn einzuholen und abzuschlagen.\nDanach werden die Rollen gewechselt.\nImmer 3 Spieler gleichzeitig aktiv, weitere Spieler warten und wechseln anschließend.", source:"https://www.instagram.com/reel/DZntR50Oj69/?utm_source=ig_web_copy_link&igsi=MzRlODBiNWFlZA=="},
-  ];
+  const TRAINING_UNIT_2 = [];
 
   const TRAINING_UNIT_3 = [
     {
@@ -3047,29 +2998,23 @@ function pickRandomTraining(list, unit){
     }
 
     if(two){
-      // In 2-station mode, the football exercise is the second station.
+      // Im 2-Stationen-Modus wird die Fußballübung aus Station 3 zur zweiten Station.
       if(window.selectedTraining3 && !window.selectedTraining2){
         window.selectedTraining2 = window.selectedTraining3;
       }
       window.selectedTraining3 = null;
-
       if(window.selectedTraining2){
         showTrainingSelection(3, window.selectedTraining2);
       }
+    }else{
+      // Station 2 ist in diesem Modus fest als „Pass- und Ballübung“ definiert.
+      window.selectedTraining2 = null;
       const name2 = document.getElementById("trainingUnit2Name");
       const details2 = document.getElementById("trainingDetails2");
       const mat2 = document.getElementById("trainingMaterial2");
-      if(name2) name2.textContent = "Nicht verwendet";
+      if(name2) name2.textContent = "Pass- und Ballübung";
       if(details2) details2.classList.remove("open");
-      if(mat2) mat2.innerHTML = '<div class="material-empty">In diesem Modus nicht verwendet.</div>';
-    }else{
-      // Back to 3 stations: restore a football exercise to station 3 if one is selected.
-      if(window.selectedTraining2 && !window.selectedTraining3){
-        window.selectedTraining3 = window.selectedTraining2;
-        window.selectedTraining2 = null;
-        showTrainingSelection(2, pickRandomTraining(TRAINING_UNIT_2, 2));
-        showTrainingSelection(3, window.selectedTraining3);
-      }
+      if(mat2) mat2.innerHTML = '<div class="material-empty">Für diese Station ist noch keine Übung hinterlegt.</div>';
     }
 
     renderCombinedTrainingMaterials();
@@ -3081,15 +3026,7 @@ function pickRandomTraining(list, unit){
     if(childCount) calculateTrainingGroups(childCount.value);
   });
 
-  document.getElementById("drawUnit2Btn").addEventListener("click", () => {
-    if(isTwoStationTraining()){
-      showTrainingSelection(3, pickRandomTraining(TRAINING_UNIT_3, 3));
-    }else{
-      showTrainingSelection(2, pickRandomTraining(TRAINING_UNIT_2, 2));
-    }
-  });
-
-  document.getElementById("drawUnit3Btn").addEventListener("click", () => {
+  document.getElementById("drawUnit3Btn")?.addEventListener("click", () => {
     showTrainingSelection(3, pickRandomTraining(TRAINING_UNIT_3, 3));
   });
 
@@ -3479,30 +3416,29 @@ const TIMER_WHISTLE_AUDIO = "data:audio/mpeg;base64,SUQzBAAAAAAAI1RTU0UAAAAPAAAD
   const TRAINING_TEMPLATE_KEY = "u11coach_training_template_v1";
   function localDateForInput(){ const d=new Date(); return `${d.getFullYear()}-${String(d.getMonth()+1).padStart(2,"0")}-${String(d.getDate()).padStart(2,"0")}`; }
   function populateTrainingTemplateSelects(){
-    const s2=document.getElementById("templateUnit2Select"), s3=document.getElementById("templateUnit3Select"); if(!s2||!s3)return;
-    s2.innerHTML=TRAINING_UNIT_2.map(x=>`<option value="${x.no}">${x.no} – ${x.name}</option>`).join("");
+    const s3=document.getElementById("templateUnit3Select");
+    if(!s3) return;
     s3.innerHTML=TRAINING_UNIT_3.map(x=>`<option value="${x.no}">${x.no} – ${x.name}</option>`).join("");
   }
-  function findTrainingByNo(no){ return TRAINING_UNIT_2.find(x=>x.no===no) || TRAINING_UNIT_3.find(x=>x.no===no) || null; }
+  function findTrainingByNo(no){ return TRAINING_UNIT_3.find(x=>x.no===no) || null; }
   function readTrainingTemplate(){ try{return JSON.parse(localStorage.getItem(TRAINING_TEMPLATE_KEY)||"null");}catch(e){return null;} }
   function updateTrainingTemplateSummary(){
-    const box=document.getElementById("trainingTemplateSummary"), s2=document.getElementById("templateUnit2Select"), s3=document.getElementById("templateUnit3Select"); if(!box||!s2||!s3)return;
-    const a=findTrainingByNo(s2.value), b=findTrainingByNo(s3.value);
-    box.innerHTML=`<strong>Trainingsaufbau</strong><div>Station 1: Parcours als Viereck</div><div>Station 2: ${a ? a.no+" – "+a.name : "–"}</div><div>Station 3: ${b ? b.no+" – "+b.name : "–"}</div><div class="footnote" style="margin-top:6px;">Richtwert: 90 Minuten Gesamttraining.</div>`;
+    const box=document.getElementById("trainingTemplateSummary"), s3=document.getElementById("templateUnit3Select"); if(!box||!s3)return;
+    const b=findTrainingByNo(s3.value);
+    box.innerHTML=`<strong>Trainingsaufbau</strong><div>Station 1: Parcours als Viereck</div><div>Station 2: Pass- und Ballübung</div><div>Station 3: ${b ? b.no+" – "+b.name : "–"}</div><div class="footnote" style="margin-top:6px;">Richtwert: 90 Minuten Gesamttraining.</div>`;
   }
   function renderTrainingTemplate(){
     populateTrainingTemplateSelects(); const saved=readTrainingTemplate();
-    const title=document.getElementById("trainingTemplateTitle"), s2=document.getElementById("templateUnit2Select"), s3=document.getElementById("templateUnit3Select");
-    if(saved){ if(title)title.value=saved.title||""; if(s2&&saved.unit2)s2.value=saved.unit2; if(s3&&saved.unit3)s3.value=saved.unit3; }
-    else { if(title&&!title.value)title.value="Mein Training"; if(s2&&window.selectedTraining2)s2.value=window.selectedTraining2.no; if(s3&&window.selectedTraining3)s3.value=window.selectedTraining3.no; }
+    const title=document.getElementById("trainingTemplateTitle"), s3=document.getElementById("templateUnit3Select");
+    if(saved){ if(title)title.value=saved.title||""; if(s3&&saved.unit3)s3.value=saved.unit3; }
+    else { if(title&&!title.value)title.value="Mein Training"; if(s3&&window.selectedTraining3)s3.value=window.selectedTraining3.no; }
     updateTrainingTemplateSummary();
   }
-  document.getElementById("templateUnit2Select")?.addEventListener("change",updateTrainingTemplateSummary);
   document.getElementById("templateUnit3Select")?.addEventListener("change",updateTrainingTemplateSummary);
   document.getElementById("saveTrainingTemplateBtn")?.addEventListener("click",()=>{
     const title=(document.getElementById("trainingTemplateTitle")?.value||"Mein Training").trim()||"Mein Training";
-    const unit2=document.getElementById("templateUnit2Select")?.value||"2.1", unit3=document.getElementById("templateUnit3Select")?.value||"3.1";
-    try{localStorage.setItem(TRAINING_TEMPLATE_KEY,JSON.stringify({title,unit2,unit3,savedAt:new Date().toISOString()}));}catch(e){}
+    const unit3=document.getElementById("templateUnit3Select")?.value||"3.1";
+    try{localStorage.setItem(TRAINING_TEMPLATE_KEY,JSON.stringify({title,unit2:"Pass- und Ballübung",unit3,savedAt:new Date().toISOString()}));}catch(e){}
     const st=document.getElementById("trainingTemplateStatus"); if(st)st.textContent="Trainingsvorlage gespeichert.";
   });
   document.getElementById("loadTrainingTemplateBtn")?.addEventListener("click",()=>{
@@ -3510,8 +3446,8 @@ const TIMER_WHISTLE_AUDIO = "data:audio/mpeg;base64,SUQzBAAAAAAAI1RTU0UAAAAPAAAD
     renderTrainingTemplate(); const st=document.getElementById("trainingTemplateStatus");if(st)st.textContent="Gespeicherte Vorlage geladen.";
   });
   document.getElementById("useTrainingTemplateBtn")?.addEventListener("click",()=>{
-    const a=findTrainingByNo(document.getElementById("templateUnit2Select")?.value), b=findTrainingByNo(document.getElementById("templateUnit3Select")?.value); if(!a||!b)return;
-    showTrainingSelection(2,a); showTrainingSelection(3,b); showMode("training");
+    const b=findTrainingByNo(document.getElementById("templateUnit3Select")?.value); if(!b)return;
+    window.selectedTraining2=null; showTrainingSelection(3,b); showMode("training");
   });
 
   /* ===================== Trainingsnotizen ===================== */
@@ -3632,12 +3568,12 @@ const TIMER_WHISTLE_AUDIO = "data:audio/mpeg;base64,SUQzBAAAAAAAI1RTU0UAAAAPAAAD
     const unit2 = window.selectedTraining2;
     const unit3 = window.selectedTraining3;
 
-    if(twoStation ? !unit2 : (!unit2 || !unit3)){
+    if(twoStation ? !unit2 : !unit3){
       const status = document.getElementById("trainingConfirmStatus");
       if(status){
         status.textContent = twoStation
           ? "Bitte zuerst eine Fußballübung für Station 2 auswählen."
-          : "Bitte zuerst eine Übung in Station 2 und Station 3 auswählen.";
+          : "Bitte zuerst eine Übung in Station 3 auswählen.";
       }
       return;
     }
@@ -3658,7 +3594,7 @@ const TIMER_WHISTLE_AUDIO = "data:audio/mpeg;base64,SUQzBAAAAAAAI1RTU0UAAAAPAAAD
       children,
       groups,
       unit1: "Parcours",
-      unit2: `${unit2.no} ${unit2.name}`,
+      unit2: twoStation ? `${unit2.no} ${unit2.name}` : "Pass- und Ballübung",
       unit3: twoStation ? "" : `${unit3.no} ${unit3.name}`,
       stations: twoStation ? 2 : 3,
       materials,
@@ -4413,6 +4349,6 @@ if ("serviceWorker" in navigator) {
 }
 </script>
 
-<div class="install-hint">SpVgg Erdweg U11 (<a href="./U11-Coach-Versionshistory.md" target="_blank" rel="noopener noreferrer" class="footer-version-link" aria-label="Versionshistory">V1.139</a> by Mike)</div>
+<div class="install-hint">SpVgg Erdweg U11 (<a href="./U11-Coach-Versionshistory.md" target="_blank" rel="noopener noreferrer" class="footer-version-link" aria-label="Versionshistory">V1.140</a> by Mike)</div>
 </body>
 </html>

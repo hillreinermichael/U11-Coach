@@ -1,3 +1,10 @@
+## V1.140
+
+- Station 2 heißt jetzt **Pass- und Ballübung**.
+- Alle bisherigen Station-2-Übungen und die Zufallsauswahl wurden vorerst entfernt.
+- Station 1 „Parcours“ und Station 3 „Fußballübung“ bleiben unverändert.
+- Trainingsvorlagen und Trainingshistorie verwenden Station 2 jetzt fest als „Pass- und Ballübung“.
+
 ## V1.139
 
 - Trikotnummern werden auf der **Spieltag-/Spielerkader-Auswahlliste** direkt hinter dem Spielernamen angezeigt.
