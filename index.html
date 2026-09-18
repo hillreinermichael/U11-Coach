@@ -179,6 +179,7 @@
   }
   .roster-info{flex:1;display:flex;flex-direction:column;gap:2px;}
   .roster-name{font-weight:700;font-size:14.5px;color:var(--erdweg-black);}
+  .roster-number{font-size:11px;font-weight:800;color:var(--erdweg-red-dark);margin-left:2px;}
   .roster-pos-badges{display:flex;gap:4px;flex-wrap:wrap;}
   .pos-tag{
     font-size:10px;
@@ -2025,6 +2026,9 @@ const sortedPlayers = Object.keys(PLAYERS)
   .filter(p => !GROUP_ONLY_PLAYERS.has(p))
   .sort((a,b) => displayName(a).localeCompare(displayName(b), "de"));
 
+// Trikotnummern werden aus dem Excel-Blatt „Trikotnummern“ geladen.
+let JERSEY_NUMBERS = {};
+
 function renderRoster(){
   rosterList.innerHTML = "";
   for(const p of sortedPlayers){
@@ -2036,7 +2040,17 @@ function renderRoster(){
     });
 
     const info = document.createElement("div"); info.className = "roster-info";
-    const name = document.createElement("div"); name.className = "roster-name"; name.textContent = displayName(p);
+    const shownName = displayName(p);
+    const name = document.createElement("div"); name.className = "roster-name";
+    name.textContent = shownName;
+    const jersey = JERSEY_NUMBERS[shownName];
+    if(jersey){
+      const jerseyEl = document.createElement("span");
+      jerseyEl.className = "roster-number";
+      jerseyEl.textContent = `(${jersey})`;
+      name.appendChild(document.createTextNode(" "));
+      name.appendChild(jerseyEl);
+    }
     
     // Positionsprioritäten und Werte bleiben intern für Berechnungen erhalten,
     // werden in der Spieltags-Auswahlliste aber nicht angezeigt.
@@ -3152,9 +3166,6 @@ function pickRandomTraining(list, unit){
   const ROSTER_DATA_NAMES = {
     "Kenan": "Kenny"
   };
-
-  // Trikotnummern werden ausschließlich aus dem Excel-Blatt „Trikotnummern“ geladen.
-  let JERSEY_NUMBERS = {};
 
   function rosterPlayerHtml(name){
     const dataName = ROSTER_DATA_NAMES[name] || name;
@@ -4402,6 +4413,6 @@ if ("serviceWorker" in navigator) {
 }
 </script>
 
-<div class="install-hint">SpVgg Erdweg U11 (<a href="./U11-Coach-Versionshistory.md" target="_blank" rel="noopener noreferrer" class="footer-version-link" aria-label="Versionshistory">V1.138</a> by Mike)</div>
+<div class="install-hint">SpVgg Erdweg U11 (<a href="./U11-Coach-Versionshistory.md" target="_blank" rel="noopener noreferrer" class="footer-version-link" aria-label="Versionshistory">V1.139</a> by Mike)</div>
 </body>
 </html>

@@ -1,3 +1,9 @@
+## V1.139
+
+- Trikotnummern werden auf der **Spieltag-/Spielerkader-Auswahlliste** direkt hinter dem Spielernamen angezeigt.
+- Die Trikotnummern werden weiterhin ausschließlich aus dem Excel-Blatt `Trikotnummern` geladen; dadurch werden Änderungen wie **Daniel (14)** und **Kristof (8)** nach dem Excel-Laden automatisch übernommen.
+- Die Trikotnummern werden vor dem ersten Rendern initialisiert, damit die Anzeige auch beim ersten Seitenaufbau ohne JavaScript-Fehler funktioniert.
+
 ## V1.138
 
 - Im **Spieltag** werden die Positionsangaben unter den Spielernamen entfernt, damit die Spielerauswahl kompakter dargestellt wird.
