@@ -1,3 +1,9 @@
+## V1.141
+
+- Trikotnummern werden in **„Anwesende Spieler & Positionen“** zuverlässig angezeigt.
+- Die Zuordnung erfolgt über interne Spielernamen und deren Anzeigevarianten, damit auch gekürzte Namen wie „Lukas B.“ korrekt mit der Excel-Trikotnummer verknüpft werden.
+- Sonderfälle mit abweichenden Namen wie **Kenny → Kenan** werden ebenfalls berücksichtigt.
+
 ## V1.140
 
 - Station 2 heißt jetzt **Pass- und Ballübung**.

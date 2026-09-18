@@ -1696,11 +1696,32 @@ async function loadPlayersFromExcel(){
       console.warn("Blatt 'Trikotnummern' nicht gefunden.");
     }
 
-    // Anzeige-name "Kenan" verwendet weiterhin intern den Excel-/Spielerdatensatz "Kenny".
+    // Trikotnummern werden für alle bekannten Namensvarianten hinterlegt.
+    // So funktionieren z. B. "Lukas Bühling" und die Anzeige "Lukas B."
+    // genauso wie der Sonderfall "Kenny" -> "Kenan".
     JERSEY_NUMBERS = {};
-    for(const [name, jersey] of Object.entries(jerseys)){
-      const displayName = Object.entries(ROSTER_DATA_NAMES || {}).find(([,dataName]) => dataName === name)?.[0] || name;
-      if(jersey) JERSEY_NUMBERS[displayName] = jersey;
+    for(const [excelName, jersey] of Object.entries(jerseys)){
+      if(!jersey) continue;
+
+      const aliases = new Set([excelName]);
+
+      // Vollständiger interner Spielername und seine gekürzte Anzeigeform.
+      if(PLAYERS[excelName]){
+        aliases.add(excelName);
+        aliases.add(displayName(excelName));
+      }
+
+      // Sonderfälle mit abweichendem Anzeigenamen, z. B. Kenny -> Kenan.
+      for(const [alias, dataName] of Object.entries(ROSTER_DATA_NAMES || {})){
+        if(dataName === excelName){
+          aliases.add(alias);
+          aliases.add(displayName(alias));
+        }
+      }
+
+      for(const alias of aliases){
+        JERSEY_NUMBERS[alias] = jersey;
+      }
     }
 
     window.u11PlayersFromExcel = Object.keys(updated).length;
@@ -2036,7 +2057,11 @@ function renderRoster(){
     const shownName = displayName(p);
     const name = document.createElement("div"); name.className = "roster-name";
     name.textContent = shownName;
-    const jersey = JERSEY_NUMBERS[shownName];
+
+    // Trikotnummer immer über den internen Spielernamen und als Fallback über
+    // die sichtbare Namensvariante auflösen. Dadurch funktionieren auch
+    // gekürzte Namen wie "Lukas B.".
+    const jersey = JERSEY_NUMBERS[p] || JERSEY_NUMBERS[shownName];
     if(jersey){
       const jerseyEl = document.createElement("span");
       jerseyEl.className = "roster-number";
@@ -4349,6 +4374,6 @@ if ("serviceWorker" in navigator) {
 }
 </script>
 
-<div class="install-hint">SpVgg Erdweg U11 (<a href="./U11-Coach-Versionshistory.md" target="_blank" rel="noopener noreferrer" class="footer-version-link" aria-label="Versionshistory">V1.140</a> by Mike)</div>
+<div class="install-hint">SpVgg Erdweg U11 (<a href="./U11-Coach-Versionshistory.md" target="_blank" rel="noopener noreferrer" class="footer-version-link" aria-label="Versionshistory">V1.141</a> by Mike)</div>
 </body>
 </html>
