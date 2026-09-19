@@ -1,3 +1,9 @@
+## V1.143
+
+- Auf der **Spieltag**-Seite eine zusätzliche Kachel **„Aufwärmen“** ergänzt.
+- Die Kachel öffnet direkt die bereits vorhandene Seite „Aufwärmen“ mit Aufwärm- und Dehnübungen.
+- Die bestehende Aufwärmseite selbst bleibt unverändert.
+
 ## V1.142
 
 - Auf der **Aufwärmenseite** wurde unter den bisherigen Aufwärmübungen eine eigene Kachel **„Dehnübungen“** ergänzt.

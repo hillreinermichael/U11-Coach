@@ -1055,6 +1055,10 @@ color:#fff;
           <strong>Wechsel-Assistent</strong>
           <span>Passende Einwechslungen für die aktuelle Aufstellung</span>
         </button>
+        <button type="button" class="start-choice" id="matchdayWarmupBtn">
+          <strong>Aufwärmen</strong>
+          <span>Aufwärm- und Dehnübungen</span>
+        </button>
       </div>
     </div>
   </div>
@@ -3118,6 +3122,7 @@ function pickRandomTraining(list, unit){
   const matchdayLineupBtn = document.getElementById("matchdayLineupBtn");
   const matchdayChecklistBtn = document.getElementById("matchdayChecklistBtn");
   const matchdaySubstitutionBtn = document.getElementById("matchdaySubstitutionBtn");
+  const matchdayWarmupBtn = document.getElementById("matchdayWarmupBtn");
   const startTrainingBtn = document.getElementById("startTrainingBtn");
   const trainingUnitsBtn = document.getElementById("trainingUnitsBtn");
   const trainingWarmupBtn = document.getElementById("trainingWarmupBtn");
@@ -3299,6 +3304,7 @@ function showMode(mode){
   matchdayLineupBtn.addEventListener("click", () => showMode("lineup"));
   matchdayChecklistBtn.addEventListener("click", () => showMode("checklist"));
   matchdaySubstitutionBtn.addEventListener("click", () => showMode("substitution"));
+  matchdayWarmupBtn.addEventListener("click", () => showMode("trainingWarmup"));
   startTrainingBtn.addEventListener("click", () => showMode("trainingHub"));
   trainingUnitsBtn.addEventListener("click", () => showMode("training"));
   trainingWarmupBtn.addEventListener("click", () => showMode("trainingWarmup"));
@@ -4405,6 +4411,6 @@ if ("serviceWorker" in navigator) {
 }
 </script>
 
-<div class="install-hint">SpVgg Erdweg U11 (<a href="./U11-Coach-Versionshistory.md" target="_blank" rel="noopener noreferrer" class="footer-version-link" aria-label="Versionshistory">V1.142</a> by Mike)</div>
+<div class="install-hint">SpVgg Erdweg U11 (<a href="./U11-Coach-Versionshistory.md" target="_blank" rel="noopener noreferrer" class="footer-version-link" aria-label="Versionshistory">V1.143</a> by Mike)</div>
 </body>
 </html>
