@@ -1,3 +1,10 @@
+## V1.142
+
+- Auf der **Aufwärmenseite** wurde unter den bisherigen Aufwärmübungen eine eigene Kachel **„Dehnübungen“** ergänzt.
+- Enthalten sind fünf Dehn-/Lockerungsübungen: Oberschenkeldehnung, Hände an die Füße mit gestreckten Beinen, Innenschenkel im seitlichen Ausfallschritt, Ausfallschritt und Fußkreisen.
+- Jede Übung ist mit einer Halte-/Ausführungszeit von mindestens 10 Sekunden gekennzeichnet.
+- Die bisherige Aufwärmkachel bleibt unverändert.
+
 ## V1.141
 
 - Trikotnummern werden in **„Anwesende Spieler & Positionen“** zuverlässig angezeigt.
