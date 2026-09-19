@@ -968,7 +968,7 @@ color:#fff;
   </div>
 
   <div id="trainingWarmupMode" class="mode-section" style="display:none;">
-    <button type="button" class="mode-back" data-back="trainingHub">← Training</button>
+    <button type="button" class="mode-back" id="trainingWarmupBackBtn" data-back="trainingHub">← Training</button>
     <div class="card start-menu">
       <h2>Aufwärmen</h2>
       <div class="start-menu-sub">5 einfache Übungen für ca. 3 Minuten</div>
@@ -3126,6 +3126,7 @@ function pickRandomTraining(list, unit){
   const startTrainingBtn = document.getElementById("startTrainingBtn");
   const trainingUnitsBtn = document.getElementById("trainingUnitsBtn");
   const trainingWarmupBtn = document.getElementById("trainingWarmupBtn");
+  const trainingWarmupBackBtn = document.getElementById("trainingWarmupBackBtn");
   const trainingGroupsBtn = document.getElementById("trainingGroupsBtn");
   const trainingStrengthGroupsBtn = document.getElementById("trainingStrengthGroupsBtn");
   const startHistoryBtn = document.getElementById("startHistoryBtn");
@@ -3133,6 +3134,12 @@ function pickRandomTraining(list, unit){
   const trainingNotesBtn = document.getElementById("trainingNotesBtn");
   const startLigaBtn = document.getElementById("startLigaBtn");
   const startTimerBtn = document.getElementById("startTimerBtn");
+
+  window.warmupReturnMode = "trainingHub";
+  function updateWarmupBackButton(){
+    const btn = document.getElementById("trainingWarmupBackBtn");
+    if(btn) btn.textContent = window.warmupReturnMode === "matchdayHub" ? "← Spieltag" : "← Training";
+  }
   const startMatchHistoryBtn = document.getElementById("startMatchHistoryBtn");
   const startRosterBtn = document.getElementById("startRosterBtn");
 
@@ -3304,10 +3311,18 @@ function showMode(mode){
   matchdayLineupBtn.addEventListener("click", () => showMode("lineup"));
   matchdayChecklistBtn.addEventListener("click", () => showMode("checklist"));
   matchdaySubstitutionBtn.addEventListener("click", () => showMode("substitution"));
-  matchdayWarmupBtn.addEventListener("click", () => showMode("trainingWarmup"));
+  matchdayWarmupBtn.addEventListener("click", () => {
+    window.warmupReturnMode = "matchdayHub";
+    updateWarmupBackButton();
+    showMode("trainingWarmup");
+  });
   startTrainingBtn.addEventListener("click", () => showMode("trainingHub"));
   trainingUnitsBtn.addEventListener("click", () => showMode("training"));
-  trainingWarmupBtn.addEventListener("click", () => showMode("trainingWarmup"));
+  trainingWarmupBtn.addEventListener("click", () => {
+    window.warmupReturnMode = "trainingHub";
+    updateWarmupBackButton();
+    showMode("trainingWarmup");
+  });
   trainingGroupsBtn.addEventListener("click", () => showMode("teams"));
   trainingStrengthGroupsBtn.addEventListener("click", () => showMode("trainingStrengthGroups"));
   startHistoryBtn.addEventListener("click", () => showMode("history"));
@@ -3405,6 +3420,11 @@ const TIMER_WHISTLE_AUDIO = "data:audio/mpeg;base64,SUQzBAAAAAAAI1RTU0UAAAAPAAAD
 
   document.querySelectorAll(".mode-back").forEach(btn => {
     btn.addEventListener("click", () => {
+      if(btn.id === "trainingWarmupBackBtn") {
+        const target = window.warmupReturnMode === "matchdayHub" ? "matchdayHub" : "trainingHub";
+        showMode(target);
+        return;
+      }
       if(btn.dataset.back === "trainingHub") showMode("trainingHub");
       else if(btn.dataset.back === "matchdayHub") showMode("matchdayHub");
       else showStartMenu();
@@ -4411,6 +4431,6 @@ if ("serviceWorker" in navigator) {
 }
 </script>
 
-<div class="install-hint">SpVgg Erdweg U11 (<a href="./U11-Coach-Versionshistory.md" target="_blank" rel="noopener noreferrer" class="footer-version-link" aria-label="Versionshistory">V1.143</a> by Mike)</div>
+<div class="install-hint">SpVgg Erdweg U11 (<a href="./U11-Coach-Versionshistory.md" target="_blank" rel="noopener noreferrer" class="footer-version-link" aria-label="Versionshistory">V1.145</a> by Mike)</div>
 </body>
 </html>

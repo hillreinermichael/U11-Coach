@@ -1,3 +1,8 @@
+## V1.145
+- Aufwärmseite kann von Training und Spieltag aus geöffnet werden.
+- Zurück von der Aufwärmseite führt jetzt zum Ausgangsbereich zurück: von Training zu „Training“, von Spieltag zu „Spieltag“.
+
+
 ## V1.143
 
 - Auf der **Spieltag**-Seite eine zusätzliche Kachel **„Aufwärmen“** ergänzt.
