@@ -495,11 +495,11 @@
   .match-history-entry.is-win{background:#e8f5e9;border-color:#b8dcbc;}
   .match-history-entry.is-loss{background:#ffebee;border-color:#efb4bb;}
   .match-history-entry.is-draw{background:#fff8d6;border-color:#eadb7b;}
-  .match-history-date{font-size:11px;font-weight:800;color:var(--ink-soft);text-transform:uppercase;letter-spacing:.06em;margin-bottom:7px;}
+  .match-history-date{display:flex;align-items:center;gap:8px;font-size:11px;font-weight:800;color:var(--ink-soft);text-transform:uppercase;letter-spacing:.06em;margin-bottom:7px;}
+  .match-history-type{font-size:10px;font-weight:800;letter-spacing:.04em;color:var(--erdweg-red);text-transform:none;}
   .match-history-main{display:grid;grid-template-columns:1fr auto;gap:8px 12px;align-items:center;}
   .match-history-opponent{font-size:16px;font-weight:800;color:var(--erdweg-black);}
   .match-history-result{font-family:'Anton',sans-serif;font-size:24px;letter-spacing:.03em;color:var(--erdweg-red-dark);white-space:nowrap;}
-  .match-history-meta{grid-column:1 / -1;font-size:11px;font-weight:700;color:var(--ink-soft);}
   .mode-back{
     border:none;
     background:transparent;
@@ -3207,6 +3207,7 @@ function pickRandomTraining(list, unit){
   }
 
   const MATCH_HISTORY = [
+    { date: "2026-09-19", opponent: "Lohhof U11 3", type: "Punktspiel", venue: "Auswärts", goalsFor: 6, goalsAgainst: 5 },
     { date: "2026-09-17", opponent: "(SG) Niederroth/Arnbach U11", type: "Testspiel", venue: "Auswärts", goalsFor: 6, goalsAgainst: 4 }
   ];
 
@@ -3243,11 +3244,13 @@ function pickRandomTraining(list, unit){
         : `${game.goalsFor} : ${game.goalsAgainst}`;
       return `
         <div class="match-history-entry ${resultClass}">
-          <div class="match-history-date">${formatMatchDate(game.date)}</div>
+          <div class="match-history-date">
+            <span>${formatMatchDate(game.date)}</span>
+            <span class="match-history-type">${game.type || "Spiel"}</span>
+          </div>
           <div class="match-history-main">
             <div class="match-history-opponent">${formatMatchTeams(game)}</div>
             <div class="match-history-result">${score}</div>
-            <div class="match-history-meta">${game.type || "Spiel"} · ${game.venue} · ${result}</div>
           </div>
         </div>`;
     }).join("");
@@ -4431,6 +4434,6 @@ if ("serviceWorker" in navigator) {
 }
 </script>
 
-<div class="install-hint">SpVgg Erdweg U11 (<a href="./U11-Coach-Versionshistory.md" target="_blank" rel="noopener noreferrer" class="footer-version-link" aria-label="Versionshistory">V1.145</a> by Mike)</div>
+<div class="install-hint">SpVgg Erdweg U11 (<a href="./U11-Coach-Versionshistory.md" target="_blank" rel="noopener noreferrer" class="footer-version-link" aria-label="Versionshistory">V1.147</a> by Mike)</div>
 </body>
 </html>

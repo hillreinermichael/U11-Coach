@@ -1,3 +1,16 @@
+## V1.147
+
+- Spielhistorie kompakter gestaltet.
+- Neben dem Datum wird nur noch die Spielart (**Testspiel** oder **Punktspiel**) angezeigt.
+- Angaben zu **Heim/Auswärts** sowie **Sieg/Niederlage/Unentschieden** werden aus der sichtbaren Historie entfernt.
+- Gegnerpaarung und Spielstand bleiben erhalten.
+
+## V1.146
+
+- Neues Spiel in der Spielhistorie ergänzt: **19.09.2026 – Lohhof U11 3 – SpVgg Erdweg U11**.
+- Ergebnis: **5:6**, Sieg für SpVgg Erdweg U11.
+- Spielart: **Punktspiel**.
+
 ## V1.145
 - Aufwärmseite kann von Training und Spieltag aus geöffnet werden.
 - Zurück von der Aufwärmseite führt jetzt zum Ausgangsbereich zurück: von Training zu „Training“, von Spieltag zu „Spieltag“.
