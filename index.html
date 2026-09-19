@@ -1396,9 +1396,16 @@ color:#fff;
         </div>
         <span class="training-duration">10–15 Min.</span>
       </div>
-      <div class="training-details" style="display:block;">
-        <div class="training-selected">Übung wird noch festgelegt.</div>
+      <div class="training-random-row">
+        <div>
+          <div class="training-random-label">Heute:</div>
+          <div id="trainingUnit2Name" class="training-selected">Noch keine Übung gezogen</div>
+        </div>
+        <button type="button" class="training-draw-btn" id="drawUnit2Btn">Zufällig wählen</button>
       </div>
+      <button type="button" class="training-details-btn" data-toggle="trainingDetails2">Details anzeigen</button>
+      <div class="training-details" id="trainingDetails2"></div>
+      <div class="training-material" id="trainingMaterial2"><div class="material-empty">Noch keine Übung gewählt.</div></div>
     </div>
 
     <div class="training-station" id="trainingStation3Card">
@@ -2648,7 +2655,46 @@ document.getElementById("calcBtn").addEventListener("click", () => {
 });
 
   /* ===================== Training – 3 Stationen ===================== */
-  const TRAINING_UNIT_2 = [];
+  const TRAINING_UNIT_2 = [
+    {
+      no:"2.1",
+      name:"Kurzpasskombi 1",
+      duration:"ca. 10–15 Min.",
+      source:"https://www.soccerdrills.de/trainingsuebungen/passen/uebungen/kurzpasskombi-1/482/",
+      sourceLabel:"Soccerdrills.de",
+      details:`Aufbau: Zwei gegenüberliegende Gruppen. Eine Anspielstation steht seitlich.\nA passt zum Anspieler, startet ins Feld und bekommt eine kurze Ablage zurück. Danach dribbelt A zur gegenüberliegenden Gruppe.\nDort folgt die nächste Ballablage. Anschließend gleicher Ablauf zurück.\nZiel: sauberes Passspiel, kurze Ballablage, Kopf hoch und nach dem Pass sofort in Bewegung bleiben.\nSpielerzahl: ca. 5–10 Spieler.\nVarianten: direktes Passspiel oder Seitenwechsel.`
+    },
+    {
+      no:"2.2",
+      name:"Rückenpass",
+      duration:"ca. 10–15 Min.",
+      source:"https://www.soccerdrills.de/trainingsuebungen/passen/uebungen/rueckenpass/391/",
+      sourceLabel:"Soccerdrills.de",
+      details:`Aufbau: Slalom mit 3 Hütchen und eine Passstation.\nA dribbelt im Slalom, passt zum Trainer, erhält den Rückpass, umläuft den Trainer mit Ball und sprintet zurück zum Ausgangspunkt.\nBallannahme und Tempodribbling stehen im Mittelpunkt.\nSpielerzahl: ca. 3–5 Spieler pro Gruppe.\nHinweis: Rückpass so spielen, dass der Spieler den Ball im Lauf mitnehmen kann.`
+    },
+    {
+      no:"2.3",
+      name:"Centerspieler",
+      duration:"ca. 10–15 Min.",
+      source:"https://www.soccerdrills.de/trainingsuebungen/passen/uebungen/centerspieler/302/",
+      sourceLabel:"Soccerdrills.de",
+      details:`Aufbau: 2 Abwehrspieler, 3 Angreifer und 1 Centerspieler im markierten Innenfeld.\nDie 3 Angreifer spielen in Überzahl und nutzen den Centerspieler immer wieder als Anspielstation. Der Centerspieler verteilt den Ball schnell weiter.\nDie Abwehrspieler dürfen das zentrale Feld nicht betreten.\nZiel: freilaufen, Passwinkel schaffen und schnell weiterspielen.\nSpielerzahl: ca. 5–9 Spieler.`
+    },
+    {
+      no:"2.4",
+      name:"Schattenflucht",
+      duration:"ca. 10–15 Min.",
+      source:"https://www.soccerdrills.de/trainingsuebungen/passen/uebungen/schattenflucht/309/",
+      sourceLabel:"Soccerdrills.de",
+      details:`Aufbau: Zwischen Startspieler und Anspielstation steht ein Verteidiger. Die Anspielstation bewegt sich zwischen Verteidiger und Tor.\nDer Spieler löst sich aus dem Deckungsschatten, wird anspielbar und spielt den Ball zurück. Danach folgt der Torschuss bzw. die nächste Aktion.\nZiel: aktiv aus dem Deckungsschatten lösen, Passweg öffnen und den Doppelpass vorbereiten.\nSpielerzahl: ca. 4 Feldspieler + Torwart.\nHinweis: Viel Bewegung und kurze Erklärungen.`
+    },
+    {
+      no:"2.5",
+      name:"Ballannahme am Hütchen",
+      duration:"ca. 10–15 Min.",
+      details:`Aufbau: 2 Spieler stehen sich gegenüber. Vor jedem Spieler steht ein Hütchen.\nA erhält den Ball und nimmt ihn mit dem rechten Fuß an. Mit dem ersten Kontakt legt A den Ball am Hütchen vorbei und passt ihn mit dem linken Fuß zurück zum Mitspieler. Danach werden die Füße gewechselt: Annahme links, erster Kontakt am Hütchen vorbei und Rückpass rechts.\nZiel: saubere Ballannahme, erster Kontakt in die Bewegung und Passspiel mit beiden Füßen.\nHinweis: Der erste Kontakt soll den Ball kontrolliert seitlich am Hütchen vorbeilegen. Anschließend sofort zurückpassen.`
+    }
+  ];
 
   const TRAINING_UNIT_3 = [
     {
@@ -2726,7 +2772,6 @@ document.getElementById("calcBtn").addEventListener("click", () => {
     "2.1": "<svg viewBox=\"0 0 300 150\" class=\"station-svg\" aria-label=\"Aufbau Kraftparcours\">\n  <rect x=\"18\" y=\"18\" width=\"264\" height=\"114\" rx=\"10\" fill=\"#f7f7f7\" stroke=\"#ddd\"/>\n  <circle cx=\"65\" cy=\"48\" r=\"14\" fill=\"#fff\" stroke=\"#c8102e\" stroke-width=\"3\"/><text x=\"65\" y=\"52\" text-anchor=\"middle\" font-size=\"11\" font-weight=\"700\">1</text>\n  <circle cx=\"150\" cy=\"48\" r=\"14\" fill=\"#fff\" stroke=\"#c8102e\" stroke-width=\"3\"/><text x=\"150\" y=\"52\" text-anchor=\"middle\" font-size=\"11\" font-weight=\"700\">2</text>\n  <circle cx=\"235\" cy=\"48\" r=\"14\" fill=\"#fff\" stroke=\"#c8102e\" stroke-width=\"3\"/><text x=\"235\" y=\"52\" text-anchor=\"middle\" font-size=\"11\" font-weight=\"700\">3</text>\n  <circle cx=\"235\" cy=\"102\" r=\"14\" fill=\"#fff\" stroke=\"#c8102e\" stroke-width=\"3\"/><text x=\"235\" y=\"106\" text-anchor=\"middle\" font-size=\"11\" font-weight=\"700\">4</text>\n  <circle cx=\"65\" cy=\"102\" r=\"14\" fill=\"#fff\" stroke=\"#c8102e\" stroke-width=\"3\"/><text x=\"65\" y=\"106\" text-anchor=\"middle\" font-size=\"11\" font-weight=\"700\">5</text>\n  <path d=\"M79 48 H136 M164 48 H221 M235 62 V88 M221 102 H79 M65 88 V62\" fill=\"none\" stroke=\"#111\" stroke-width=\"3\" stroke-linecap=\"round\"/>\n  <text x=\"150\" y=\"82\" text-anchor=\"middle\" font-size=\"11\" fill=\"#555\">Rundkurs</text>\n</svg>",
     "2.2": "<svg viewBox=\"0 0 300 150\" class=\"station-svg\" aria-label=\"Aufbau Schattenlauf\">\n  <rect x=\"18\" y=\"18\" width=\"264\" height=\"114\" rx=\"10\" fill=\"#f7f7f7\" stroke=\"#ddd\"/>\n  <circle cx=\"82\" cy=\"75\" r=\"10\" fill=\"#c8102e\"/><circle cx=\"112\" cy=\"75\" r=\"10\" fill=\"#111\"/>\n  <path d=\"M95 45 C135 20 190 25 220 60 C240 83 215 111 170 108 C145 106 130 94 120 82\" fill=\"none\" stroke=\"#c8102e\" stroke-width=\"3\" stroke-dasharray=\"6 5\"/>\n  <path d=\"M75 42 L88 33 M75 108 L88 117 M214 49 L228 47\" stroke=\"#555\" stroke-width=\"2.5\" stroke-linecap=\"round\"/>\n  <text x=\"82\" y=\"99\" text-anchor=\"middle\" font-size=\"10\" font-weight=\"700\">A</text><text x=\"112\" y=\"99\" text-anchor=\"middle\" font-size=\"10\" font-weight=\"700\">B</text>\n</svg>",
     "2.3": "<svg viewBox=\"0 0 300 150\" class=\"station-svg\" aria-label=\"Aufbau Bärenlauf Parcours\">\n  <rect x=\"18\" y=\"18\" width=\"264\" height=\"114\" rx=\"10\" fill=\"#f7f7f7\" stroke=\"#ddd\"/>\n  <path d=\"M45 110 L45 50 L105 50 L105 105 L165 105 L165 45 L225 45\" fill=\"none\" stroke=\"#c8102e\" stroke-width=\"4\" stroke-linecap=\"round\" stroke-linejoin=\"round\"/>\n  <g fill=\"#111\">\n    <circle cx=\"45\" cy=\"110\" r=\"4\"/><circle cx=\"45\" cy=\"50\" r=\"4\"/><circle cx=\"105\" cy=\"50\" r=\"4\"/><circle cx=\"105\" cy=\"105\" r=\"4\"/><circle cx=\"165\" cy=\"105\" r=\"4\"/><circle cx=\"165\" cy=\"45\" r=\"4\"/><circle cx=\"225\" cy=\"45\" r=\"4\"/>\n  </g>\n  <path d=\"M225 65 C215 85 195 95 175 95\" fill=\"none\" stroke=\"#111\" stroke-width=\"3\" stroke-dasharray=\"6 5\"/>\n  <text x=\"230\" y=\"78\" font-size=\"10\" font-weight=\"700\">Hinweg</text><text x=\"205\" y=\"112\" font-size=\"10\" font-weight=\"700\">Sprint zurück</text>\n</svg>",
-    "2.5": "<svg viewBox=\"0 0 300 150\" class=\"station-svg\" aria-label=\"Staffel mit Kraftaufgaben\">\n  <rect x=\"18\" y=\"18\" width=\"264\" height=\"114\" rx=\"10\" fill=\"#f7f7f7\" stroke=\"#ddd\"/>\n  <path d=\"M38 48 H205 M38 102 H205\" stroke=\"#111\" stroke-width=\"3\"/>\n  <circle cx=\"38\" cy=\"48\" r=\"8\" fill=\"#c8102e\"/><circle cx=\"38\" cy=\"102\" r=\"8\" fill=\"#c8102e\"/>\n  <rect x=\"210\" y=\"42\" width=\"12\" height=\"12\" fill=\"#111\"/><rect x=\"210\" y=\"96\" width=\"12\" height=\"12\" fill=\"#111\"/>\n  <path d=\"M48 48 H190 M48 102 H190\" stroke=\"#c8102e\" stroke-width=\"3\" marker-end=\"url(#arrow)\"/>\n  <text x=\"236\" y=\"50\" font-size=\"10\">Kraft</text><text x=\"236\" y=\"104\" font-size=\"10\">Kraft</text>\n  <defs><marker id=\"arrow\" markerWidth=\"8\" markerHeight=\"8\" refX=\"6\" refY=\"4\" orient=\"auto\"><path d=\"M0,0 L8,4 L0,8 z\" fill=\"#c8102e\"/></marker></defs>\n</svg>",
     "2.6": `<svg viewBox="0 0 300 150" class="station-svg" aria-label="Aufbau Sprint und Ballkontrolle">
   <rect x="18" y="18" width="264" height="114" rx="10" fill="#f7f7f7" stroke="#ddd"/>
   <line x1="45" y1="75" x2="255" y2="75" stroke="#ddd" stroke-width="2"/>
@@ -2739,6 +2784,41 @@ document.getElementById("calcBtn").addEventListener("click", () => {
   <text x="45" y="138" font-size="8" fill="#555">Start</text><text x="248" y="138" text-anchor="end" font-size="8" fill="#555">Slalom zurück</text>
 </svg>`,
     "2.7": "",
+    "2.1": `<svg viewBox="0 0 300 150" class="station-svg" aria-label="Kurzpasskombi 1">
+  <rect x="20" y="25" width="260" height="100" rx="8" fill="#f7f7f7" stroke="#ddd"/>
+  <circle cx="48" cy="75" r="9" fill="#c8102e"/><circle cx="252" cy="75" r="9" fill="#c8102e"/>
+  <circle cx="150" cy="42" r="9" fill="#111"/><circle cx="150" cy="108" r="9" fill="#111"/>
+  <path d="M57 75 H141 M159 75 H243 M150 51 V99" stroke="#555" stroke-width="3" fill="none"/>
+  <path d="M66 70 C95 52 118 50 139 47 M234 80 C205 98 182 100 161 103" stroke="#c8102e" stroke-width="3" fill="none" stroke-dasharray="6 5"/>
+  <text x="48" y="98" text-anchor="middle" font-size="9">Start</text><text x="150" y="30" text-anchor="middle" font-size="9">Anspieler</text>
+</svg>`,
+    "2.2": `<svg viewBox="0 0 300 150" class="station-svg" aria-label="Rückenpass">
+  <rect x="20" y="25" width="260" height="100" rx="8" fill="#f7f7f7" stroke="#ddd"/>
+  <circle cx="45" cy="105" r="8" fill="#c8102e"/><circle cx="255" cy="75" r="8" fill="#111"/>
+  <circle cx="90" cy="45" r="5" fill="#111"/><circle cx="120" cy="105" r="5" fill="#111"/><circle cx="150" cy="45" r="5" fill="#111"/>
+  <path d="M45 105 C62 86 69 66 90 45 S114 65 120 105 S137 73 150 45" fill="none" stroke="#c8102e" stroke-width="3"/>
+  <path d="M158 45 C178 58 195 68 247 74" fill="none" stroke="#555" stroke-width="3" stroke-dasharray="6 5"/>
+  <path d="M247 82 C220 102 170 112 122 112 C92 112 72 109 52 105" fill="none" stroke="#c8102e" stroke-width="3" stroke-dasharray="6 5"/>
+  <text x="255" y="61" text-anchor="middle" font-size="9">Trainer</text><text x="52" y="121" font-size="9">Start / Sprint zurück</text>
+</svg>`,
+    "2.3": `<svg viewBox="0 0 300 150" class="station-svg" aria-label="Centerspieler">
+  <rect x="30" y="25" width="240" height="100" rx="8" fill="#f7f7f7" stroke="#ddd"/>
+  <rect x="126" y="52" width="48" height="46" rx="4" fill="#fff" stroke="#111" stroke-width="2"/>
+  <circle cx="60" cy="48" r="9" fill="#c8102e"/><circle cx="60" cy="104" r="9" fill="#c8102e"/><circle cx="240" cy="48" r="9" fill="#c8102e"/>
+  <circle cx="240" cy="104" r="9" fill="#111"/><circle cx="195" cy="75" r="9" fill="#111"/>
+  <circle cx="150" cy="75" r="8" fill="#c8102e"/>
+  <path d="M69 48 L141 69 M69 104 L141 81 M159 75 L186 75 M159 69 L231 48 M159 81 L231 104" stroke="#555" stroke-width="2.5" fill="none"/>
+  <text x="150" y="45" text-anchor="middle" font-size="9">Center</text><text x="60" y="30" text-anchor="middle" font-size="9">Angreifer</text><text x="218" y="127" text-anchor="middle" font-size="9">Abwehr</text>
+</svg>`,
+    "2.4": `<svg viewBox="0 0 300 150" class="station-svg" aria-label="Schattenflucht">
+  <rect x="25" y="25" width="250" height="100" rx="8" fill="#f7f7f7" stroke="#ddd"/>
+  <rect x="220" y="48" width="35" height="50" fill="none" stroke="#111" stroke-width="3"/>
+  <circle cx="55" cy="88" r="9" fill="#c8102e"/><circle cx="140" cy="74" r="9" fill="#c8102e"/><circle cx="112" cy="58" r="9" fill="#111"/>
+  <path d="M64 86 C84 78 96 72 131 73" fill="none" stroke="#555" stroke-width="3" stroke-dasharray="6 5"/>
+  <path d="M149 73 C171 62 190 58 220 62" fill="none" stroke="#c8102e" stroke-width="3"/>
+  <path d="M112 67 C103 75 96 81 91 91" fill="none" stroke="#111" stroke-width="3"/>
+  <text x="112" y="45" text-anchor="middle" font-size="9">Verteidiger</text><text x="183" y="116" text-anchor="middle" font-size="9">Anspielstation löst sich</text>
+</svg>`,
     "3.1": "<svg viewBox=\"0 0 300 150\" class=\"station-svg\" aria-label=\"Passdreieck\">\n  <rect x=\"18\" y=\"18\" width=\"264\" height=\"114\" rx=\"10\" fill=\"#f7f7f7\" stroke=\"#ddd\"/>\n  <circle cx=\"70\" cy=\"105\" r=\"11\" fill=\"#c8102e\"/><circle cx=\"150\" cy=\"45\" r=\"11\" fill=\"#111\"/><circle cx=\"230\" cy=\"105\" r=\"11\" fill=\"#c8102e\"/>\n  <path d=\"M82 98 L140 54 M160 54 L218 98 M218 112 L82 112\" fill=\"none\" stroke=\"#555\" stroke-width=\"3\"/>\n  <text x=\"70\" y=\"123\" text-anchor=\"middle\" font-size=\"10\" font-weight=\"700\">A</text><text x=\"150\" y=\"28\" text-anchor=\"middle\" font-size=\"10\" font-weight=\"700\">B</text><text x=\"230\" y=\"123\" text-anchor=\"middle\" font-size=\"10\" font-weight=\"700\">C</text>\n  <text x=\"150\" y=\"132\" text-anchor=\"middle\" font-size=\"9\" fill=\"#555\">passen + nachlaufen</text>\n</svg>",
     "3.2": "<svg viewBox=\"0 0 300 150\" class=\"station-svg\" aria-label=\"Torschuss nach Dribbling\">\n  <rect x=\"18\" y=\"18\" width=\"264\" height=\"114\" rx=\"10\" fill=\"#f7f7f7\" stroke=\"#ddd\"/>\n  <path d=\"M45 110 C65 80 65 45 90 60 C110 75 110 105 135 90 C160 75 155 48 180 56 C202 63 196 98 215 90\" fill=\"none\" stroke=\"#c8102e\" stroke-width=\"4\"/>\n  <circle cx=\"45\" cy=\"110\" r=\"7\" fill=\"#111\"/>\n  <path d=\"M225 38 h38 v34 h-38 z\" fill=\"none\" stroke=\"#111\" stroke-width=\"3\"/>\n  <path d=\"M215 90 L230 70\" stroke=\"#111\" stroke-width=\"3\" stroke-dasharray=\"5 4\"/>\n  <text x=\"76\" y=\"126\" font-size=\"10\">Slalom</text><text x=\"243\" y=\"88\" text-anchor=\"middle\" font-size=\"10\">Tor</text>\n</svg>",
     "3.3": "<svg viewBox=\"0 0 300 150\" class=\"station-svg\" aria-label=\"Zwei gegen eins\">\n  <rect x=\"18\" y=\"18\" width=\"264\" height=\"114\" rx=\"10\" fill=\"#f7f7f7\" stroke=\"#ddd\"/>\n  <circle cx=\"70\" cy=\"62\" r=\"10\" fill=\"#c8102e\"/><circle cx=\"70\" cy=\"98\" r=\"10\" fill=\"#c8102e\"/><circle cx=\"145\" cy=\"80\" r=\"10\" fill=\"#111\"/>\n  <path d=\"M80 64 L132 76 M80 96 L132 84\" stroke=\"#c8102e\" stroke-width=\"3\"/>\n  <rect x=\"230\" y=\"55\" width=\"32\" height=\"50\" fill=\"none\" stroke=\"#111\" stroke-width=\"3\"/>\n  <path d=\"M155 80 H220\" stroke=\"#555\" stroke-width=\"3\" stroke-dasharray=\"6 5\"/>\n  <text x=\"70\" y=\"38\" text-anchor=\"middle\" font-size=\"10\">2 Angreifer</text><text x=\"145\" y=\"68\" text-anchor=\"middle\" font-size=\"10\">1 Abwehr</text>\n</svg>",
@@ -2776,7 +2856,7 @@ document.getElementById("calcBtn").addEventListener("click", () => {
       <strong>Quelle:</strong>
       <a href="${item.source}" target="_blank" rel="noopener noreferrer"
          style="margin-left:6px;text-decoration:underline;pointer-events:auto;position:relative;z-index:50;cursor:pointer;">
-         Instagram-Reel
+         ${item.sourceLabel || "Quelle"}
       </a>
     </div>`;
   }
@@ -2805,13 +2885,10 @@ function pickRandomTraining(list, unit){
       {name:"5 Stangen", required:true},
       {name:"5 Hürden", required:true}
     ],
-    "2.1": [{name:"5 Hütchen", required:true}],
-    "2.2": [{name:"4 Medizinbälle", required:true}],
-    "2.3": [{name:"5 Hütchen", required:true}],
-    "2.5": [{name:"2 Hütchen", required:true}],
-    "2.6": [{name:"4 Hütchen", required:true},{name:"1 Ball", required:true}],
-    "2.7": [{name:"4 Kegel", required:true},{name:"4 Hütchen", required:true}],
-    "2.8": [{name:"4 Hütchen", required:true},{name:"1 Leibchen", required:true}],
+    "2.1": [{name:"6 Hütchen", required:true},{name:"Mehrere Bälle", required:true}],
+    "2.2": [{name:"3 Hütchen", required:true},{name:"2 Bodenmarkierungen", required:true},{name:"1 Ball", required:true}],
+    "2.3": [{name:"4 Markierungen", required:true},{name:"1 Ball", required:true}],
+    "2.4": [{name:"Mehrere Bälle", required:true},{name:"1 Tor", required:true},{name:"Markierungen für den Korridor", required:true}],
     "3.1": [
       {name:"3 Hütchen", required:true},
       {name:"1 Ball", required:true}
@@ -2995,6 +3072,9 @@ function pickRandomTraining(list, unit){
   }
 
   const TRAINING_IMAGES = {
+    "2.5": [
+      {src:"./bilder/2.5-ballannahme-am-huetchen.png", caption:"Aufbau Ballannahme am Hütchen"}
+    ],
     "2.7": [
       {src:"https://raw.githubusercontent.com/hillreinermichael/U11-Coach/main/bilder/u11-beschleunigen-abbremser.png", caption:"Aufbau Beschleunigen & Abbremsen"}
     ],
@@ -3084,6 +3164,10 @@ function pickRandomTraining(list, unit){
     setTrainingStationMode(e.target.value);
     const childCount = document.getElementById("trainingChildCount");
     if(childCount) calculateTrainingGroups(childCount.value);
+  });
+
+  document.getElementById("drawUnit2Btn")?.addEventListener("click", () => {
+    showTrainingSelection(2, pickRandomTraining(TRAINING_UNIT_2, 2));
   });
 
   document.getElementById("drawUnit3Btn")?.addEventListener("click", () => {
@@ -4435,6 +4519,6 @@ if ("serviceWorker" in navigator) {
 }
 </script>
 
-<div class="install-hint">SpVgg Erdweg U11 (<a href="./U11-Coach-Versionshistory.md" target="_blank" rel="noopener noreferrer" class="footer-version-link" aria-label="Versionshistory">V1.148</a> by Mike)</div>
+<div class="install-hint">SpVgg Erdweg U11 (<a href="./U11-Coach-Versionshistory.md" target="_blank" rel="noopener noreferrer" class="footer-version-link" aria-label="Versionshistory">V1.153</a> by Mike)</div>
 </body>
 </html>

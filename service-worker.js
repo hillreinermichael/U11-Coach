@@ -1,4 +1,4 @@
-const CACHE_NAME = "u11-coach-v1.148";
+const CACHE_NAME = "u11-coach-v1.153";
 const APP_SHELL = [
   "./",
   "./index.html",
@@ -11,7 +11,8 @@ const APP_SHELL = [
   "./bilder/u11-parcours-foto.jpg",
   "./u11-beschleunigen-abbremser.png",
   "./u11-reaction-chase-game.png",
-  "./u11-shoot-defense.png"
+  "./u11-shoot-defense.png",
+  "./bilder/2.5-ballannahme-am-huetchen.png"
 ];
 
 self.addEventListener("install", event => {

@@ -1,3 +1,16 @@
+## V1.153
+- Bei „2.5 – Ballannahme am Hütchen“ die alte interne SVG-Grafik vollständig entfernt.
+- Es wird für diese Übung ausschließlich die vom Nutzer bereitgestellte Skizze aus `bilder/2.5-ballannahme-am-huetchen.png` angezeigt.
+
+## V1.151
+- Bei „2.5 – Ballannahme am Hütchen“ die bisherige Grafik durch die vom Nutzer bereitgestellte Aufbau-Skizze ersetzt.
+- Die neue Grafik wird aus `bilder/2.5-ballannahme-am-huetchen.png` geladen und im gleichen Stil wie die übrigen Trainingsbilder angezeigt.
+
+## V1.150
+- Station 2 „Pass- und Ballübung“ um die Übung **„Ballannahme am Hütchen“** erweitert.
+- Aufbau: 2 Spieler stehen sich gegenüber, vor jedem Spieler ein Hütchen.
+- Ablauf: Ballannahme mit einem Fuß, erster Kontakt am Hütchen vorbei, Rückpass mit dem anderen Fuß; anschließend Fußwechsel.
+
 ## V1.148
 
 - Liga-Tabelle auf den aktuellen BFV-Stand vom 19.09.2026 aktualisiert.
@@ -671,3 +684,10 @@ zusätzlich in der App
 - Die Ermittlung der offenen Trikotnummern erkennt Mehrfachnummern robust, z. B. "1 / 9" oder "1+9".
 - Dadurch werden bei Maximilian Rohbeck sowohl die 1 als auch die 9 als vergeben berücksichtigt.
 - Aktuell offene Nummern bleiben 8 und 14.
+
+
+## V1.149
+- Station 2 „Pass- und Ballübung“ mit vier auswählbaren Übungen ergänzt.
+- Übungen: „Kurzpasskombi 1“, „Rückenpass“, „Centerspieler“ und „Schattenflucht“.
+- Station 2 verwendet wie Station 3 Zufallsauswahl, Detailansicht, Materialanzeige und Quellenlink.
+- Die Übungsbeschreibungen und Materialangaben wurden kompakt für den U11-Trainingsbetrieb aufbereitet.
