@@ -1,3 +1,9 @@
+## V1.148
+
+- Liga-Tabelle auf den aktuellen BFV-Stand vom 19.09.2026 aktualisiert.
+- Neue Platzierungen, Spiele, G-U-V, Tore, Tordifferenz und Punkte übernommen.
+- Mannschaftsnamen an den aktuellen Tabellenstand angepasst.
+
 ## V1.147
 
 - Spielhistorie kompakter gestaltet.
