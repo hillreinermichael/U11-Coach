@@ -1,3 +1,7 @@
+## V1.162
+
+- Aufwärmenseite: Der komplette Merksatz wurde entfernt.
+
 ## V1.161
 
 - Station 2, Übung 2.7 „Warmup Drill“: Material ergänzt auf 3 Bälle und 6 Hütchen.
