@@ -1,3 +1,7 @@
+## V1.161
+
+- Station 2, Übung 2.7 „Warmup Drill“: Material ergänzt auf 3 Bälle und 6 Hütchen.
+
 ## V1.159
 - Neue Grafik für „2.5 – Ballannahme am Hütchen“ übernommen.
 - Die bisherige Grafik dieser Übung wird nicht mehr verwendet.
