@@ -1,3 +1,14 @@
+## V1.159
+- Neue Grafik für „2.5 – Ballannahme am Hütchen“ übernommen.
+- Die bisherige Grafik dieser Übung wird nicht mehr verwendet.
+
+## V1.158
+
+- Station 2: neue Übung **2.7 – Warmup Drill** ergänzt.
+- Aufbau: 2 Spieler stehen sich gegenüber, 1 Ball.
+- Ein Spieler passt zum anderen und läuft anschließend um den Mitspieler herum.
+- Ziel: Passspiel, Bewegung ohne Ball und sofortiges Nachlaufen verbinden.
+
 ## V1.157
 - Bei „2.6 – Passdreieck mit Nachlaufen“ die bisherige interne Grafik vollständig entfernt.
 - Ausschließlich die vom Nutzer bereitgestellte Grafik `bilder/2.6-passdreieck-mit-nachlaufen.png` wird verwendet.
@@ -708,3 +719,8 @@ zusätzlich in der App
 - Übungen: „Kurzpasskombi 1“, „Rückenpass“, „Centerspieler“ und „Schattenflucht“.
 - Station 2 verwendet wie Station 3 Zufallsauswahl, Detailansicht, Materialanzeige und Quellenlink.
 - Die Übungsbeschreibungen und Materialangaben wurden kompakt für den U11-Trainingsbetrieb aufbereitet.
+
+## V1.160
+- Für „2.7 – Warmup Drill“ die bisherige Grafik durch die neu bereitgestellte Grafik ersetzt.
+- Die neue Grafik liegt als `bilder/2.7-warmup-drill.png` vor und wird lokal verwendet.
+
