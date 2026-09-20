@@ -1151,11 +1151,11 @@ color:#fff;
     <div class="card">
       <h2>Spielerkader</h2>
       <div class="roster-section">
-        <div class="material-title">Spielerkader (10)</div>
+        <div class="material-title" id="playerRosterTitle">Spielerkader</div>
         <div id="playerRosterList" class="roster-list"></div>
       </div>
       <div class="roster-section">
-        <div class="material-title">Ersatz (6)</div>
+        <div class="material-title" id="playerRosterBenchTitle">Ersatz</div>
         <div id="playerRosterBenchList" class="roster-list"></div>
       </div>
       <div class="roster-section roster-open-numbers">
@@ -1603,22 +1603,57 @@ async function loadPlayersFromExcel(){
     const valueRows = XLSX.utils.sheet_to_json(valueSheet,{defval:null});
     if(!valueRows.length) throw new Error("Spielerwerte.xlsx enthält keine Spielerdaten");
 
+    // Die Excel-Datei ist die zentrale Quelle für die Spielerbasis.
+    // Jeder Spieler aus dem Blatt „Spielerwerte“ wird übernommen; neue Spieler
+    // müssen daher nicht mehr zusätzlich im HTML hinterlegt werden.
+    const excelPlayers = {};
     const updated = {};
     for(const row of valueRows){
       const name = String(row["Spieler"] ?? "").trim();
-      if(!name || !PLAYERS[name]) continue;
+      if(!name) continue;
+
+      const fallback = DEFAULT_PLAYERS[name] || {
+        ratings: {TW: 5, AB: 5, MF: 5, ST: 5, SM: 5},
+        body: 5,
+        stamina: 5,
+        positions: []
+      };
+
+      const playerData = {
+        ratings: Object.assign({}, fallback.ratings || {TW:5,AB:5,MF:5,ST:5,SM:5}),
+        body: Number.isFinite(fallback.body) ? fallback.body : 5,
+        stamina: Number.isFinite(fallback.stamina) ? fallback.stamina : 5,
+        positions: Array.isArray(fallback.positions) ? [...fallback.positions] : []
+      };
+
       const n = k => Number(row[k]);
       const vals = {
         TW:n("Torwart"), AB:n("Abwehr"), MF:n("Mittelfeld"),
         ST:n("Sturm"), SM:n("Spielmacher")
       };
-      if(Object.values(vals).some(v => !Number.isFinite(v))) continue;
-      PLAYERS[name].ratings = vals;
+      if(Object.values(vals).every(v => Number.isFinite(v))){
+        playerData.ratings = vals;
+      }
+
       const stamina=n("Ausdauer"), body=n("Körper");
-      if(Number.isFinite(stamina)) PLAYERS[name].stamina=stamina;
-      if(Number.isFinite(body)) PLAYERS[name].body=body;
-      updated[name]=true;
+      if(Number.isFinite(stamina)) playerData.stamina=stamina;
+      if(Number.isFinite(body)) playerData.body=body;
+
+      excelPlayers[name] = playerData;
+      updated[name] = true;
     }
+
+    // Entfernt alte hart codierte Spieler wie „Neuer Spieler“, wenn sie nicht
+    // mehr in der aktuellen Excel-Datei enthalten sind.
+    PLAYERS = excelPlayers;
+
+    // Anwesenheitsstatus vorhandener Spieler behalten, neue Spieler hinzufügen.
+    const previousAttendance = (typeof attendance === "object" && attendance) ? attendance : {};
+    const nextAttendance = {};
+    for(const name of Object.keys(PLAYERS)){
+      nextAttendance[name] = Boolean(previousAttendance[name]);
+    }
+    attendance = nextAttendance;
 
     // Sheet 2: Positionspriorität
     const normalizeExcelHeader = value => String(value ?? "")
@@ -1800,7 +1835,7 @@ const PREFERRED_SIDE = {
   "Neuer Spieler":"egal"
 };
 
-const GROUP_ONLY_PLAYERS = new Set(["Neuer Spieler"]);
+const GROUP_ONLY_PLAYERS = new Set();
 
 function getPreferredSide(player){ return PREFERRED_SIDE[player] || "egal"; }
 function sideOfSlot(slot){
@@ -1904,7 +1939,6 @@ function canPlay(p, slot){
 }
 
 function displayName(p){
-  if(p === "Neuer Spieler") return p;
   const parts = p.split(" ");
   if(parts.length >= 2) return parts[0] + " " + parts[1][0] + ".";
   return p;
@@ -2074,15 +2108,14 @@ function getSM(p){
   return (PLAYERS[p] && PLAYERS[p].ratings && PLAYERS[p].ratings.SM !== undefined) ? PLAYERS[p].ratings.SM : 5;
 }
 
-const sortedPlayers = Object.keys(PLAYERS)
-  .filter(p => !GROUP_ONLY_PLAYERS.has(p))
-  .sort((a,b) => displayName(a).localeCompare(displayName(b), "de"));
-
 // Trikotnummern werden aus dem Excel-Blatt „Trikotnummern“ geladen.
 let JERSEY_NUMBERS = {};
 
 function renderRoster(){
   rosterList.innerHTML = "";
+  const sortedPlayers = Object.keys(PLAYERS)
+    .filter(p => !GROUP_ONLY_PLAYERS.has(p))
+    .sort((a,b) => displayName(a).localeCompare(displayName(b), "de"));
   for(const p of sortedPlayers){
     const row = document.createElement("div"); row.className = "roster-item";
     
@@ -3078,10 +3111,10 @@ function pickRandomTraining(list, unit){
       {src:"./bilder/2.6-passdreieck-mit-nachlaufen.png", caption:"Aufbau Passdreieck mit Nachlaufen"}
     ],
     "2.5": [
-      {src:"./bilder/2.5-ballannahme-am-huetchen.png", caption:"Aufbau Ballannahme am Hütchen"}
+      {src:"https://raw.githubusercontent.com/hillreinermichael/U11-Coach/main/bilder/2.5-ballannahme-am-huetchen.png?v=1164", caption:"Aufbau Ballannahme am Hütchen"}
     ],
     "2.7": [
-      {src:"./bilder/2.7-warmup-drill.png", caption:"Aufbau Warmup Drill"}
+      {src:"https://raw.githubusercontent.com/hillreinermichael/U11-Coach/main/bilder/2.7-warmup-drill.png?v=1164", caption:"Aufbau Warmup Drill"}
     ],
     "2.8": [
       {src:"https://raw.githubusercontent.com/hillreinermichael/U11-Coach/main/bilder/u11-reaction-chase-game.png", caption:"Aufbau Reaction Chase Game"}
@@ -3232,8 +3265,10 @@ function pickRandomTraining(list, unit){
   const startMatchHistoryBtn = document.getElementById("startMatchHistoryBtn");
   const startRosterBtn = document.getElementById("startRosterBtn");
 
-  // Aktueller Spielerkader: Genau 10 Spieler. Die Trainerkinder sind immer im Kader und stehen an erster Stelle.
-  const ROSTER_PLAYERS = [
+  // Die bisherige 10er-Kernbesetzung bleibt als bevorzugter Spielerkader erhalten.
+  // Spieler, die neu aus Excel kommen und noch nicht in dieser Kernliste stehen,
+  // werden automatisch unter „Ersatz“ ergänzt.
+  const ROSTER_CORE_PLAYERS = [
     "Bastian",
     "Emin",
     "Frederik",
@@ -3246,8 +3281,7 @@ function pickRandomTraining(list, unit){
     "Noah"
   ];
 
-  // Ersatzspieler für den aktuellen Spieltag.
-  const ROSTER_BENCH = [
+  const ROSTER_CORE_BENCH = [
     "Ali",
     "Daniel",
     "Johannes Suppmair",
@@ -3279,8 +3313,27 @@ function pickRandomTraining(list, unit){
   function renderPlayerRoster(){
     const list=document.getElementById("playerRosterList");
     const bench=document.getElementById("playerRosterBenchList");
-    if(list) list.innerHTML=ROSTER_PLAYERS.map(rosterPlayerHtml).join("");
-    if(bench) bench.innerHTML=ROSTER_BENCH.map(rosterPlayerHtml).join("");
+
+    const rosterPlayers = ROSTER_CORE_PLAYERS.filter(p => PLAYERS[p]);
+    const rosterBench = ROSTER_CORE_BENCH.filter(p => PLAYERS[ROSTER_DATA_NAMES[p] || p]);
+    const usedDataNames = new Set([
+      ...rosterPlayers,
+      ...rosterBench.map(p => ROSTER_DATA_NAMES[p] || p)
+    ]);
+
+    const additionalPlayers = Object.keys(PLAYERS)
+      .filter(p => !usedDataNames.has(p))
+      .sort((a,b) => displayName(a).localeCompare(displayName(b), "de"));
+
+    const benchPlayers = [...rosterBench, ...additionalPlayers];
+
+    if(list) list.innerHTML=rosterPlayers.map(rosterPlayerHtml).join("");
+    if(bench) bench.innerHTML=benchPlayers.map(rosterPlayerHtml).join("");
+
+    const rosterTitle = document.getElementById("playerRosterTitle");
+    const benchTitle = document.getElementById("playerRosterBenchTitle");
+    if(rosterTitle) rosterTitle.textContent = `Spielerkader (${rosterPlayers.length})`;
+    if(benchTitle) benchTitle.textContent = `Ersatz (${benchPlayers.length})`;
 
     const openNumbersEl=document.getElementById("openJerseyNumbers");
     if(openNumbersEl){
@@ -4524,6 +4577,6 @@ if ("serviceWorker" in navigator) {
 }
 </script>
 
-<div class="install-hint">SpVgg Erdweg U11 (<a href="./U11-Coach-Versionshistory.md" target="_blank" rel="noopener noreferrer" class="footer-version-link" aria-label="Versionshistory">V1.162</a> by Mike)</div>
+<div class="install-hint">SpVgg Erdweg U11 (<a href="./U11-Coach-Versionshistory.md" target="_blank" rel="noopener noreferrer" class="footer-version-link" aria-label="Versionshistory">V1.164</a> by Mike)</div>
 </body>
 </html>

@@ -1,3 +1,7 @@
+## V1.164
+- Bilder für Station 2.5 und 2.7 auf direkte Raw-GitHub-Pfade umgestellt.
+- Versionsparameter ergänzt, damit alte Browser-/404-Caches die neuen Bilder nicht verdecken.
+
 ## V1.162
 
 - Aufwärmenseite: Der komplette Merksatz wurde entfernt.
@@ -732,3 +736,9 @@ zusätzlich in der App
 - Für „2.7 – Warmup Drill“ die bisherige Grafik durch die neu bereitgestellte Grafik ersetzt.
 - Die neue Grafik liegt als `bilder/2.7-warmup-drill.png` vor und wird lokal verwendet.
 
+## V1.163
+- Die Spielerbasis wird jetzt vollständig aus `Spielerwerte.xlsx` geladen. Neue Spieler müssen nicht mehr im HTML hart codiert werden.
+- Der bisherige Testspieler „Neuer Spieler“ wird beim Laden der aktuellen Excel-Datei nicht mehr übernommen; „Jonas“ kann dadurch direkt aus Excel verwendet werden.
+- Weitere neue Excel-Spieler wie „Florian“ werden automatisch in die App übernommen.
+- Anwesenheitslisten, Trainingsgruppen und Spielerauswahl aktualisieren sich nach dem Excel-Laden mit der aktuellen Spielerliste.
+- Die bestehende 10er-Kernbesetzung bleibt im Spielerkader priorisiert; weitere Spieler aus Excel werden automatisch unter „Ersatz“ ergänzt.
