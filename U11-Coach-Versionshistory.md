@@ -1,3 +1,20 @@
+## V1.157
+- Bei „2.6 – Passdreieck mit Nachlaufen“ die bisherige interne Grafik vollständig entfernt.
+- Ausschließlich die vom Nutzer bereitgestellte Grafik `bilder/2.6-passdreieck-mit-nachlaufen.png` wird verwendet.
+
+## V1.156
+- Station 2 um die neue Übung **2.6 – Passdreieck mit Nachlaufen** erweitert.
+- Aufbau: Viereck mit 5 Spielern. Der Ball wird im Viereck nach vorne gespielt und der Spieler läuft seinem Pass hinterher.
+- Material ergänzt: **1 Ball** und **4 Hütchen**.
+- Quelle zum bereitgestellten Facebook-Reel hinterlegt.
+
+## V1.155
+- Liga-Tabelle auf den vom Trainer bereitgestellten BFV-Screenshot vom 20.09.2026 aktualisiert.
+- Platzierungen, Spiele, G-U-V, Tore, Tordifferenz und Punkte an den neuen Tabellenstand angepasst.
+
+## V1.154
+- Bei „2.5 – Ballannahme am Hütchen“ die Materialangabe ergänzt: **mehrere Bälle** und **6 Hütchen**.
+
 ## V1.153
 - Bei „2.5 – Ballannahme am Hütchen“ die alte interne SVG-Grafik vollständig entfernt.
 - Es wird für diese Übung ausschließlich die vom Nutzer bereitgestellte Skizze aus `bilder/2.5-ballannahme-am-huetchen.png` angezeigt.
