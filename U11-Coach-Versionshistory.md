@@ -1,3 +1,30 @@
+## V1.169
+
+- Station 2: Für **2.9 – Passing Drill** die benötigten Materialien ergänzt: **Mehrere Bälle** und **4 Hütchen**.
+- Sichtbare Versionsanzeige und Service Worker auf **V1.169** aktualisiert.
+
+## V1.168
+
+- Station 2: **2.8 – Reaction Chase Game** aus der aktiven Übungsliste entfernt.
+- Das zugehörige Bild wird nicht mehr als aktives Übungsbild geladen.
+- Sichtbare Versionsanzeige und Service Worker auf **V1.168** aktualisiert.
+
+## V1.167
+
+- Station 2: Für **2.9 – Passing Drill** die vom Nutzer bereitgestellte Grafik als Übungsbild ergänzt.
+- Neue Datei: `bilder/2.9-passing-drill.png`.
+
+## V1.166
+
+- Station 2: neue Übung **2.9 – Passing Drill** ergänzt.
+- Quelle: Instagram-Reel `https://www.instagram.com/reels/Ddgu7xbM0VP/`.
+- Ablauf nach dem bereitgestellten Video ergänzt: Dribbling zur Mitte, Richtungswechsel, Pass zur seitlichen Anspielstation, anschließende Bewegung auf die Seite und Weiterpass zur gegenüberliegenden Gruppe.
+- Die dokumentierte Übung **2.8 – Reaction Chase Game** wieder in die aktive Station-2-Liste aufgenommen.
+
+## V1.165
+
+- Station 1 „Parcours“: Daueranzeige auf „3 x 5 Runden. Ca. 10 Min“ geändert.
+
 ## V1.164
 - Bilder für Station 2.5 und 2.7 auf direkte Raw-GitHub-Pfade umgestellt.
 - Versionsparameter ergänzt, damit alte Browser-/404-Caches die neuen Bilder nicht verdecken.
