@@ -1,3 +1,11 @@
+## V1.171
+
+- Spielgruppen: Bei **2 Mannschaften** werden jetzt jeweils **6 Spieler auf dem Feld** eingeplant.
+- Weitere anwesende Spieler werden als **Auswechselspieler** dem Team zugeordnet.
+- Die Teamaufteilung berücksichtigt neben der Spielstärke nun auch eine **möglichst gleiche Mannschaftsgröße**; die Teamgrößen unterscheiden sich höchstens um einen Spieler.
+- Die Spielgruppen-Auswahl zeigt für 2 Mannschaften jetzt **6 Spieler je Mannschaft** an.
+- Sichtbare Versionsanzeige und Service Worker auf **V1.171** aktualisiert.
+
 ## V1.170
 
 - Trainingsgruppen: Die Gruppennamen zeigen nur noch **Gruppe 1**, **Gruppe 2** und **Gruppe 3**. Die Zusätze **Stärkste**, **Mittel** und **Schwächste** wurden entfernt.

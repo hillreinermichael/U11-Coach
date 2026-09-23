@@ -1087,7 +1087,7 @@ color:#fff;
         <label for="teamCountSelect">Mannschaften</label>
         <select id="teamCountSelect">
           <option value="3">3 Mannschaften · 4 Spieler je Mannschaft</option>
-          <option value="2">2 Mannschaften · 4 Spieler je Mannschaft</option>
+          <option value="2">2 Mannschaften · 6 Spieler je Mannschaft</option>
         </select>
       </div>
 
@@ -4000,44 +4000,97 @@ const TIMER_WHISTLE_AUDIO = "data:audio/mpeg;base64,SUQzBAAAAAAAI1RTU0UAAAAPAAAD
     syncTeamSelectionFromTrainingGroups();
   }
 
+  function getTeamActiveSize(teamCount){
+    return teamCount===2 ? 6 : 4;
+  }
+
+  function getBalancedTeamSizes(totalPlayers, teamCount, activeSize){
+    const requiredPlayers=teamCount===2 ? teamCount*activeSize : teamCount;
+    if(totalPlayers < requiredPlayers) return null;
+    const base=Math.floor(totalPlayers/teamCount);
+    const remainder=totalPlayers%teamCount;
+    const sizes=Array(teamCount).fill(base);
+    for(let i=0;i<remainder;i++) sizes[i]++;
+    return sizes;
+  }
+
   function createBalancedTeams(players, teamCount){
+    const activeSize=getTeamActiveSize(teamCount);
+    const targetSizes=getBalancedTeamSizes(players.length, teamCount, activeSize);
+    if(!targetSizes) return null;
+
     const sorted=players.slice().sort((a,b)=>{
       const d=playerTeamStrength(b)-playerTeamStrength(a);
       return Math.abs(d)>0.0001 ? d : displayName(a).localeCompare(displayName(b),"de");
     });
+
     let best=null, bestCost=Infinity;
-    const runs=220;
+    const runs=260;
+
     for(let run=0;run<runs;run++){
+      const order=run===0
+        ? sorted.slice()
+        : sorted.slice().sort(()=>Math.random()-0.5);
       const teams=Array.from({length:teamCount},()=>[]);
-      const sums=Array(teamCount).fill(0);
-      const order=run===0 ? sorted.slice() : sorted.slice().sort(()=>Math.random()-0.5);
+
+      // Zuerst werden die Plaetze auf dem Feld besetzt. Dadurch haben bei
+      // 2 Mannschaften immer beide Teams exakt 6 Spieler auf dem Feld.
       for(const p of order){
-        let bestTeam=0, bestTeamCost=Infinity;
-        for(let idx=0;idx<teamCount;idx++){
-          const projected=sums.slice();
-          projected[idx]+=playerTeamStrength(p);
-          const counts=teams.map((t,i)=>t.length+(i===idx?1:0));
-          const activeCounts=counts.map(c=>Math.min(4,c));
-          const activeSums=teams.map((t,i)=>{
-            const active=t.slice(0,4).reduce((sum,n)=>sum+playerTeamStrength(n),0);
-            return i===idx && t.length<4 ? active+playerTeamStrength(p) : active;
+        const available=teams
+          .map((t,i)=>({i,t,remaining:targetSizes[i]-t.length}))
+          .filter(x=>x.remaining>0);
+
+        let candidates=available.filter(x=>x.t.length<activeSize);
+        if(!candidates.length) candidates=available;
+
+        let bestTeam=null, bestTeamCost=Infinity;
+        for(const candidate of candidates){
+          const projectedActiveSums=teams.map((t,i)=>{
+            const active=t.slice(0,activeSize).reduce((sum,n)=>sum+playerTeamStrength(n),0);
+            return i===candidate.i && t.length<activeSize
+              ? active+playerTeamStrength(p)
+              : active;
           });
-          const activeRange=Math.max(...activeSums)-Math.min(...activeSums);
-          const countRange=Math.max(...activeCounts)-Math.min(...activeCounts);
-          const totalRange=Math.max(...projected)-Math.min(...projected);
-          const cost=activeRange + countRange*20 + totalRange*0.03 - projected[idx]*0.0001;
-          if(cost<bestTeamCost){bestTeamCost=cost;bestTeam=idx;}
+          const activeRange=Math.max(...projectedActiveSums)-Math.min(...projectedActiveSums);
+          const projectedTotalSums=teams.map((t,i)=>{
+            const total=t.reduce((sum,n)=>sum+playerTeamStrength(n),0);
+            return i===candidate.i ? total+playerTeamStrength(p) : total;
+          });
+          const totalRange=Math.max(...projectedTotalSums)-Math.min(...projectedTotalSums);
+          const countRange=Math.max(...teams.map((t,i)=>t.length+(i===candidate.i?1:0)))
+            -Math.min(...teams.map((t,i)=>t.length+(i===candidate.i?1:0)));
+
+          // Gleich grosse Mannschaften haben Vorrang. Innerhalb dieser
+          // Vorgabe wird vor allem die Staerke der Spieler auf dem Feld
+          // moeglichst ausgeglichen.
+          const cost=activeRange + totalRange*0.02 + countRange*1000;
+          if(cost<bestTeamCost){
+            bestTeamCost=cost;
+            bestTeam=candidate.i;
+          }
         }
+
+        if(bestTeam===null) break;
         teams[bestTeam].push(p);
-        sums[bestTeam]+=playerTeamStrength(p);
       }
-      const activeSums=teams.map(t=>t.slice(0,4).reduce((sum,p)=>sum+playerTeamStrength(p),0));
-      const activeCounts=teams.map(t=>Math.min(4,t.length));
-      const cost=(Math.max(...activeSums)-Math.min(...activeSums))
-        +(Math.max(...activeCounts)-Math.min(...activeCounts))*20;
+
+      if(teams.some((t,i)=>t.length!==targetSizes[i])) continue;
+
+      const activeSums=teams.map(t=>t.slice(0,activeSize)
+        .reduce((sum,p)=>sum+playerTeamStrength(p),0));
+      const totalSums=teams.map(t=>t.reduce((sum,p)=>sum+playerTeamStrength(p),0));
+      const activeRange=Math.max(...activeSums)-Math.min(...activeSums);
+      const totalRange=Math.max(...totalSums)-Math.min(...totalSums);
+      const cost=activeRange + totalRange*0.02;
+
       if(cost<bestCost){
         bestCost=cost;
-        best={teams:teams.map(t=>t.slice()),sums:sums.slice()};
+        best={
+          teams:teams.map(t=>t.slice()),
+          sums:totalSums.slice(),
+          activeSize,
+          targetSizes:targetSizes.slice()
+        };
       }
     }
     return best;
@@ -4053,6 +4106,7 @@ const TIMER_WHISTLE_AUDIO = "data:audio/mpeg;base64,SUQzBAAAAAAAI1RTU0UAAAAPAAAD
   function calculateTeams(options={}){
     const reshuffle=!!options.reshuffle;
     const teamCount=Number(document.getElementById("teamCountSelect")?.value||3);
+    const activeSize=getTeamActiveSize(teamCount);
     const checked=[...document.querySelectorAll("#teamPlayerList input[type=checkbox]:checked")].map(x=>x.value);
     const result=document.getElementById("teamSplitResult");
     const reshuffleBtn=document.getElementById("reshuffleTeamsBtn");
@@ -4062,8 +4116,12 @@ const TIMER_WHISTLE_AUDIO = "data:audio/mpeg;base64,SUQzBAAAAAAAI1RTU0UAAAAPAAAD
     const goalkeepers=checked.filter(p=>fixedGoalkeepers.includes(p));
     const fieldPlayers=checked.filter(p=>!fixedGoalkeepers.includes(p));
 
-    if(fieldPlayers.length<teamCount){
-      result.innerHTML=`<div class="material-empty">Bitte mindestens ${teamCount} Feldspieler auswählen, damit jede Mannschaft mindestens einen Spieler erhält. Maximilian Rohbeck und Maximilian Mätzig zählen als feste Torhüter nicht mit.</div>`;
+    const minimumFieldPlayers=teamCount===2 ? teamCount*activeSize : teamCount;
+    if(fieldPlayers.length<minimumFieldPlayers){
+      const minText=teamCount===2
+        ? `Bitte mindestens ${minimumFieldPlayers} Feldspieler auswählen, damit beide Mannschaften jeweils ${activeSize} Spieler auf dem Feld haben können.`
+        : `Bitte mindestens ${minimumFieldPlayers} Feldspieler auswählen, damit jede Mannschaft mindestens einen Spieler erhält.`;
+      result.innerHTML=`<div class="material-empty">${minText} Maximilian Rohbeck und Maximilian Mätzig zählen als feste Torhüter nicht mit.</div>`;
       reshuffleBtn.disabled=true;
       window.u11LastTeamSignature=null;
       return;
@@ -4078,9 +4136,9 @@ const TIMER_WHISTLE_AUDIO = "data:audio/mpeg;base64,SUQzBAAAAAAAI1RTU0UAAAAPAAAD
       const candidate=createBalancedTeams(shuffled,teamCount);
       if(!candidate) continue;
       const signature=teamSignature(candidate.teams);
-      const activeSums=candidate.teams.map(t=>t.slice(0,4).reduce((sum,p)=>sum+playerTeamStrength(p),0));
+      const activeSums=candidate.teams.map(t=>t.slice(0,activeSize).reduce((sum,p)=>sum+playerTeamStrength(p),0));
       const activeRange=Math.max(...activeSums)-Math.min(...activeSums);
-      const cost=activeRange + candidate.teams.reduce((sum,t)=>sum+Math.max(0,t.length-4),0)*0.01;
+      const cost=activeRange + candidate.teams.reduce((sum,t)=>sum+Math.max(0,t.length-activeSize),0)*0.01;
       if(cost<bestCost){
         bestCost=cost;
         if(!reshuffle || !previous || signature===previous){ chosen=candidate; chosenSig=signature; }
@@ -4136,14 +4194,14 @@ const TIMER_WHISTLE_AUDIO = "data:audio/mpeg;base64,SUQzBAAAAAAAI1RTU0UAAAAPAAAD
     const helperUsed=new Set();
     const helpersByTeam=chosen.teams.map(()=>null);
     const underfilled=chosen.teams
-      .map((team,i)=>({i, team, deficit:Math.max(0,4-team.length), strength:team.slice(0,4).reduce((sum,p)=>sum+playerTeamStrength(p),0)}))
+      .map((team,i)=>({i, team, deficit:Math.max(0,activeSize-team.length), strength:team.slice(0,activeSize).reduce((sum,p)=>sum+playerTeamStrength(p),0)}))
       .filter(x=>x.deficit>0)
       .sort((a,b)=>a.strength-b.strength || a.i-b.i);
 
     for(const target of underfilled){
       const candidates=[];
       const otherTeamStrengths=chosen.teams
-        .map((team,i)=>i===target.i ? null : team.slice(0,4).reduce((sum,p)=>sum+playerTeamStrength(p),0))
+        .map((team,i)=>i===target.i ? null : team.slice(0,activeSize).reduce((sum,p)=>sum+playerTeamStrength(p),0))
         .filter(v=>v!==null);
       const referenceStrength = otherTeamStrengths.length
         ? otherTeamStrengths.reduce((sum,v)=>sum+v,0)/otherTeamStrengths.length
@@ -4151,7 +4209,7 @@ const TIMER_WHISTLE_AUDIO = "data:audio/mpeg;base64,SUQzBAAAAAAAI1RTU0UAAAAPAAAD
 
       chosen.teams.forEach((team,sourceIndex)=>{
         if(sourceIndex===target.i) return;
-        team.slice(0,4).forEach(p=>{
+        team.slice(0,activeSize).forEach(p=>{
           // Spieler mit Ausdauer < 8 sind keine möglichen Aushilfen.
           // Sie bleiben als normale Spieler ihrer eigenen Mannschaft verfügbar.
           if(playerStamina(p) < 8) return;
@@ -4182,15 +4240,15 @@ const TIMER_WHISTLE_AUDIO = "data:audio/mpeg;base64,SUQzBAAAAAAAI1RTU0UAAAAPAAAD
     }
 
     result.innerHTML = chosen.teams.map((team,i)=>{
-      const active=team.slice(0,4);
-      const subs=team.slice(4);
+      const active=team.slice(0,activeSize);
+      const subs=team.slice(activeSize);
       const helper=helpersByTeam[i];
       const displayTotal=active.reduce((sum,p)=>sum+playerTeamStrength(p),0)
         + (helper ? playerTeamStrength(helper.player) : 0);
       return `
         <div class="team-card">
           <h3>${TRAINING_TEAM_NAMES[i] || `Team ${i+1}`}</h3>
-          <div class="team-strength">Stärke: ${displayTeamStrength(displayTotal)} · ${active.length} Feldspieler</div>
+          <div class="team-strength">Stärke: ${displayTeamStrength(displayTotal)} · ${active.length} Spieler auf dem Feld</div>
           <div class="team-section-title">Auf dem Feld</div>
           <div class="team-members">
             ${active.map(p=>`<div class="team-member-line"><span>${displayName(p)}</span></div>`).join("")}
@@ -4586,6 +4644,6 @@ if ("serviceWorker" in navigator) {
 }
 </script>
 
-<div class="install-hint">SpVgg Erdweg U11 (<a href="./U11-Coach-Versionshistory.md" target="_blank" rel="noopener noreferrer" class="footer-version-link" aria-label="Versionshistory">V1.170</a> by Mike)</div>
+<div class="install-hint">SpVgg Erdweg U11 (<a href="./U11-Coach-Versionshistory.md" target="_blank" rel="noopener noreferrer" class="footer-version-link" aria-label="Versionshistory">V1.171</a> by Mike)</div>
 </body>
 </html>
