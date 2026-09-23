@@ -1,3 +1,8 @@
+## V1.170
+
+- Trainingsgruppen: Die Gruppennamen zeigen nur noch **Gruppe 1**, **Gruppe 2** und **Gruppe 3**. Die Zusätze **Stärkste**, **Mittel** und **Schwächste** wurden entfernt.
+- Sichtbare Versionsanzeige und Service Worker auf **V1.170** aktualisiert.
+
 ## V1.169
 
 - Station 2: Für **2.9 – Passing Drill** die benötigten Materialien ergänzt: **Mehrere Bälle** und **4 Hütchen**.
