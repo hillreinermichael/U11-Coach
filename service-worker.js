@@ -1,4 +1,4 @@
-const CACHE_NAME = "u11-coach-v1.173";
+const CACHE_NAME = "u11-coach-v1.174";
 const APP_SHELL = [
   "./",
   "./index.html",

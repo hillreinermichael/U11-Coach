@@ -1,3 +1,12 @@
+## V1.174
+
+- Neue optionale **Station 4 „Sondertraining“** für genau **1 Spieler** ergänzt.
+- Übung **„Wahrnehmen · Verarbeiten · Umsetzen“** nach dem vom Nutzer bereitgestellten Instagram-Reel eingebunden.
+- Schwerpunkt: Wahrnehmung, Ballverarbeitung sowie Lösungen mit 1, 2 oder 3 Kontakten und Aktionen nach rechts/links.
+- Material: **4 Hütchen und 1 Ball**.
+- Station 4 bleibt unabhängig von der normalen Auswahl mit 2 oder 3 Stationen und wird nicht in die reguläre Gruppeneinteilung einbezogen.
+- Sichtbare Versionsanzeige und Service Worker auf **V1.174** aktualisiert.
+
 ## V1.173
 
 - Station 1 „Parcours“: Die Dauerangabe wurde von **3 x 5 Runden. Ca. 10 Min** auf **4 x 5 Runden. Ca. 10 Min** geändert.
