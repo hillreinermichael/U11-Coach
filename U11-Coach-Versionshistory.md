@@ -1,3 +1,11 @@
+## V1.175
+
+- Station 4 „Sondertraining“ um eine zweite Übung ergänzt: **„Ballannahme unter hohem Tempo“**.
+- Schwerpunkt: erster Kontakt unter hohem Tempo, dynamische Bewegungen, Richtungswechsel, Koordination, Reaktionsfähigkeit und Handlungsschnelligkeit.
+- Die neue Übung ist für **1 Spieler** ausgelegt und ergänzt die bestehende Station-4-Übung.
+- Material: **Mehrere Bälle und Hütchen**.
+- Sichtbare Versionsanzeige und Service Worker auf **V1.175** aktualisiert.
+
 ## V1.174
 
 - Neue optionale **Station 4 „Sondertraining“** für genau **1 Spieler** ergänzt.
