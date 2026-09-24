@@ -1,3 +1,25 @@
+## V1.178
+
+- Die beiden Bilder für Station 4 „Sondertraining“ wurden in die GitHub-Release-Dateien aufgenommen, damit sie zusammen mit den geänderten Dateien hochgeladen werden können.
+- `bilder/station-4-wahrnehmen.png` gehört zu **4.1 – Wahrnehmen · Verarbeiten · Umsetzen**.
+- `bilder/station-4-ballannahme-hohes-tempo.png` gehört zu **4.2 – Ballannahme unter hohem Tempo**.
+- Sichtbare Versionsanzeige und Service Worker auf **V1.178** aktualisiert.
+
+## V1.177
+
+- Station 4 „Sondertraining“: Die beiden Übungen wurden nummeriert.
+- **4.1 – Wahrnehmen · Verarbeiten · Umsetzen**
+- **4.2 – Ballannahme unter hohem Tempo**
+- Sichtbare Versionsanzeige und Service Worker auf **V1.177** aktualisiert.
+
+## V1.176
+
+- Station 4 „Sondertraining“: Bild für **„Wahrnehmen · Verarbeiten · Umsetzen“** ergänzt.
+- Station 4 „Sondertraining“: Bild für **„Ballannahme unter hohem Tempo“** ergänzt.
+- Beide Bilder werden direkt in der jeweiligen Detailansicht der Übung angezeigt.
+- Neue Bilddateien: `bilder/station-4-wahrnehmen.png` und `bilder/station-4-ballannahme-hohes-tempo.png`.
+- Sichtbare Versionsanzeige und Service Worker auf **V1.176** aktualisiert.
+
 ## V1.175
 
 - Station 4 „Sondertraining“ um eine zweite Übung ergänzt: **„Ballannahme unter hohem Tempo“**.
