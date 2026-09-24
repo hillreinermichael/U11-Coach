@@ -1,3 +1,13 @@
+## V1.173
+
+- Station 1 „Parcours“: Die Dauerangabe wurde von **3 x 5 Runden. Ca. 10 Min** auf **4 x 5 Runden. Ca. 10 Min** geändert.
+- Sichtbare Versionsanzeige und Service Worker auf **V1.173** aktualisiert.
+
+## V1.172
+
+- Station 3: Für **3.7 – 1 gegen 1 – Torschuss & Umschalten** die benötigten Materialien ergänzt: **3 Dummys**.
+- Sichtbare Versionsanzeige und Service Worker auf **V1.172** aktualisiert.
+
 ## V1.171
 
 - Spielgruppen: Bei **2 Mannschaften** werden jetzt jeweils **6 Spieler auf dem Feld** eingeplant.
