@@ -1,3 +1,10 @@
+## V1.182
+
+- Text von **2.10 – Warmup Passing Drill** an den tatsächlichen Übungsablauf angepasst.
+- Aufbau: 3 Spieler; ein Spieler im Zentrum des Vierecks, zwei Anspielspieler davor und dahinter.
+- Der Spieler im Zentrum wird angespielt, passt zurück, läuft nach links heraus, erhält einen weiteren Pass, spielt zum anderen Anspielspieler und kehrt anschließend in die Mitte zurück.
+- Sichtbare Versionsanzeige und Service Worker auf **V1.182** aktualisiert.
+
 ## V1.181
 
 - Neue Übung **2.10 – Warmup Passing Drill** in Station 2 ergänzt.
