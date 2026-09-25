@@ -978,14 +978,6 @@ color:#fff;
           <strong>Spielgruppen</strong>
           <span>Spieler auswählen und in Teams aufteilen</span>
         </button>
-        <button type="button" class="start-choice" id="startHistoryBtn">
-          <strong>Trainingshistorie</strong>
-          <span>Bestätigte Trainings anzeigen</span>
-        </button>
-        <button type="button" class="start-choice" id="trainingTemplateBtn">
-          <strong>Trainingsvorlage</strong>
-          <span>Training planen und Vorlage speichern</span>
-        </button>
         <button type="button" class="start-choice" id="trainingNotesBtn">
           <strong>Trainingsnotizen</strong>
           <span>Notizen zum Training speichern</span>
@@ -1242,33 +1234,6 @@ color:#fff;
       </div>
     </div>
   </div>
-  <div id="trainingTemplateMode" class="mode-section" style="display:none;">
-    <button type="button" class="mode-back" data-back="trainingHub">← Training</button>
-    <div class="card">
-      <h2>Trainingsvorlage</h2>
-      <div class="assistant-note">Die Vorlage wird auf diesem Gerät gespeichert und kann beim nächsten Training wieder geladen werden.</div>
-      <div class="field-row">
-        <label class="small" for="trainingTemplateTitle">Name der Vorlage</label>
-        <input id="trainingTemplateTitle" type="text" maxlength="80" placeholder="z. B. Schnelligkeit + Torschuss">
-      </div>
-      <div class="field-row">
-        <label class="small">Station 2</label>
-        <div class="training-template-summary" style="margin:0;">Pass- und Ballübung</div>
-      </div>
-      <div class="field-row">
-        <label class="small" for="templateUnit3Select">Station 3</label>
-        <select id="templateUnit3Select"></select>
-      </div>
-      <div class="training-template-summary" id="trainingTemplateSummary"></div>
-      <div class="team-calc-actions">
-        <button type="button" class="primary" id="saveTrainingTemplateBtn">Vorlage speichern</button>
-        <button type="button" class="timer-action secondary" id="loadTrainingTemplateBtn">Gespeicherte Vorlage laden</button>
-        <button type="button" class="timer-action secondary" id="useTrainingTemplateBtn">Ins Training übernehmen</button>
-      </div>
-      <div id="trainingTemplateStatus" class="material-empty"></div>
-    </div>
-  </div>
-
   <div id="trainingNotesMode" class="mode-section" style="display:none;">
     <button type="button" class="mode-back" data-back="trainingHub">← Training</button>
     <div class="card">
@@ -1309,16 +1274,6 @@ color:#fff;
     </div>
   </div>
 
-  <div id="historyMode" class="mode-section" style="display:none;">
-    <button type="button" class="mode-back" data-back="trainingHub">← Training</button>
-    <div class="card">
-      <h2>Trainingshistorie</h2>
-      <div class="history-actions">
-        <button type="button" class="timer-action secondary" id="clearHistoryBtn">Historie löschen</button>
-      </div>
-      <div id="historyList" class="history-list"></div>
-    </div>
-  </div>
   <div id="lineupMode" class="mode-section" style="display:none;">
     <button type="button" class="mode-back" data-back="matchdayHub">← Spieltag</button>
   <div class="card">
@@ -1507,11 +1462,6 @@ color:#fff;
       <strong>Abschluss:</strong> Abschlussspiel oder Turnier – je nach Zeit und Spielerzahl.
     </div>
 
-    <div class="training-confirm">
-      <button type="button" class="primary" id="confirmTrainingBtn">Training bestätigen</button>
-      <button type="button" class="timer-action secondary" id="openHistoryFromTraining">Trainingshistorie</button>
-      <div id="trainingConfirmStatus" class="material-empty"></div>
-    </div>
     </div>
   </div>
 
@@ -3313,11 +3263,9 @@ function pickRandomTraining(list, unit){
   const timerMode = document.getElementById("timerMode");
   const matchHistoryMode = document.getElementById("matchHistoryMode");
   const playerRosterMode = document.getElementById("playerRosterMode");
-  const historyMode = document.getElementById("historyMode");
   const checklistMode = document.getElementById("checklistMode");
   const teamsMode = document.getElementById("teamsMode");
   const trainingStrengthGroupsMode = document.getElementById("trainingStrengthGroupsMode");
-  const trainingTemplateMode = document.getElementById("trainingTemplateMode");
   const trainingNotesMode = document.getElementById("trainingNotesMode");
   const substitutionMode = document.getElementById("substitutionMode");
   const ligaMode = document.getElementById("ligaMode");
@@ -3332,8 +3280,6 @@ function pickRandomTraining(list, unit){
   const trainingWarmupBackBtn = document.getElementById("trainingWarmupBackBtn");
   const trainingGroupsBtn = document.getElementById("trainingGroupsBtn");
   const trainingStrengthGroupsBtn = document.getElementById("trainingStrengthGroupsBtn");
-  const startHistoryBtn = document.getElementById("startHistoryBtn");
-  const trainingTemplateBtn = document.getElementById("trainingTemplateBtn");
   const trainingNotesBtn = document.getElementById("trainingNotesBtn");
   const startLigaBtn = document.getElementById("startLigaBtn");
   const startTimerBtn = document.getElementById("startTimerBtn");
@@ -3489,20 +3435,16 @@ function showMode(mode){
     timerMode.style.display = mode === "timer" ? "block" : "none";
     matchHistoryMode.style.display = mode === "matchHistory" ? "block" : "none";
     playerRosterMode.style.display = mode === "playerRoster" ? "block" : "none";
-    historyMode.style.display = mode === "history" ? "block" : "none";
     checklistMode.style.display = mode === "checklist" ? "block" : "none";
     teamsMode.style.display = mode === "teams" ? "block" : "none";
     trainingStrengthGroupsMode.style.display = mode === "trainingStrengthGroups" ? "block" : "none";
-    trainingTemplateMode.style.display = mode === "trainingTemplate" ? "block" : "none";
     trainingNotesMode.style.display = mode === "trainingNotes" ? "block" : "none";
     substitutionMode.style.display = mode === "substitution" ? "block" : "none";
     ligaMode.style.display = mode === "liga" ? "block" : "none";
-    if(mode === "history") renderTrainingHistory();
     if(mode === "matchHistory") renderMatchHistory();
     if(mode === "checklist") renderChecklist();
     if(mode === "teams") renderTeamPlayerSelection();
     if(mode === "trainingStrengthGroups") renderStrengthGroupPlayerSelection();
-    if(mode === "trainingTemplate") renderTrainingTemplate();
     if(mode === "trainingNotes") renderTrainingNotes();
     if(mode === "substitution") renderSubstitutionAssistant();
     if(mode === "liga") refreshLiga();
@@ -3519,11 +3461,9 @@ function showMode(mode){
     timerMode.style.display = "none";
     matchHistoryMode.style.display = "none";
     playerRosterMode.style.display = "none";
-    historyMode.style.display = "none";
     checklistMode.style.display = "none";
     teamsMode.style.display = "none";
     trainingStrengthGroupsMode.style.display = "none";
-    trainingTemplateMode.style.display = "none";
     trainingNotesMode.style.display = "none";
     substitutionMode.style.display = "none";
     ligaMode.style.display = "none";
@@ -3551,8 +3491,6 @@ function showMode(mode){
   });
   trainingGroupsBtn.addEventListener("click", () => showMode("teams"));
   trainingStrengthGroupsBtn.addEventListener("click", () => showMode("trainingStrengthGroups"));
-  startHistoryBtn.addEventListener("click", () => showMode("history"));
-  trainingTemplateBtn.addEventListener("click", () => showMode("trainingTemplate"));
   trainingNotesBtn.addEventListener("click", () => showMode("trainingNotes"));
   startLigaBtn.addEventListener("click", () => showMode("liga"));
   startRosterBtn.addEventListener("click", () => showMode("playerRoster"));
@@ -3720,44 +3658,6 @@ const TIMER_WHISTLE_AUDIO = "data:audio/mpeg;base64,SUQzBAAAAAAAI1RTU0UAAAAPAAAD
     calculateTrainingGroups(trainingChildCount.value);
   }
 
-  /* ===================== Trainingsvorlage ===================== */
-  const TRAINING_TEMPLATE_KEY = "u11coach_training_template_v1";
-  function localDateForInput(){ const d=new Date(); return `${d.getFullYear()}-${String(d.getMonth()+1).padStart(2,"0")}-${String(d.getDate()).padStart(2,"0")}`; }
-  function populateTrainingTemplateSelects(){
-    const s3=document.getElementById("templateUnit3Select");
-    if(!s3) return;
-    s3.innerHTML=TRAINING_UNIT_3.map(x=>`<option value="${x.no}">${x.no} – ${x.name}</option>`).join("");
-  }
-  function findTrainingByNo(no){ return TRAINING_UNIT_3.find(x=>x.no===no) || null; }
-  function readTrainingTemplate(){ try{return JSON.parse(localStorage.getItem(TRAINING_TEMPLATE_KEY)||"null");}catch(e){return null;} }
-  function updateTrainingTemplateSummary(){
-    const box=document.getElementById("trainingTemplateSummary"), s3=document.getElementById("templateUnit3Select"); if(!box||!s3)return;
-    const b=findTrainingByNo(s3.value);
-    box.innerHTML=`<strong>Trainingsaufbau</strong><div>Station 1: Parcours als Viereck</div><div>Station 2: Pass- und Ballübung</div><div>Station 3: ${b ? b.no+" – "+b.name : "–"}</div><div class="footnote" style="margin-top:6px;">Richtwert: 90 Minuten Gesamttraining.</div>`;
-  }
-  function renderTrainingTemplate(){
-    populateTrainingTemplateSelects(); const saved=readTrainingTemplate();
-    const title=document.getElementById("trainingTemplateTitle"), s3=document.getElementById("templateUnit3Select");
-    if(saved){ if(title)title.value=saved.title||""; if(s3&&saved.unit3)s3.value=saved.unit3; }
-    else { if(title&&!title.value)title.value="Mein Training"; if(s3&&window.selectedTraining3)s3.value=window.selectedTraining3.no; }
-    updateTrainingTemplateSummary();
-  }
-  document.getElementById("templateUnit3Select")?.addEventListener("change",updateTrainingTemplateSummary);
-  document.getElementById("saveTrainingTemplateBtn")?.addEventListener("click",()=>{
-    const title=(document.getElementById("trainingTemplateTitle")?.value||"Mein Training").trim()||"Mein Training";
-    const unit3=document.getElementById("templateUnit3Select")?.value||"3.1";
-    try{localStorage.setItem(TRAINING_TEMPLATE_KEY,JSON.stringify({title,unit2:"Pass- und Ballübung",unit3,savedAt:new Date().toISOString()}));}catch(e){}
-    const st=document.getElementById("trainingTemplateStatus"); if(st)st.textContent="Trainingsvorlage gespeichert.";
-  });
-  document.getElementById("loadTrainingTemplateBtn")?.addEventListener("click",()=>{
-    if(!readTrainingTemplate()){const st=document.getElementById("trainingTemplateStatus");if(st)st.textContent="Noch keine Vorlage gespeichert.";return;}
-    renderTrainingTemplate(); const st=document.getElementById("trainingTemplateStatus");if(st)st.textContent="Gespeicherte Vorlage geladen.";
-  });
-  document.getElementById("useTrainingTemplateBtn")?.addEventListener("click",()=>{
-    const b=findTrainingByNo(document.getElementById("templateUnit3Select")?.value); if(!b)return;
-    window.selectedTraining2=null; showTrainingSelection(3,b); showMode("training");
-  });
-
   /* ===================== Trainingsnotizen ===================== */
   const TRAINING_NOTES_KEY = "u11coach_training_notes_v1";
   function loadTrainingNotes(){try{const v=JSON.parse(localStorage.getItem(TRAINING_NOTES_KEY)||"[]");return Array.isArray(v)?v:[];}catch(e){return[];}}
@@ -3922,137 +3822,6 @@ const TIMER_WHISTLE_AUDIO = "data:audio/mpeg;base64,SUQzBAAAAAAAI1RTU0UAAAAPAAAD
   }
   document.getElementById("findSubstitutionsBtn")?.addEventListener("click",renderSubstitutionSuggestions);
   document.getElementById("subOutSelect")?.addEventListener("change",renderSubstitutionSuggestions);
-
-  /* ===================== Trainingshistorie ===================== */
-  const TRAINING_HISTORY_KEY = "u11coach_training_history_v1";
-
-  function loadTrainingHistory(){
-    try{
-      return JSON.parse(localStorage.getItem(TRAINING_HISTORY_KEY) || "[]");
-    }catch(e){
-      return [];
-    }
-  }
-
-  function saveTrainingHistory(record){
-    let history = loadTrainingHistory();
-    history.unshift(record);
-    history = history.slice(0, 30);
-    try{
-      localStorage.setItem(TRAINING_HISTORY_KEY, JSON.stringify(history));
-    }catch(e){}
-  }
-
-  function renderTrainingHistory(){
-    const el = document.getElementById("historyList");
-    if(!el) return;
-
-    const history = loadTrainingHistory();
-    if(!history.length){
-      el.innerHTML = '<div class="material-empty">Noch keine bestätigten Trainings gespeichert.</div>';
-      return;
-    }
-
-    el.innerHTML = history.map(r => `
-      <div class="history-entry">
-        <strong>${r.date}</strong>
-        <div class="history-meta">${r.children ? r.children + " Kinder · " : ""}Station 1: ${r.unit1} · Station 2: ${r.unit2}${r.unit3 ? " · Station 3: " + r.unit3 : ""}</div>
-        <ul>
-          ${r.groups ? `<li>Gruppen: ${r.groups.join(" / ")} Kinder</li>` : ""}
-          ${r.materials && r.materials.length ? `<li>Material: ${r.materials.join(", ")}</li>` : ""}
-        </ul>
-      </div>
-    `).join("");
-  }
-
-  function confirmCurrentTraining(){
-    const twoStation = isTwoStationTraining();
-    const unit2 = window.selectedTraining2;
-    const unit3 = window.selectedTraining3;
-
-    if(twoStation ? !unit2 : !unit3){
-      const status = document.getElementById("trainingConfirmStatus");
-      if(status){
-        status.textContent = twoStation
-          ? "Bitte zuerst eine Fußballübung für Station 2 auswählen."
-          : "Bitte zuerst eine Übung in Station 3 auswählen.";
-      }
-      return;
-    }
-
-    const childInput = document.getElementById("trainingChildCount");
-    const children = childInput ? Math.max(1, Math.min(30, Number(childInput.value) || 0)) : null;
-
-    const groups = typeof getTrainingGroups === "function" && children
-      ? getTrainingGroups(children)
-      : null;
-
-    const materials = typeof mergeTrainingMaterials === "function"
-      ? mergeTrainingMaterials().map(x => x.name)
-      : [];
-
-    saveTrainingHistory({
-      date: new Date().toLocaleString("de-DE"),
-      children,
-      groups,
-      unit1: "Parcours",
-      unit2: twoStation ? `${unit2.no} ${unit2.name}` : "Pass- und Ballübung",
-      unit3: twoStation ? "" : `${unit3.no} ${unit3.name}`,
-      stations: twoStation ? 2 : 3,
-      materials,
-      confirmed: true
-    });
-
-    const status = document.getElementById("trainingConfirmStatus");
-    if(status) status.textContent = "Training wurde gespeichert.";
-  }
-
-  document.getElementById("confirmTrainingBtn").addEventListener("click", confirmCurrentTraining);
-  document.getElementById("openHistoryFromTraining").addEventListener("click", () => showMode("history"));
-
-  document.getElementById("clearHistoryBtn").addEventListener("click", ()=>{
-    localStorage.removeItem(TRAINING_HISTORY_KEY);
-    renderTrainingHistory();
-  });
-
-  /* ===================== Trainer-Assistent ===================== */
-  function refreshTrainerAssistant(){
-    const training=document.getElementById("assistantTraining");
-    const materials=document.getElementById("assistantMaterials");
-    const game=document.getElementById("assistantGame");
-    const timer=document.getElementById("assistantTimer");
-
-    const history=loadTrainingHistory();
-    const last=history[0];
-
-    training.innerHTML=last
-      ? `<div class="assistant-line">Letztes/generiertes Training: ${last.unit2} + ${last.unit3}</div>
-         <div class="assistant-line">${last.children} Kinder · Gruppen ${last.groups.join(" / ")}</div>`
-      : `<div class="assistant-line">Noch kein Training generiert.</div>`;
-
-    materials.innerHTML=last
-      ? last.materials.map(x=>`<div class="assistant-line">• ${x}</div>`).join("")
-      : `<div class="assistant-line">Noch keine Materialliste.</div>`;
-
-    let present=[];
-    try{
-      present=Object.keys(PLAYERS||{}).filter(p=>{
-        const box=document.querySelector(`[data-player="${CSS.escape(p)}"] input[type="checkbox"]`);
-        return box ? box.checked : false;
-      });
-    }catch(e){}
-
-    game.innerHTML=`
-      <div class="assistant-line"><strong>Spieler anwesend:</strong> ${present.length ? present.length : "noch nicht ausgewählt"}</div>
-      <div class="assistant-line"><strong>Formation:</strong> ${document.getElementById("formationSelect")?.value || "2-2-2"}</div>
-      <div class="assistant-line"><strong>Hinweis:</strong> Beste Aufstellung / Spielerwechsel im Aufstellungsbereich.</div>
-    `;
-
-    const remaining = (typeof timerSeconds === "number") ? timerSeconds : 300;
-    const mm=Math.floor(remaining/60).toString().padStart(2,"0");
-    const ss=(remaining%60).toString().padStart(2,"0");
-    timer.innerHTML=`<div class="assistant-line"><strong>Timer:</strong> ${mm}:${ss}</div>`;
-  }
 
   /* ===================== Spieltags-Checkliste ===================== */
   const CHECKLIST_KEY = "u11coach_matchday_checklist_v1";
@@ -4810,6 +4579,6 @@ if ("serviceWorker" in navigator) {
 }
 </script>
 
-<div class="install-hint">SpVgg Erdweg U11 (<a href="./U11-Coach-Versionshistory.md" target="_blank" rel="noopener noreferrer" class="footer-version-link" aria-label="Versionshistory">V1.183</a> by Mike)</div>
+<div class="install-hint">SpVgg Erdweg U11 (<a href="./U11-Coach-Versionshistory.md" target="_blank" rel="noopener noreferrer" class="footer-version-link" aria-label="Versionshistory">V1.184</a> by Mike)</div>
 </body>
 </html>

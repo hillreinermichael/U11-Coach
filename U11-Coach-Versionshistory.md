@@ -1,3 +1,10 @@
+## V1.184
+
+- Die Punkte **Trainingsvorlage** und **Trainingshistorie** aus dem Trainingsbereich vollständig entfernt.
+- Die zugehörigen Seiten, Verlinkungen und Speicherfunktionen entfernt.
+- Die normale Trainingsauswahl mit Trainingseinheiten, Aufwärmen, Trainingsgruppen, Spielgruppen und Trainingsnotizen bleibt bestehen.
+- Sichtbare Versionsanzeige und Service Worker auf **V1.184** aktualisiert.
+
 ## V1.183
 
 - Die Übungen **2.2 – Rückenpass** und **2.4 – Schattenflucht** aus Station 2 entfernt.
