@@ -1,3 +1,9 @@
+## V1.183
+
+- Die Übungen **2.2 – Rückenpass** und **2.4 – Schattenflucht** aus Station 2 entfernt.
+- Die zugehörigen aktiven Diagramm- und Materialeinträge wurden ebenfalls entfernt.
+- Sichtbare Versionsanzeige und Service Worker auf **V1.183** aktualisiert.
+
 ## V1.182
 
 - Text von **2.10 – Warmup Passing Drill** an den tatsächlichen Übungsablauf angepasst.
