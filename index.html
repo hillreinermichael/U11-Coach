@@ -314,6 +314,33 @@
   .dialog-actions .save{background:var(--erdweg-red);color:#fff;}
   .dialog-actions .cancel{background:#e0e0e0;color:var(--erdweg-black);}
 
+  /* Manueller Spielertausch */
+  .swap-player-list{
+    display:flex;
+    flex-direction:column;
+    gap:8px;
+    max-height:300px;
+    overflow-y:auto;
+    margin-bottom:16px;
+    text-align:left;
+  }
+  .swap-player-btn{
+    width:100%;
+    border:1px solid var(--line);
+    border-left:5px solid var(--erdweg-red);
+    border-radius:9px;
+    background:#fff;
+    color:var(--erdweg-black);
+    padding:11px 12px;
+    font:inherit;
+    font-weight:700;
+    text-align:left;
+    cursor:pointer;
+  }
+  .swap-player-btn:active{background:#f3f4f6;}
+  .pitch-player{cursor:pointer;}
+  .pitch-player:hover{filter:brightness(1.08);}
+
   .install-hint{
     max-width:540px;margin:16px auto 0;padding:0 14px;
     color:rgba(255,255,255,0.6);font-size:12px;text-align:center;line-height:1.5;
@@ -1506,6 +1533,17 @@ color:#fff;
   </div>
 </div>
 
+<div class="overlay" id="swapOverlay">
+  <div class="dialog">
+    <h3 id="swapTitle">Spieler austauschen</h3>
+    <div class="dialog-sub" id="swapSub">Ersatzspieler auswählen</div>
+    <div class="swap-player-list" id="swapPlayerList"></div>
+    <div class="dialog-actions">
+      <button class="cancel" id="swapCancel" type="button">Abbrechen</button>
+    </div>
+  </div>
+</div>
+
   <div id="trainingStrengthGroupsMode" class="mode-section" style="display:none;">
     <button type="button" class="mode-back" data-back="trainingHub">← Training</button>
     <div class="card">
@@ -2288,6 +2326,17 @@ function drawPitch(assign){
     const g = el("g", {});
 
     if(player){
+      g.setAttribute("class","pitch-player");
+      g.setAttribute("tabindex","0");
+      g.setAttribute("role","button");
+      g.setAttribute("aria-label",displayName(player) + " austauschen");
+      g.addEventListener("click", () => openPlayerSwap(player));
+      g.addEventListener("keydown", (event) => {
+        if(event.key === "Enter" || event.key === " "){
+          event.preventDefault();
+          openPlayerSwap(player);
+        }
+      });
       g.appendChild(el("circle",{cx:x,cy:y,r:r,fill:"#c8102e",stroke:"#ffffff","stroke-width":2.5}));
       const t1 = el("text",{x:x,y:y-3,"text-anchor":"middle","font-size":"10","font-weight":"800",fill:"#ffffff","font-family":"Inter,sans-serif"});
       t1.textContent = displayName(player);
@@ -3784,23 +3833,117 @@ const TIMER_WHISTLE_AUDIO = "data:audio/mpeg;base64,SUQzBAAAAAAAI1RTU0UAAAAPAAAD
     box.innerHTML=candidates.map(c=>`<div class="substitution-suggestion"><div class="substitution-suggestion-main"><strong>${displayName(c.player)}</strong><span>Passung ${c.score.toFixed(1)}</span></div><button type="button" class="timer-action secondary" data-sub-player="${String(c.player).replace(/"/g,"&quot;")}">Einwechseln</button></div>`).join("");
     box.querySelectorAll("[data-sub-player]").forEach(btn=>btn.addEventListener("click",()=>applySubstitution(selected,btn.dataset.subPlayer)));
   }
+  const swapOverlay = document.getElementById("swapOverlay");
+  const swapTitle = document.getElementById("swapTitle");
+  const swapSub = document.getElementById("swapSub");
+  const swapPlayerList = document.getElementById("swapPlayerList");
+
+  function openPlayerSwap(playerOut){
+    const state = window.u11CurrentLineup;
+    if(!state) return;
+    const entry = Object.entries(state.assignment).find(([,p]) => p === playerOut);
+    if(!entry) return;
+
+    const [slot] = entry;
+    const starters = new Set(Object.values(state.assignment));
+    const fieldPlayers = Object.entries(state.assignment)
+      .filter(([,p]) => p !== playerOut)
+      .sort((a,b) => displayName(a[1]).localeCompare(displayName(b[1]), "de"));
+    const benchPlayers = (state.available || [])
+      .filter(p => !starters.has(p) && !GROUP_ONLY_PLAYERS.has(p))
+      .sort((a,b) => displayName(a).localeCompare(displayName(b), "de"));
+
+    swapTitle.textContent = displayName(playerOut) + " austauschen";
+    swapSub.textContent = "Du kannst einen anderen Feldspieler für einen Platztausch oder einen Auswechselspieler auswählen.";
+    swapPlayerList.innerHTML = "";
+
+    const addSection = (title, players, mode) => {
+      const section = document.createElement("div");
+      section.style.marginBottom = "12px";
+
+      const heading = document.createElement("div");
+      heading.className = "material-title";
+      heading.style.marginBottom = "8px";
+      heading.textContent = title;
+      section.appendChild(heading);
+
+      if(!players.length){
+        const empty = document.createElement("div");
+        empty.className = "material-empty";
+        empty.textContent = mode === "field" ? "Keine weiteren Feldspieler vorhanden." : "Keine Auswechselspieler vorhanden.";
+        section.appendChild(empty);
+      } else {
+        players.forEach(item => {
+          const playerIn = mode === "field" ? item[1] : item;
+          const btn = document.createElement("button");
+          btn.type = "button";
+          btn.className = "swap-player-btn";
+          if(mode === "field") {
+            const targetSlot = item[0];
+            btn.textContent = displayName(playerIn) + " → Platz " + (LABEL[targetSlot] || ptype(targetSlot));
+          } else {
+            btn.textContent = displayName(playerIn) + " → einwechseln";
+          }
+          btn.addEventListener("click", () => {
+            applySubstitution(playerOut, playerIn);
+            swapOverlay.classList.remove("open");
+          });
+          section.appendChild(btn);
+        });
+      }
+
+      swapPlayerList.appendChild(section);
+    };
+
+    addSection("Spieler auf dem Feld – Plätze tauschen", fieldPlayers, "field");
+    addSection("Auswechselspieler", benchPlayers, "bench");
+
+    swapOverlay.classList.add("open");
+  }
+
+  document.getElementById("swapCancel")?.addEventListener("click", () => swapOverlay.classList.remove("open"));
+  swapOverlay?.addEventListener("click", (event) => {
+    if(event.target === swapOverlay) swapOverlay.classList.remove("open");
+  });
+
   function applySubstitution(playerOut,playerIn){
-    const state=window.u11CurrentLineup;if(!state)return;const entry=Object.entries(state.assignment).find(([,p])=>p===playerOut);if(!entry)return;const slot=entry[0];
+    const state=window.u11CurrentLineup;
+    if(!state) return;
+    const entry=Object.entries(state.assignment).find(([,p])=>p===playerOut);
+    if(!entry) return;
+    const slot=entry[0];
+    const targetEntry=Object.entries(state.assignment).find(([,p])=>p===playerIn);
     const assignment=Object.assign({},state.assignment);
-    assignment[slot]=playerIn;
+    let message="";
+
+    if(targetEntry){
+      const targetSlot=targetEntry[0];
+      assignment[slot]=playerIn;
+      assignment[targetSlot]=playerOut;
+      message=`<div class="footnote"><strong>Plätze getauscht:</strong> ${displayName(playerOut)} ↔ ${displayName(playerIn)}</div>`;
+    } else {
+      assignment[slot]=playerIn;
+      message=`<div class="footnote"><strong>Wechsel übernommen:</strong> ${displayName(playerOut)} raus · ${displayName(playerIn)} rein · ${POS_NAMES[ptype(slot)]||ptype(slot)}</div>`;
+    }
+
     state.assignment=assignment;
     drawPitch(assignment);
+
     const starters=new Set(Object.values(assignment));
     const benchPlayers=(state.available||[]).filter(p=>!starters.has(p));
     benchCard.style.display="block";
     benchBody.innerHTML=benchPlayers.length
       ? '<div class="bench-list">'+benchPlayers.map((p,i)=>`<div class="bench-player"><div class="bench-number">${i+1}</div><div><div class="bench-name">${displayName(p)}</div></div></div>`).join('')+'</div>'
       : '<div class="bench-empty">Keine Spieler auf der Bank.</div>';
+
     const outP=document.getElementById("subOutSelect");
-    if(outP) outP.value=playerIn;
+    if(outP){
+      const currentOptions=[...outP.options].map(o=>o.value);
+      if(!currentOptions.includes(outP.value)) outP.value="";
+    }
     renderSubstitutionAssistant();
     resultsCard.style.display="block";
-    resultsBody.innerHTML=`<div class="footnote"><strong>Wechsel übernommen:</strong> ${displayName(playerOut)} raus · ${displayName(playerIn)} rein · ${POS_NAMES[ptype(slot)]||ptype(slot)}</div>`;
+    resultsBody.innerHTML=message;
   }
   document.getElementById("findSubstitutionsBtn")?.addEventListener("click",renderSubstitutionSuggestions);
   document.getElementById("subOutSelect")?.addEventListener("change",renderSubstitutionSuggestions);
@@ -4692,6 +4835,6 @@ if ("serviceWorker" in navigator) {
 }
 </script>
 
-<div class="install-hint">SpVgg Erdweg U11 (<a href="./U11-Coach-Versionshistory.md" target="_blank" rel="noopener noreferrer" class="footer-version-link" aria-label="Versionshistory">V1.178</a> by Mike)</div>
+<div class="install-hint">SpVgg Erdweg U11 (<a href="./U11-Coach-Versionshistory.md" target="_blank" rel="noopener noreferrer" class="footer-version-link" aria-label="Versionshistory">V1.180</a> by Mike)</div>
 </body>
 </html>

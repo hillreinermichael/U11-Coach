@@ -1,3 +1,19 @@
+## V1.180
+
+- Manuelle Aufstellungsänderung im **Spieltag → Anwesende Spieler & Positionen** erweitert.
+- Beim Anklicken eines Spielers im Spielfeld können jetzt auch **andere Feldspieler** ausgewählt werden.
+- Wählt man einen anderen Feldspieler, werden die beiden **Positionen direkt getauscht**.
+- Auswechselspieler können weiterhin ausgewählt werden und ersetzen den angeklickten Spieler auf dessen Position.
+- Die Bankanzeige, das Spielfeld und der Wechsel-Assistent werden nach beiden Arten der Änderung aktualisiert.
+
+## V1.179
+
+- Im **Spieltag → Anwesende Spieler & Positionen** können Spieler nach der automatischen Aufstellung jetzt direkt im **Spielfeld angeklickt und manuell ausgetauscht** werden.
+- Beim Anklicken eines Spielers werden die aktuell verfügbaren Auswechselspieler angezeigt.
+- Der ausgewählte Auswechselspieler übernimmt exakt die angeklickte Position. Die automatische Aufstellung bleibt ansonsten unverändert.
+- Die Bankanzeige und der Wechsel-Assistent werden nach einem manuellen Tausch automatisch aktualisiert.
+- Sichtbare Versionsanzeige und Service Worker auf **V1.179** aktualisiert.
+
 ## V1.178
 
 - Die beiden Bilder für Station 4 „Sondertraining“ wurden in die GitHub-Release-Dateien aufgenommen, damit sie zusammen mit den geänderten Dateien hochgeladen werden können.
