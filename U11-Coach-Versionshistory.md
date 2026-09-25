@@ -1,3 +1,11 @@
+## V1.181
+
+- Neue Übung **2.10 – Warmup Passing Drill** in Station 2 ergänzt.
+- Instagram-Quelle zum Trainingsvideo hinterlegt.
+- Das bereitgestellte Bild als `bilder/2.10-warmup-passing-drill.png` aufgenommen.
+- Material für 2.10: mehrere Bälle und mehrere Hütchen.
+- Sichtbare Versionsanzeige und Service Worker auf **V1.181** aktualisiert.
+
 ## V1.180
 
 - Manuelle Aufstellungsänderung im **Spieltag → Anwesende Spieler & Positionen** erweitert.
