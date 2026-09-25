@@ -1,3 +1,9 @@
+## V1.185
+
+- Die Meldung **„Wechsel übernommen: …“** unter dem Spielfeld wird nach einem Spielerwechsel entfernt.
+- Die manuelle Wechsel- und Platztauschfunktion bleibt unverändert.
+- Sichtbare Versionsanzeige und Service Worker auf **V1.185** aktualisiert.
+
 ## V1.184
 
 - Die Punkte **Trainingsvorlage** und **Trainingshistorie** aus dem Trainingsbereich vollständig entfernt.
