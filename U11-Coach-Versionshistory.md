@@ -1,3 +1,9 @@
+## V1.188
+
+- Hinweis unter der Ligatabelle auf den neuen BFV-Screenshot vom **27.09.2026** aktualisiert.
+- Das Datum des Tabellenstands wird künftig bei einer neuen BFV-Screenshot-Aktualisierung mit der jeweiligen Aktualisierung angepasst.
+- Sichtbare Versionsanzeige und Service Worker auf **V1.188** aktualisiert.
+
 ## V1.187
 
 - Neues Punktspiel vom **27.09.2026** gegen **[SG] Tandern/Hilgertshausen/Pipinsried U11** ergänzt.
