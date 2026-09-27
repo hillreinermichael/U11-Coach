@@ -1,3 +1,9 @@
+## V1.189
+
+- Spielhistorie auf kleinen Bildschirmen angepasst: Das Ergebnis wird unterhalb der Mannschaftsnamen angezeigt.
+- Lange Mannschaftsnamen können jetzt vollständig umbrechen, ohne dass das Ergebnis außerhalb der Karte liegt.
+- Sichtbare Versionsanzeige und Service Worker auf **V1.189** aktualisiert.
+
 ## V1.188
 
 - Hinweis unter der Ligatabelle auf den neuen BFV-Screenshot vom **27.09.2026** aktualisiert.

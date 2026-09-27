@@ -524,9 +524,14 @@
   .match-history-entry.is-draw{background:#fff8d6;border-color:#eadb7b;}
   .match-history-date{display:flex;align-items:center;gap:8px;font-size:11px;font-weight:800;color:var(--ink-soft);text-transform:uppercase;letter-spacing:.06em;margin-bottom:7px;}
   .match-history-type{font-size:10px;font-weight:800;letter-spacing:.04em;color:var(--erdweg-red);text-transform:none;}
-  .match-history-main{display:grid;grid-template-columns:1fr auto;gap:8px 12px;align-items:center;}
-  .match-history-opponent{font-size:16px;font-weight:800;color:var(--erdweg-black);}
+  .match-history-main{display:grid;grid-template-columns:minmax(0,1fr) auto;gap:8px 12px;align-items:center;}
+  .match-history-opponent{font-size:16px;font-weight:800;color:var(--erdweg-black);min-width:0;overflow-wrap:anywhere;word-break:normal;}
   .match-history-result{font-family:'Anton',sans-serif;font-size:24px;letter-spacing:.03em;color:var(--erdweg-red-dark);white-space:nowrap;}
+  @media(max-width:560px){
+    .match-history-main{display:block;}
+    .match-history-opponent{line-height:1.2;}
+    .match-history-result{display:block;text-align:right;margin-top:8px;font-size:26px;}
+  }
   .mode-back{
     border:none;
     background:transparent;
@@ -4580,6 +4585,6 @@ if ("serviceWorker" in navigator) {
 }
 </script>
 
-<div class="install-hint">SpVgg Erdweg U11 (<a href="./U11-Coach-Versionshistory.md" target="_blank" rel="noopener noreferrer" class="footer-version-link" aria-label="Versionshistory">V1.188</a> by Mike)</div>
+<div class="install-hint">SpVgg Erdweg U11 (<a href="./U11-Coach-Versionshistory.md" target="_blank" rel="noopener noreferrer" class="footer-version-link" aria-label="Versionshistory">V1.189</a> by Mike)</div>
 </body>
 </html>
