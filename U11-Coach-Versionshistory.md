@@ -1,3 +1,18 @@
+## V1.187
+
+- Neues Punktspiel vom **27.09.2026** gegen **[SG] Tandern/Hilgertshausen/Pipinsried U11** ergänzt.
+- Heimspiel: **SpVgg Erdweg U11 – [SG] Tandern/Hilgertshausen/Pipinsried U11**.
+- Ergebnis: **5:2** für SpVgg Erdweg U11.
+- Spielart: **Punktspiel**.
+- Sichtbare Versionsanzeige und Service Worker auf **V1.187** aktualisiert.
+
+## V1.186
+
+- Ligatabelle anhand des vom Trainer bereitgestellten neuen BFV-Screenshots vom 27.09.2026 aktualisiert.
+- Alle Mannschaften stehen jetzt mit **2 Spielen** und den neuen Spielständen, Tordifferenzen und Punkten in der Tabelle.
+- Reihenfolge aktualisiert: SV Haimhausen U11, SV Sulzemoos U11, SpVgg Erdweg U11, SV Lohhof U11 3, [SG] Vierkirchen/Petershausen U11, VfL Egenburg U11, [SG] Niederroth/Arnbach U11, [SG] Tandern/Hilgertshausen/Pipinsried U11, SV Odelzhausen U11, [SG] Amperland U11 3.
+- Sichtbare Versionsanzeige und Service Worker auf **V1.186** aktualisiert.
+
 ## V1.185
 
 - Die Meldung **„Wechsel übernommen: …“** unter dem Spielfeld wird nach einem Spielerwechsel entfernt.
