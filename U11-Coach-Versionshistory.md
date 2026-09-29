@@ -1,3 +1,9 @@
+## V1.190
+
+- Die Übung **3.2 – Torschuss nach Dribbling** aus Station 3 entfernt.
+- Der zugehörige aktive Diagramm- und Materialeintrag wurde ebenfalls entfernt.
+- Sichtbare Versionsanzeige und Service Worker auf **V1.190** aktualisiert.
+
 ## V1.189
 
 - Spielhistorie auf kleinen Bildschirmen angepasst: Das Ergebnis wird unterhalb der Mannschaftsnamen angezeigt.
