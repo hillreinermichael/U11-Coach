@@ -1,3 +1,9 @@
+## V1.193
+
+- Auf der Seite **Wechselplanung** den Hinweistext unter jedem Spielfeld entfernt.
+- Den Beschreibungstext oberhalb der vier Spielfelder entfernt.
+- Service Worker und Versionsanzeige auf V1.193 aktualisiert.
+
 ## V1.192
 
 - Wechselplanung erweitert: Änderungen im 1. Viertel werden automatisch auf das 2., 3. und 4. Viertel übernommen.
