@@ -361,6 +361,21 @@
     margin-top:2px;
   }
 
+  /* Wechselplanung – 4 Viertel */
+  .subplan-grid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:12px;}
+  .subplan-card{border:1px solid var(--line);border-radius:12px;background:#fff;padding:10px;}
+  .subplan-card h3{margin:0 0 8px;font-size:14px;color:var(--erdweg-black);}
+  .subplan-pitch-wrap{border-radius:12px;overflow:hidden;line-height:0;background:#174023;}
+  .subplan-pitch{width:100%;height:auto;display:block;}
+  .subplan-card .subplan-help{margin:8px 0 0;font-size:10px;line-height:1.35;color:var(--ink-soft);}
+  .subplan-bench{margin-top:9px;padding-top:8px;border-top:1px solid var(--line);font-size:11px;line-height:1.45;}
+  .subplan-bench strong{font-size:10px;text-transform:uppercase;letter-spacing:.06em;color:var(--erdweg-red-dark);}
+  .subplan-actions{display:grid;grid-template-columns:1fr 1fr;gap:8px;margin-bottom:12px;}
+  .subplan-empty-note{padding:10px;border:1px dashed var(--line);border-radius:10px;background:#fafafa;font-size:11px;color:var(--ink-soft);margin-bottom:12px;}
+  .subplan-pitch-player{cursor:pointer;}
+  .subplan-pitch-player:hover{filter:brightness(1.08);}
+  @media(max-width:760px){.subplan-grid{grid-template-columns:1fr;}.subplan-actions{grid-template-columns:1fr;}}
+
   /* Training – 3 Stationen */
   #trainingCard .training-intro{
     background:#f4f5f7;
@@ -1079,6 +1094,10 @@ color:#fff;
           <strong>Aufwärmen</strong>
           <span>Aufwärm- und Dehnübungen</span>
         </button>
+        <button type="button" class="start-choice" id="matchdaySubPlanBtn">
+          <strong>Wechselplanung</strong>
+          <span>4 Viertel vor dem Spiel planen</span>
+        </button>
       </div>
     </div>
   </div>
@@ -1312,6 +1331,20 @@ color:#fff;
 
   </div>
 
+  <div id="substitutionPlanMode" class="mode-section" style="display:none;">
+    <button type="button" class="mode-back" data-back="matchdayHub">← Spieltag</button>
+    <div class="card">
+      <h2>Wechselplanung</h2>
+      <div class="assistant-note">Plane vor dem Spiel die vier Viertel. Das 1. Viertel übernimmt zunächst automatisch die aktuelle Aufstellung.</div>
+      <div class="subplan-actions">
+        <button type="button" class="timer-action secondary" id="subPlanImportQ1Btn">1. Viertel aus Aufstellung übernehmen</button>
+        <button type="button" class="timer-action secondary" id="subPlanResetBtn">Wechselplanung zurücksetzen</button>
+      </div>
+      <div id="subPlanStatus" class="subplan-empty-note"></div>
+      <div id="subPlanGrid" class="subplan-grid"></div>
+    </div>
+  </div>
+
   <div class="mode-section" id="trainingMode" style="display:none;">
     <button type="button" class="mode-back" data-back="trainingHub">← Training</button>
     <div class="card" id="trainingCard">
@@ -1495,6 +1528,17 @@ color:#fff;
     <div class="swap-player-list" id="swapPlayerList"></div>
     <div class="dialog-actions">
       <button class="cancel" id="swapCancel" type="button">Abbrechen</button>
+    </div>
+  </div>
+</div>
+
+<div class="overlay" id="subPlanPlayerOverlay">
+  <div class="dialog">
+    <h3 id="subPlanPlayerTitle">Spieler auswählen</h3>
+    <div class="dialog-sub" id="subPlanPlayerSub">Spieler für diese Position auswählen</div>
+    <div class="swap-player-list" id="subPlanPlayerList"></div>
+    <div class="dialog-actions">
+      <button class="cancel" id="subPlanPlayerCancel" type="button">Abbrechen</button>
     </div>
   </div>
 </div>
@@ -3262,12 +3306,14 @@ function pickRandomTraining(list, unit){
   const trainingStrengthGroupsMode = document.getElementById("trainingStrengthGroupsMode");
   const trainingNotesMode = document.getElementById("trainingNotesMode");
   const substitutionMode = document.getElementById("substitutionMode");
+  const substitutionPlanMode = document.getElementById("substitutionPlanMode");
   const ligaMode = document.getElementById("ligaMode");
   const startMatchdayBtn = document.getElementById("startMatchdayBtn");
   const matchdayLineupBtn = document.getElementById("matchdayLineupBtn");
   const matchdayChecklistBtn = document.getElementById("matchdayChecklistBtn");
   const matchdaySubstitutionBtn = document.getElementById("matchdaySubstitutionBtn");
   const matchdayWarmupBtn = document.getElementById("matchdayWarmupBtn");
+  const matchdaySubPlanBtn = document.getElementById("matchdaySubPlanBtn");
   const startTrainingBtn = document.getElementById("startTrainingBtn");
   const trainingUnitsBtn = document.getElementById("trainingUnitsBtn");
   const trainingWarmupBtn = document.getElementById("trainingWarmupBtn");
@@ -3435,6 +3481,7 @@ function showMode(mode){
     trainingStrengthGroupsMode.style.display = mode === "trainingStrengthGroups" ? "block" : "none";
     trainingNotesMode.style.display = mode === "trainingNotes" ? "block" : "none";
     substitutionMode.style.display = mode === "substitution" ? "block" : "none";
+    substitutionPlanMode.style.display = mode === "substitutionPlan" ? "block" : "none";
     ligaMode.style.display = mode === "liga" ? "block" : "none";
     if(mode === "matchHistory") renderMatchHistory();
     if(mode === "checklist") renderChecklist();
@@ -3442,6 +3489,7 @@ function showMode(mode){
     if(mode === "trainingStrengthGroups") renderStrengthGroupPlayerSelection();
     if(mode === "trainingNotes") renderTrainingNotes();
     if(mode === "substitution") renderSubstitutionAssistant();
+    if(mode === "substitutionPlan") renderSubstitutionPlan();
     if(mode === "liga") refreshLiga();
     window.scrollTo({top:0, behavior:"smooth"});
   }
@@ -3461,6 +3509,7 @@ function showMode(mode){
     trainingStrengthGroupsMode.style.display = "none";
     trainingNotesMode.style.display = "none";
     substitutionMode.style.display = "none";
+    substitutionPlanMode.style.display = "none";
     ligaMode.style.display = "none";
     window.scrollTo({top:0, behavior:"smooth"});
   }
@@ -3472,6 +3521,7 @@ function showMode(mode){
   matchdayLineupBtn.addEventListener("click", () => showMode("lineup"));
   matchdayChecklistBtn.addEventListener("click", () => showMode("checklist"));
   matchdaySubstitutionBtn.addEventListener("click", () => showMode("substitution"));
+  matchdaySubPlanBtn?.addEventListener("click", () => showMode("substitutionPlan"));
   matchdayWarmupBtn.addEventListener("click", () => {
     window.warmupReturnMode = "matchdayHub";
     updateWarmupBackButton();
@@ -3679,6 +3729,280 @@ const TIMER_WHISTLE_AUDIO = "data:audio/mpeg;base64,SUQzBAAAAAAAI1RTU0UAAAAPAAAD
     if(!text){if(st)st.textContent="Bitte zuerst eine Notiz eingeben.";return;}
     const arr=loadTrainingNotes();arr.unshift({date,text,title:readTrainingTemplate()?.title||"Training"});try{localStorage.setItem(TRAINING_NOTES_KEY,JSON.stringify(arr.slice(0,50)));}catch(e){}
     const input=document.getElementById("trainingNoteText");if(input)input.value="";if(st)st.textContent="Notiz gespeichert.";renderTrainingNotes();
+  });
+
+  /* ===================== Wechselplanung ===================== */
+  const SUBPLAN_STORAGE_KEY = "u11coach_substitution_plan_v1";
+  let subPlanPlayerContext = null;
+
+  function cloneAssignment(assign){
+    return Object.assign({}, assign || {});
+  }
+
+  function loadSubstitutionPlan(){
+    try{
+      const raw = localStorage.getItem(SUBPLAN_STORAGE_KEY);
+      const parsed = JSON.parse(raw || "null");
+      if(parsed && Array.isArray(parsed.quarters) && parsed.quarters.length === 4){
+        return {
+          formation: parsed.formation || "2-2-2",
+          quarters: parsed.quarters.map(cloneAssignment)
+        };
+      }
+    }catch(e){}
+    return null;
+  }
+
+  function saveSubstitutionPlan(){
+    try{ localStorage.setItem(SUBPLAN_STORAGE_KEY, JSON.stringify(window.u11SubstitutionPlan)); }catch(e){}
+  }
+
+  function getSubPlanAvailablePlayers(){
+    const state = window.u11CurrentLineup;
+    if(state && Array.isArray(state.available) && state.available.length) return state.available.slice();
+    return Object.keys(PLAYERS).filter(p => !GROUP_ONLY_PLAYERS.has(p) && attendance[p]);
+  }
+
+  function initializeSubstitutionPlan(forceFromLineup=false){
+    const current = window.u11CurrentLineup;
+    const existing = loadSubstitutionPlan();
+    if(existing && !forceFromLineup){
+      window.u11SubstitutionPlan = existing;
+      return;
+    }
+
+    const formation = current?.formation || formationSelect.value || "2-2-2";
+    const q1 = current?.assignment ? cloneAssignment(current.assignment) : {};
+    window.u11SubstitutionPlan = {
+      formation,
+      quarters:[cloneAssignment(q1), cloneAssignment(q1), cloneAssignment(q1), cloneAssignment(q1)]
+    };
+    saveSubstitutionPlan();
+  }
+
+  function subPlanDrawPitch(svg, assign, formation, quarterIndex){
+    if(!svg) return;
+    svg.innerHTML = "";
+    const W = 260, H = 380, margin = 12;
+    svg.setAttribute("viewBox", "0 0 260 380");
+
+    svg.appendChild(el("rect", {x:0,y:0,width:W,height:H,fill:"#1e4d2b"}));
+    for(let i=0;i<H;i+=20){
+      if((i/20)%2===1) svg.appendChild(el("rect",{x:0,y:i,width:W,height:20,fill:"#174023"}));
+    }
+    svg.appendChild(el("rect", {x:margin,y:margin,width:W-2*margin,height:H-2*margin,fill:"none",stroke:"rgba(255,255,255,0.85)","stroke-width":2}));
+    svg.appendChild(el("line", {x1:margin,y1:H/2,x2:W-margin,y2:H/2,stroke:"rgba(255,255,255,0.85)","stroke-width":2}));
+    svg.appendChild(el("circle", {cx:W/2,cy:H/2,r:38,fill:"none",stroke:"rgba(255,255,255,0.85)","stroke-width":2}));
+    svg.appendChild(el("rect", {x:W/2-55,y:margin,width:110,height:35,fill:"none",stroke:"rgba(255,255,255,0.85)","stroke-width":2}));
+    svg.appendChild(el("rect", {x:W/2-55,y:H-margin-35,width:110,height:35,fill:"none",stroke:"rgba(255,255,255,0.85)","stroke-width":2}));
+
+    const coords = FORMATION_COORDS[formation] || FORMATION_COORDS["2-2-2"];
+    const r = 26;
+
+    for(const slot of FORMATIONS[formation] || FORMATIONS["2-2-2"]){
+      const [fx, fy] = coords[slot];
+      const x = margin + fx*(W-2*margin), y = margin + fy*(H-2*margin);
+      const player = assign ? assign[slot] : null;
+      const g = el("g", {});
+      g.setAttribute("class", "subplan-pitch-player");
+      g.setAttribute("tabindex", "0");
+      g.setAttribute("role", "button");
+      g.setAttribute("aria-label", player ? displayName(player) + " bearbeiten" : (LABEL[slot] || slot) + " besetzen");
+      g.addEventListener("click", () => openSubPlanPlayerPicker(quarterIndex, slot));
+      g.addEventListener("keydown", (event) => {
+        if(event.key === "Enter" || event.key === " "){
+          event.preventDefault();
+          openSubPlanPlayerPicker(quarterIndex, slot);
+        }
+      });
+
+      if(player){
+        g.appendChild(el("circle",{cx:x,cy:y,r:r,fill:"#c8102e",stroke:"#ffffff","stroke-width":2.5}));
+        const t1 = el("text",{x:x,y:y-3,"text-anchor":"middle","font-size":"10","font-weight":"800",fill:"#ffffff","font-family":"Inter,sans-serif"});
+        t1.textContent = displayName(player);
+        g.appendChild(t1);
+      }else{
+        g.appendChild(el("circle",{cx:x,cy:y,r:r,fill:"rgba(18,18,18,0.75)",stroke:"#ffffff","stroke-width":1.5,"stroke-dasharray":"3,2"}));
+        const t = el("text",{x:x,y:y-2,"text-anchor":"middle","font-size":"8","font-weight":"700",fill:"#ffffff","font-family":"Inter,sans-serif"});
+        t.textContent = LABEL[slot] || slot;
+        g.appendChild(t);
+        const t2 = el("text",{x:x,y:y+9,"text-anchor":"middle","font-size":"7","font-weight":"700",fill:"#ffffff","font-family":"Inter,sans-serif"});
+        t2.textContent = "antippen";
+        g.appendChild(t2);
+      }
+      svg.appendChild(g);
+    }
+  }
+
+  function renderSubstitutionPlan(){
+    const grid = document.getElementById("subPlanGrid");
+    const status = document.getElementById("subPlanStatus");
+    if(!grid || !status) return;
+
+    if(!window.u11SubstitutionPlan) initializeSubstitutionPlan(false);
+    const plan = window.u11SubstitutionPlan;
+    const available = getSubPlanAvailablePlayers();
+    const formation = plan.formation || "2-2-2";
+
+    status.textContent = available.length
+      ? `Formation ${formation}. Spieler anklicken, um Positionen zu besetzen, zu ersetzen oder untereinander zu tauschen.`
+      : "Bitte zuerst auf der Aufstellungsseite anwesende Spieler auswählen und eine Aufstellung berechnen.";
+
+    grid.innerHTML = "";
+    plan.quarters.forEach((assign, q) => {
+      const card = document.createElement("div");
+      card.className = "subplan-card";
+
+      const h = document.createElement("h3");
+      h.textContent = `${q+1}. Viertel · 15 Minuten`;
+      card.appendChild(h);
+
+      const wrap = document.createElement("div");
+      wrap.className = "subplan-pitch-wrap";
+      const svg = document.createElementNS(SVGNS, "svg");
+      svg.classList.add("pitch", "subplan-pitch");
+      wrap.appendChild(svg);
+      card.appendChild(wrap);
+
+      const help = document.createElement("div");
+      help.className = "subplan-help";
+      help.textContent = "Spielfeld anklicken, um einen Spieler einzutragen oder zu ändern.";
+      card.appendChild(help);
+
+      const bench = document.createElement("div");
+      bench.className = "subplan-bench";
+      const playing = new Set(Object.values(assign || {}).filter(Boolean));
+      const onBench = available
+        .filter(p => !playing.has(p))
+        .sort((a,b)=>displayName(a).localeCompare(displayName(b),"de"));
+      bench.innerHTML = `<strong>Bank:</strong> ${onBench.length ? onBench.map(p=>displayName(p)).join(", ") : "keine"}`;
+      card.appendChild(bench);
+
+      grid.appendChild(card);
+      subPlanDrawPitch(svg, assign, formation, q);
+    });
+  }
+
+  function openSubPlanPlayerPicker(quarterIndex, slot){
+    const plan = window.u11SubstitutionPlan;
+    if(!plan) return;
+    const assign = plan.quarters[quarterIndex] || {};
+    const currentPlayer = assign[slot] || null;
+    const usedPlayers = new Set(Object.values(assign).filter(Boolean));
+    const available = getSubPlanAvailablePlayers();
+
+    subPlanPlayerContext = {quarterIndex, slot, currentPlayer};
+
+    const title = document.getElementById("subPlanPlayerTitle");
+    const sub = document.getElementById("subPlanPlayerSub");
+    const list = document.getElementById("subPlanPlayerList");
+    const overlay = document.getElementById("subPlanPlayerOverlay");
+    if(!title || !sub || !list || !overlay) return;
+
+    title.textContent = currentPlayer ? `${displayName(currentPlayer)} bearbeiten` : `${LABEL[slot] || slot} besetzen`;
+    sub.textContent = currentPlayer
+      ? "Einen anderen Feldspieler wählen = Plätze tauschen. Einen freien Spieler wählen = Spieler ersetzen."
+      : "Spieler für diese Position auswählen.";
+    list.innerHTML = "";
+
+    if(currentPlayer){
+      const clearBtn = document.createElement("button");
+      clearBtn.type = "button";
+      clearBtn.className = "swap-player-btn";
+      clearBtn.textContent = "Position leeren";
+      clearBtn.addEventListener("click", () => {
+        delete plan.quarters[quarterIndex][slot];
+        syncSubstitutionPlanForward(quarterIndex);
+        saveSubstitutionPlan();
+        overlay.classList.remove("open");
+        subPlanPlayerContext = null;
+        renderSubstitutionPlan();
+      });
+      list.appendChild(clearBtn);
+    }
+
+    const candidates = available
+      .filter(p => p !== currentPlayer)
+      .sort((a,b)=>{
+        const aUsed = usedPlayers.has(a), bUsed = usedPlayers.has(b);
+        if(aUsed !== bUsed) return aUsed ? -1 : 1;
+        return displayName(a).localeCompare(displayName(b),"de");
+      });
+
+    if(!candidates.length){
+      const empty = document.createElement("div");
+      empty.className = "material-empty";
+      empty.textContent = "Keine weiteren Spieler verfügbar.";
+      list.appendChild(empty);
+    } else {
+      candidates.forEach(player => {
+        const btn = document.createElement("button");
+        btn.type = "button";
+        btn.className = "swap-player-btn";
+        btn.textContent = usedPlayers.has(player)
+          ? `${displayName(player)} → Platz tauschen`
+          : `${displayName(player)} → eintragen`;
+        btn.addEventListener("click", () => applySubPlanPlayer(player));
+        list.appendChild(btn);
+      });
+    }
+
+    overlay.classList.add("open");
+  }
+
+  function syncSubstitutionPlanForward(fromQuarterIndex){
+    const plan = window.u11SubstitutionPlan;
+    if(!plan || !Array.isArray(plan.quarters)) return;
+    const source = cloneAssignment(plan.quarters[fromQuarterIndex]);
+    for(let q = fromQuarterIndex + 1; q < plan.quarters.length; q++){
+      plan.quarters[q] = cloneAssignment(source);
+    }
+  }
+
+  function applySubPlanPlayer(playerIn){
+    const ctx = subPlanPlayerContext;
+    const plan = window.u11SubstitutionPlan;
+    const overlay = document.getElementById("subPlanPlayerOverlay");
+    if(!ctx || !plan) return;
+
+    const assignment = Object.assign({}, plan.quarters[ctx.quarterIndex] || {});
+    const playerOut = assignment[ctx.slot] || null;
+    const targetEntry = Object.entries(assignment).find(([,p]) => p === playerIn);
+
+    if(targetEntry){
+      const targetSlot = targetEntry[0];
+      assignment[ctx.slot] = playerIn;
+      if(playerOut) assignment[targetSlot] = playerOut;
+      else delete assignment[targetSlot];
+    } else {
+      assignment[ctx.slot] = playerIn;
+    }
+
+    plan.quarters[ctx.quarterIndex] = assignment;
+    syncSubstitutionPlanForward(ctx.quarterIndex);
+    saveSubstitutionPlan();
+    if(overlay) overlay.classList.remove("open");
+    subPlanPlayerContext = null;
+    renderSubstitutionPlan();
+  }
+
+  document.getElementById("subPlanPlayerCancel")?.addEventListener("click", () => {
+    document.getElementById("subPlanPlayerOverlay")?.classList.remove("open");
+    subPlanPlayerContext = null;
+  });
+  document.getElementById("subPlanPlayerOverlay")?.addEventListener("click", (event) => {
+    if(event.target.id === "subPlanPlayerOverlay"){
+      event.currentTarget.classList.remove("open");
+      subPlanPlayerContext = null;
+    }
+  });
+  document.getElementById("subPlanImportQ1Btn")?.addEventListener("click", () => {
+    initializeSubstitutionPlan(true);
+    renderSubstitutionPlan();
+  });
+  document.getElementById("subPlanResetBtn")?.addEventListener("click", () => {
+    initializeSubstitutionPlan(true);
+    renderSubstitutionPlan();
   });
 
   /* ===================== Wechsel-Assistent ===================== */
@@ -4574,6 +4898,6 @@ if ("serviceWorker" in navigator) {
 }
 </script>
 
-<div class="install-hint">SpVgg Erdweg U11 (<a href="./U11-Coach-Versionshistory.md" target="_blank" rel="noopener noreferrer" class="footer-version-link" aria-label="Versionshistory">V1.190</a> by Mike)</div>
+<div class="install-hint">SpVgg Erdweg U11 (<a href="./U11-Coach-Versionshistory.md" target="_blank" rel="noopener noreferrer" class="footer-version-link" aria-label="Versionshistory">V1.192</a> by Mike)</div>
 </body>
 </html>

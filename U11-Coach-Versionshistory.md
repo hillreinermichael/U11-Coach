@@ -1,3 +1,22 @@
+## V1.192
+
+- Wechselplanung erweitert: Änderungen im 1. Viertel werden automatisch auf das 2., 3. und 4. Viertel übernommen.
+- Änderungen im 2. Viertel werden automatisch auf das 3. und 4. Viertel übernommen.
+- Änderungen im 3. Viertel werden automatisch auf das 4. Viertel übernommen.
+- Beim erneuten Übernehmen der Aufstellung für das 1. Viertel werden alle vier Viertel zunächst mit dieser Aufstellung vorbelegt.
+- Auch das Leeren einer Position wird auf die nachfolgenden Viertel übernommen.
+- Service Worker und Versionsanzeige auf V1.192 aktualisiert.
+
+## V1.191
+
+- Neue Kachel **„Wechselplanung“** unter **Spieltag** ergänzt.
+- Neue Seite mit **4 eigenen Spielfeldern** für das 1. bis 4. Viertel ergänzt.
+- Das **1. Viertel übernimmt beim ersten Öffnen automatisch die aktuelle Aufstellung** aus der Aufstellungsseite.
+- Alle vier Spielfelder können per Antippen der Positionen manuell mit Spielern besetzt, geändert und zwischen Feldspielern getauscht werden.
+- Die Wechselplanung wird lokal auf dem Gerät gespeichert.
+- Das 1. Viertel kann jederzeit erneut aus der aktuellen Aufstellung übernommen werden; die komplette Planung kann zurückgesetzt werden.
+- Service Worker und Versionshistorie auf **V1.191** aktualisiert.
+
 ## V1.190
 
 - Die Übung **3.2 – Torschuss nach Dribbling** aus Station 3 entfernt.
