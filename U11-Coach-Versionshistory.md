@@ -1,3 +1,9 @@
+## V1.197
+
+- Reihenfolge der Kacheln auf der **Spieltag**-Seite angepasst: **Aufstellung → Wechselplanung → Spieltags-Checkliste → Aufwärmen**.
+- Reihenfolge der Kacheln auf der **Training**-Seite angepasst: **Trainingseinheiten → Trainingsgruppen → Spielgruppen → Aufwärmen**.
+- Sichtbare Versionsanzeige und Service Worker auf **V1.197** aktualisiert.
+
 ## V1.196
 
 - Die Kachel **„Trainingsnotizen“** aus dem Trainingsbereich entfernt.
