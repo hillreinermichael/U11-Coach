@@ -798,7 +798,6 @@
     color:#666;
   }
 
-
 .footer-version-link,.footer-version-link:visited,.footer-version-link:hover,.footer-version-link:focus{color:inherit !important;text-decoration:none !important;cursor:pointer;}
 
   #startMenu{
@@ -912,14 +911,6 @@ color:#fff;
 }
   .training-template-summary{margin:12px 0;padding:10px;border:1px solid var(--line);border-radius:10px;background:#fafafa;}
   .training-template-summary strong{display:block;margin-bottom:4px;}
-  .substitution-suggestions{margin-top:12px;display:grid;gap:8px;}
-  .substitution-suggestion{border:1px solid var(--line);border-radius:10px;padding:10px;background:#fff;display:flex;align-items:center;justify-content:space-between;gap:10px;}
-  .substitution-suggestion-main strong{display:block;font-size:13px;}
-  .substitution-suggestion-main span{display:block;font-size:10.5px;color:var(--ink-soft);margin-top:3px;line-height:1.35;}
-  .substitution-suggestion .timer-action{white-space:nowrap;}
-  .field-row input[type="text"], .field-row input[type="date"], .field-row textarea{width:100%;box-sizing:border-box;border:1px solid var(--line);border-radius:8px;padding:8px 10px;font:inherit;background:#fff;}
-  .field-row textarea{resize:vertical;line-height:1.4;}
-  @media(max-width:560px){.substitution-suggestion{align-items:flex-start;flex-direction:column;}.substitution-suggestion .timer-action{width:100%;}}
 </style>
 </head>
 <body>
@@ -997,10 +988,6 @@ color:#fff;
         <button type="button" class="start-choice" id="trainingGroupsBtn">
           <strong>Spielgruppen</strong>
           <span>Spieler auswählen und in Teams aufteilen</span>
-        </button>
-        <button type="button" class="start-choice" id="trainingNotesBtn">
-          <strong>Trainingsnotizen</strong>
-          <span>Notizen zum Training speichern</span>
         </button>
       </div>
     </div>
@@ -1085,10 +1072,6 @@ color:#fff;
         <button type="button" class="start-choice" id="matchdayChecklistBtn">
           <strong>Spieltags-Checkliste</strong>
           <span>Alles für den Spieltag im Blick</span>
-        </button>
-        <button type="button" class="start-choice" id="matchdaySubstitutionBtn">
-          <strong>Wechsel-Assistent</strong>
-          <span>Passende Einwechslungen für die aktuelle Aufstellung</span>
         </button>
         <button type="button" class="start-choice" id="matchdayWarmupBtn">
           <strong>Aufwärmen</strong>
@@ -1258,47 +1241,7 @@ color:#fff;
       </div>
     </div>
   </div>
-  <div id="trainingNotesMode" class="mode-section" style="display:none;">
-    <button type="button" class="mode-back" data-back="trainingHub">← Training</button>
-    <div class="card">
-      <h2>Trainingsnotizen</h2>
-      <div class="assistant-note">Notizen werden lokal auf diesem Gerät gespeichert.</div>
-      <div class="field-row">
-        <label class="small" for="trainingNoteDate">Datum</label>
-        <input id="trainingNoteDate" type="date">
-      </div>
-      <div class="field-row">
-        <label class="small" for="trainingNoteText">Notiz</label>
-        <textarea id="trainingNoteText" rows="7" maxlength="1500" placeholder="Was lief gut? Was war schwierig? Was soll beim nächsten Training beachtet werden?"></textarea>
-      </div>
-      <div class="team-calc-actions">
-        <button type="button" class="primary" id="saveTrainingNoteBtn">Notiz speichern</button>
-      </div>
-      <div id="trainingNotesStatus" class="material-empty"></div>
-      <div id="trainingNotesList" class="history-list"></div>
-    </div>
-  </div>
-
-  <div id="substitutionMode" class="mode-section" style="display:none;">
-    <button type="button" class="mode-back" data-back="matchdayHub">← Spieltag</button>
-    <div class="card">
-      <h2>Wechsel-Assistent</h2>
-      <div class="assistant-note">Der Assistent nutzt die zuletzt berechnete Aufstellung und schlägt passende Spieler von der Bank vor.</div>
-      <div id="substitutionEmpty" class="material-empty"></div>
-      <div id="substitutionControls" style="display:none;">
-        <div class="field-row">
-          <label class="small" for="subOutSelect">Spieler raus</label>
-          <select id="subOutSelect"></select>
-        </div>
-        <div class="team-calc-actions">
-          <button type="button" class="primary" id="findSubstitutionsBtn">Wechselvorschläge berechnen</button>
-        </div>
-        <div id="substitutionSuggestions" class="substitution-suggestions"></div>
-      </div>
-    </div>
-  </div>
-
-  <div id="lineupMode" class="mode-section" style="display:none;">
+<div id="lineupMode" class="mode-section" style="display:none;">
     <button type="button" class="mode-back" data-back="matchdayHub">← Spieltag</button>
   <div class="card">
     <h2>Anwesende Spieler & Positionen</h2>
@@ -1898,10 +1841,10 @@ async function loadPlayersFromExcel(){
 
 const PREFERRED_SIDE = {
   "Bastian":"links",
-  "Lukas Bühling":"rechts",
+  "Lukas Bühling":"links",
   "Frederik":"egal",
   "Lukas Kreitmair":"egal",
-  "Emin":"links",
+  "Emin":"rechts",
   "Maximilian Rohbeck":"egal",
   "Maximilian Mätzig":"rechts",
   "Daniel":"egal",
@@ -1921,15 +1864,20 @@ const PREFERRED_SIDE = {
 const GROUP_ONLY_PLAYERS = new Set();
 
 function getPreferredSide(player){ return PREFERRED_SIDE[player] || "egal"; }
-function sideOfSlot(slot){
+function sideOfSlot(slot, formation){
+  if(formation === "2-3-1"){
+    if(["AB1","MF1","ST1"].includes(slot)) return "links";
+    if(["AB2","MF3","ST2"].includes(slot)) return "rechts";
+    return "egal";
+  }
   if(["AB1","AB3","MF1","ST1"].includes(slot)) return "links";
   if(["AB2","AB4","MF2","ST2"].includes(slot)) return "rechts";
   return "egal";
 }
-function sidePreferenceBonus(assign){
+function sidePreferenceBonus(assign, formation){
   let b=0;
   for(const slot in assign){
-    const pref=getPreferredSide(assign[slot]), side=sideOfSlot(slot);
+    const pref=getPreferredSide(assign[slot]), side=sideOfSlot(slot, formation);
     if(pref==="egal" || side==="egal") continue;
     b += pref===side ? 1.5 : -1.5;
   }
@@ -2048,14 +1996,14 @@ function scoreLineup(assign, formation){
 
   // Taktische Präferenzen
   if(formation === "2-2-2"){
-    if(assign.MF1 === "Emin") s += 12;
-    if(assign.MF2 === "Lukas Bühling") s += 12;
+    if(assign.MF2 === "Emin") s += 12;
+    if(assign.MF1 === "Lukas Bühling") s += 12;
     if(assign.AB1 === "Bastian" || assign.AB2 === "Bastian") s += 25;
     if(assign.AB1 === "Maximilian Mätzig" || assign.AB2 === "Maximilian Mätzig") s += 18;
   }
   if(formation === "2-3-1"){
-    if(assign.MF1 === "Emin") s += 12;
-    if(assign.MF3 === "Lukas Bühling") s += 12;
+    if(assign.MF3 === "Emin") s += 12;
+    if(assign.MF1 === "Lukas Bühling") s += 12;
     // Spielmacher-Wert entscheidet, wer im 2-3-1 die zentrale Mittelfeldposition (MF2 = "Zehner") spielt.
     // Bewusst stärker gewichtet als die normale Positionsnote, damit ein guter Spielmacher
     // Vorrang vor anderen Kriterien hat.
@@ -2088,7 +2036,7 @@ function scoreLineup(assign, formation){
     if(p === "Maxim" && ptype(sl) !== "ST") s -= 50;
     if(p === "Emin" && ptype(sl) === "MF") s += 4;
   }
-  s += sidePreferenceBonus(assign);
+  s += sidePreferenceBonus(assign, formation);
   return s;
 }
 
@@ -3303,14 +3251,11 @@ function pickRandomTraining(list, unit){
   const checklistMode = document.getElementById("checklistMode");
   const teamsMode = document.getElementById("teamsMode");
   const trainingStrengthGroupsMode = document.getElementById("trainingStrengthGroupsMode");
-  const trainingNotesMode = document.getElementById("trainingNotesMode");
-  const substitutionMode = document.getElementById("substitutionMode");
   const substitutionPlanMode = document.getElementById("substitutionPlanMode");
   const ligaMode = document.getElementById("ligaMode");
   const startMatchdayBtn = document.getElementById("startMatchdayBtn");
   const matchdayLineupBtn = document.getElementById("matchdayLineupBtn");
   const matchdayChecklistBtn = document.getElementById("matchdayChecklistBtn");
-  const matchdaySubstitutionBtn = document.getElementById("matchdaySubstitutionBtn");
   const matchdayWarmupBtn = document.getElementById("matchdayWarmupBtn");
   const matchdaySubPlanBtn = document.getElementById("matchdaySubPlanBtn");
   const startTrainingBtn = document.getElementById("startTrainingBtn");
@@ -3319,7 +3264,6 @@ function pickRandomTraining(list, unit){
   const trainingWarmupBackBtn = document.getElementById("trainingWarmupBackBtn");
   const trainingGroupsBtn = document.getElementById("trainingGroupsBtn");
   const trainingStrengthGroupsBtn = document.getElementById("trainingStrengthGroupsBtn");
-  const trainingNotesBtn = document.getElementById("trainingNotesBtn");
   const startLigaBtn = document.getElementById("startLigaBtn");
   const startTimerBtn = document.getElementById("startTimerBtn");
 
@@ -3478,16 +3422,12 @@ function showMode(mode){
     checklistMode.style.display = mode === "checklist" ? "block" : "none";
     teamsMode.style.display = mode === "teams" ? "block" : "none";
     trainingStrengthGroupsMode.style.display = mode === "trainingStrengthGroups" ? "block" : "none";
-    trainingNotesMode.style.display = mode === "trainingNotes" ? "block" : "none";
-    substitutionMode.style.display = mode === "substitution" ? "block" : "none";
     substitutionPlanMode.style.display = mode === "substitutionPlan" ? "block" : "none";
     ligaMode.style.display = mode === "liga" ? "block" : "none";
     if(mode === "matchHistory") renderMatchHistory();
     if(mode === "checklist") renderChecklist();
     if(mode === "teams") renderTeamPlayerSelection();
     if(mode === "trainingStrengthGroups") renderStrengthGroupPlayerSelection();
-    if(mode === "trainingNotes") renderTrainingNotes();
-    if(mode === "substitution") renderSubstitutionAssistant();
     if(mode === "substitutionPlan") renderSubstitutionPlan();
     if(mode === "liga") refreshLiga();
     window.scrollTo({top:0, behavior:"smooth"});
@@ -3506,8 +3446,6 @@ function showMode(mode){
     checklistMode.style.display = "none";
     teamsMode.style.display = "none";
     trainingStrengthGroupsMode.style.display = "none";
-    trainingNotesMode.style.display = "none";
-    substitutionMode.style.display = "none";
     substitutionPlanMode.style.display = "none";
     ligaMode.style.display = "none";
     window.scrollTo({top:0, behavior:"smooth"});
@@ -3519,7 +3457,6 @@ function showMode(mode){
   startMatchdayBtn.addEventListener("click", () => showMode("matchdayHub"));
   matchdayLineupBtn.addEventListener("click", () => showMode("lineup"));
   matchdayChecklistBtn.addEventListener("click", () => showMode("checklist"));
-  matchdaySubstitutionBtn.addEventListener("click", () => showMode("substitution"));
   matchdaySubPlanBtn?.addEventListener("click", () => showMode("substitutionPlan"));
   matchdayWarmupBtn.addEventListener("click", () => {
     window.warmupReturnMode = "matchdayHub";
@@ -3535,7 +3472,6 @@ function showMode(mode){
   });
   trainingGroupsBtn.addEventListener("click", () => showMode("teams"));
   trainingStrengthGroupsBtn.addEventListener("click", () => showMode("trainingStrengthGroups"));
-  trainingNotesBtn.addEventListener("click", () => showMode("trainingNotes"));
   startLigaBtn.addEventListener("click", () => showMode("liga"));
   startRosterBtn.addEventListener("click", () => showMode("playerRoster"));
   startTimerBtn.addEventListener("click", () => showMode("timer"));
@@ -3701,34 +3637,6 @@ const TIMER_WHISTLE_AUDIO = "data:audio/mpeg;base64,SUQzBAAAAAAAI1RTU0UAAAAPAAAD
     trainingChildCount.addEventListener("input", () => calculateTrainingGroups(trainingChildCount.value));
     calculateTrainingGroups(trainingChildCount.value);
   }
-
-  /* ===================== Trainingsnotizen ===================== */
-  const TRAINING_NOTES_KEY = "u11coach_training_notes_v1";
-  function loadTrainingNotes(){try{const v=JSON.parse(localStorage.getItem(TRAINING_NOTES_KEY)||"[]");return Array.isArray(v)?v:[];}catch(e){return[];}}
-  function escapeNoteText(v){return String(v||"").replace(/[&<>]/g,m=>({"&":"&amp;","<":"&lt;",">":"&gt;"}[m]));}
-  function renderTrainingNotes(){
-    const date=document.getElementById("trainingNoteDate");
-    const list=document.getElementById("trainingNotesList");
-    if(date && !date.value) date.value=localDateForInput();
-    if(!list) return;
-    const notes=loadTrainingNotes();
-    list.innerHTML = notes.length
-      ? notes.map((n,i)=>`<div class="history-entry"><strong>${n.date}</strong><div class="history-meta">${escapeNoteText(n.title||"Training")}</div><div style="margin-top:6px;white-space:pre-wrap;line-height:1.45;">${escapeNoteText(n.text)}</div><button type="button" class="timer-action secondary" style="margin-top:8px;" data-note-index="${i}">Löschen</button></div>`).join("")
-      : '<div class="material-empty">Noch keine Trainingsnotizen gespeichert.</div>';
-    list.querySelectorAll("[data-note-index]").forEach(btn=>btn.addEventListener("click",()=>{
-      const idx=Number(btn.dataset.noteIndex);
-      const arr=loadTrainingNotes();
-      arr.splice(idx,1);
-      try{localStorage.setItem(TRAINING_NOTES_KEY,JSON.stringify(arr));}catch(e){}
-      renderTrainingNotes();
-    }));
-  }
-  document.getElementById("saveTrainingNoteBtn")?.addEventListener("click",()=>{
-    const date=document.getElementById("trainingNoteDate")?.value||localDateForInput(), text=(document.getElementById("trainingNoteText")?.value||"").trim(), st=document.getElementById("trainingNotesStatus");
-    if(!text){if(st)st.textContent="Bitte zuerst eine Notiz eingeben.";return;}
-    const arr=loadTrainingNotes();arr.unshift({date,text,title:readTrainingTemplate()?.title||"Training"});try{localStorage.setItem(TRAINING_NOTES_KEY,JSON.stringify(arr.slice(0,50)));}catch(e){}
-    const input=document.getElementById("trainingNoteText");if(input)input.value="";if(st)st.textContent="Notiz gespeichert.";renderTrainingNotes();
-  });
 
   /* ===================== Wechselplanung ===================== */
   const SUBPLAN_STORAGE_KEY = "u11coach_substitution_plan_v1";
@@ -3999,28 +3907,6 @@ const TIMER_WHISTLE_AUDIO = "data:audio/mpeg;base64,SUQzBAAAAAAAI1RTU0UAAAAPAAAD
     renderSubstitutionPlan();
   });
 
-  /* ===================== Wechsel-Assistent ===================== */
-  function playerScoreForPosition(player,pos){
-    const p=PLAYERS[player];if(!p)return 0;const r=p.ratings||{};const base=typeof r[pos]==="number"?r[pos]:0;
-    const positionalFit=Array.isArray(p.positions)&&p.positions.includes(pos)?2:-4;
-    return base*10+positionalFit+(p.stamina||0)*0.6+(p.body||0)*0.35;
-  }
-  function renderSubstitutionAssistant(){
-    const empty=document.getElementById("substitutionEmpty"), controls=document.getElementById("substitutionControls"), out=document.getElementById("subOutSelect"); if(!empty||!controls||!out)return;
-    const state=window.u11CurrentLineup; if(!state){controls.style.display="none";empty.textContent="Bitte zuerst auf der Aufstellungsseite eine Aufstellung berechnen.";return;}
-    controls.style.display="block";empty.textContent="Aktuelle Formation: "+state.formation;
-    const fieldPlayers=Object.entries(state.assignment).filter(([slot])=>ptype(slot)!=="TW");
-    out.innerHTML=fieldPlayers.map(([slot,p])=>`<option value="${p}" data-slot="${slot}">${displayName(p)}</option>`).join(""); renderSubstitutionSuggestions();
-  }
-  function renderSubstitutionSuggestions(){
-    const state=window.u11CurrentLineup,out=document.getElementById("subOutSelect"),box=document.getElementById("substitutionSuggestions");if(!state||!out||!box)return;
-    const selected=out.value, entry=Object.entries(state.assignment).find(([,p])=>p===selected);if(!entry){box.innerHTML="";return;}
-    const slot=entry[0],pos=ptype(slot),starters=new Set(Object.values(state.assignment));
-    const candidates=(state.available||[]).filter(p=>!starters.has(p)&&!GROUP_ONLY_PLAYERS.has(p)).map(p=>({player:p,score:playerScoreForPosition(p,pos)})).sort((a,b)=>b.score-a.score||displayName(a.player).localeCompare(displayName(b.player),"de")).slice(0,3);
-    if(!candidates.length){box.innerHTML='<div class="material-empty">Keine geeignete Einwechslung von der Bank gefunden.</div>';return;}
-    box.innerHTML=candidates.map(c=>`<div class="substitution-suggestion"><div class="substitution-suggestion-main"><strong>${displayName(c.player)}</strong><span>Passung ${c.score.toFixed(1)}</span></div><button type="button" class="timer-action secondary" data-sub-player="${String(c.player).replace(/"/g,"&quot;")}">Einwechseln</button></div>`).join("");
-    box.querySelectorAll("[data-sub-player]").forEach(btn=>btn.addEventListener("click",()=>applySubstitution(selected,btn.dataset.subPlayer)));
-  }
   const swapOverlay = document.getElementById("swapOverlay");
   const swapTitle = document.getElementById("swapTitle");
   const swapSub = document.getElementById("swapSub");
@@ -4124,17 +4010,9 @@ const TIMER_WHISTLE_AUDIO = "data:audio/mpeg;base64,SUQzBAAAAAAAI1RTU0UAAAAPAAAD
       ? '<div class="bench-list">'+benchPlayers.map((p,i)=>`<div class="bench-player"><div class="bench-number">${i+1}</div><div><div class="bench-name">${displayName(p)}</div></div></div>`).join('')+'</div>'
       : '<div class="bench-empty">Keine Spieler auf der Bank.</div>';
 
-    const outP=document.getElementById("subOutSelect");
-    if(outP){
-      const currentOptions=[...outP.options].map(o=>o.value);
-      if(!currentOptions.includes(outP.value)) outP.value="";
-    }
-    renderSubstitutionAssistant();
     resultsCard.style.display="block";
     resultsBody.innerHTML=message;
   }
-  document.getElementById("findSubstitutionsBtn")?.addEventListener("click",renderSubstitutionSuggestions);
-  document.getElementById("subOutSelect")?.addEventListener("change",renderSubstitutionSuggestions);
 
   /* ===================== Spieltags-Checkliste ===================== */
   const CHECKLIST_KEY = "u11coach_matchday_checklist_v1";
@@ -4892,6 +4770,6 @@ if ("serviceWorker" in navigator) {
 }
 </script>
 
-<div class="install-hint">SpVgg Erdweg U11 (<a href="./U11-Coach-Versionshistory.md" target="_blank" rel="noopener noreferrer" class="footer-version-link" aria-label="Versionshistory">V1.193</a> by Mike)</div>
+<div class="install-hint">SpVgg Erdweg U11 (<a href="./U11-Coach-Versionshistory.md" target="_blank" rel="noopener noreferrer" class="footer-version-link" aria-label="Versionshistory">V1.196</a> by Mike)</div>
 </body>
 </html>

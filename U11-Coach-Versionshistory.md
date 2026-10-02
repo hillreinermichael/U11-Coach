@@ -1,3 +1,23 @@
+## V1.196
+
+- Die Kachel **„Trainingsnotizen“** aus dem Trainingsbereich entfernt.
+- Die zugehörige Seite sowie die ausschließlich dafür verwendete Notiz-/LocalStorage-Logik entfernt.
+- Die übrigen Trainingsfunktionen bleiben unverändert.
+- Sichtbare Versionsanzeige und Service Worker auf **V1.196** aktualisiert.
+
+## V1.195
+
+- Die Kachel **„Wechsel-Assistent“** unter **Spieltag** entfernt.
+- Die zugehörige Seite und die ausschließlich dafür benötigte Assistenten-Logik entfernt.
+- Die manuelle Spieler-Auswahl bzw. der Platztausch im **Spielfeld** bleibt erhalten.
+- Sichtbare Versionsanzeige und Service Worker auf **V1.195** aktualisiert.
+
+## V1.194
+
+- Seitenpräferenzen der Spieler angepasst: **Emin rechts**, **Lukas Bühling links**.
+- Die automatische Aufstellungsbewertung berücksichtigt diese neue Seitenzuordnung auch in der Formation **2-3-1**.
+- Sichtbare Versionsanzeige und Service Worker auf V1.194 aktualisiert.
+
 ## V1.193
 
 - Auf der Seite **Wechselplanung** den Hinweistext unter jedem Spielfeld entfernt.
