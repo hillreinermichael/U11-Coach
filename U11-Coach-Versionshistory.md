@@ -1,3 +1,20 @@
+## V1.199
+
+- Fehler bei der Filterung des Spielerkaders korrigiert.
+- Das Excel-Blatt **„Spielerkader“** ist jetzt die strikte Quelle: Nur Spieler mit **„Ja“** werden auf der Seite „Spielerkader“ angezeigt.
+- Spieler mit **„Nein“** oder ohne Eintrag werden auf dieser Seite ausgeblendet.
+- Während des Excel-Ladevorgangs wird kein alter, fest hinterlegter Spielerkader mehr angezeigt.
+- Service Worker und Versionsanzeige auf **V1.199** aktualisiert.
+
+## V1.198
+
+- Neues Excel-Blatt **„Spielerkader“** als zentrale Steuerung für die Sichtbarkeit im Spielerkader ergänzt.
+- `Spielerkader = Ja` → Spieler wird in der Spielerkader-Seite angezeigt.
+- `Spielerkader = Nein` → Spieler wird auf der Spielerkader-Seite ausgeblendet.
+- Die Filterung gilt für Kaderspieler und Ersatzspieler; die übrigen Trainings-/Spielgruppen-Funktionen bleiben unverändert.
+- `Spielerwerte.xlsx` um das Blatt **„Spielerkader“** ergänzt.
+- Sichtbare Versionsanzeige und Service Worker auf **V1.198** aktualisiert.
+
 ## V1.197
 
 - Reihenfolge der Kacheln auf der **Spieltag**-Seite angepasst: **Aufstellung → Wechselplanung → Spieltags-Checkliste → Aufwärmen**.

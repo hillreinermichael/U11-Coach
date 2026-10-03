@@ -1615,6 +1615,24 @@ const DEFAULT_PLAYERS = {
 const PLAYER_VALUE_SOURCE_NOTE = "Spielerwerte aus der Excel-Datei werden intern für Bewertung, Aufstellung, Positionsstärke und Berechnungen verwendet und in der Spielerkader-Ansicht nicht angezeigt";
 const PLAYER_EXCEL_URL = "https://raw.githubusercontent.com/hillreinermichael/U11-Coach/main/Spielerwerte.xlsx";
 const PLAYER_EXCEL_FIELDS = ["Torwart","Abwehr","Mittelfeld","Sturm","Spielmacher","Ausdauer","Körper"];
+let PLAYER_SQUAD_STATUS = null;
+
+function normalizeSquadFlag(value){
+  const v = String(value ?? "").trim().toLowerCase();
+  return v === "ja" || v === "yes" || v === "true" || v === "1";
+}
+
+function playerIsInSquad(name){
+  const dataName = ROSTER_DATA_NAMES[name] || name;
+
+  // Solange die Excel-Kaderliste noch nicht geladen wurde, nichts anzeigen.
+  // Sobald das Blatt „Spielerkader“ geladen ist, gilt es als alleinige Quelle:
+  // Nur ein explizites „Ja“ macht einen Spieler sichtbar.
+  if(PLAYER_SQUAD_STATUS === null) return false;
+  if(Object.prototype.hasOwnProperty.call(PLAYER_SQUAD_STATUS, name)) return PLAYER_SQUAD_STATUS[name] === true;
+  if(Object.prototype.hasOwnProperty.call(PLAYER_SQUAD_STATUS, dataName)) return PLAYER_SQUAD_STATUS[dataName] === true;
+  return false;
+}
 
 async function loadPlayersFromExcel(){
   try{
@@ -1823,6 +1841,60 @@ async function loadPlayersFromExcel(){
       }
     }
 
+    // Sheet 4: Spielerkader
+    // Das Blatt steuert ausschließlich, welche Spieler auf der Seite „Spielerkader“
+    // sichtbar sind. „Ja“ = sichtbar, „Nein“ = ausblenden.
+    const squadSheetName = book.SheetNames.find(n =>
+      normalizeExcelHeader(n) === "spielerkader"
+    ) || book.SheetNames[3];
+
+    if(squadSheetName){
+      const squadSheet = book.Sheets[squadSheetName];
+      const matrix = XLSX.utils.sheet_to_json(squadSheet,{header:1,defval:null});
+      let headerIndex = -1;
+
+      for(let i=0;i<matrix.length;i++){
+        const row = matrix[i] || [];
+        const normalizedRow = row.map(normalizeExcelHeader);
+        if(normalizedRow.includes("spieler") && normalizedRow.includes("spielerkader")){
+          headerIndex = i;
+          break;
+        }
+      }
+
+      const status = {};
+      if(headerIndex >= 0){
+        const headers = matrix[headerIndex].map(normalizeExcelHeader);
+        const playerCol = headers.indexOf("spieler");
+        const squadCol = headers.indexOf("spielerkader");
+
+        for(let i=headerIndex+1;i<matrix.length;i++){
+          const row = matrix[i] || [];
+          const name = String(playerCol >= 0 ? (row[playerCol] ?? "") : "").trim();
+          if(!name) continue;
+          const inSquad = normalizeSquadFlag(squadCol >= 0 ? row[squadCol] : "");
+          status[name] = inSquad;
+
+          const dataName = ROSTER_DATA_NAMES[name];
+          if(dataName) status[dataName] = inSquad;
+
+          // Auch der umgekehrte Alias wird auf denselben Status gesetzt.
+          for(const [alias, mapped] of Object.entries(ROSTER_DATA_NAMES || {})){
+            if(mapped === name) status[alias] = inSquad;
+          }
+        }
+        PLAYER_SQUAD_STATUS = status;
+        window.u11SquadStatusFromExcel = true;
+      }else{
+        PLAYER_SQUAD_STATUS = {};
+        window.u11SquadStatusFromExcel = false;
+        console.warn("Keine Kopfzeile im Blatt 'Spielerkader' gefunden.");
+      }
+    }else{
+      PLAYER_SQUAD_STATUS = {};
+      window.u11SquadStatusFromExcel = false;
+    }
+
     window.u11PlayersFromExcel = Object.keys(updated).length;
     window.u11PriorityFromExcel = Boolean(prioritySheetName);
 
@@ -1833,8 +1905,11 @@ async function loadPlayersFromExcel(){
     return true;
   }catch(err){
     console.warn("Spielerwerte/Positionsprioritäten aus Excel konnten nicht geladen werden:",err);
+    PLAYER_SQUAD_STATUS = {};
+    window.u11SquadStatusFromExcel = false;
     window.u11PlayersFromExcel = 0;
     window.u11PriorityFromExcel = false;
+    if(typeof renderPlayerRoster === "function") renderPlayerRoster();
     return false;
   }
 }
@@ -3324,15 +3399,15 @@ function pickRandomTraining(list, unit){
     const list=document.getElementById("playerRosterList");
     const bench=document.getElementById("playerRosterBenchList");
 
-    const rosterPlayers = ROSTER_CORE_PLAYERS.filter(p => PLAYERS[p]);
-    const rosterBench = ROSTER_CORE_BENCH.filter(p => PLAYERS[ROSTER_DATA_NAMES[p] || p]);
+    const rosterPlayers = ROSTER_CORE_PLAYERS.filter(p => PLAYERS[p] && playerIsInSquad(p));
+    const rosterBench = ROSTER_CORE_BENCH.filter(p => PLAYERS[ROSTER_DATA_NAMES[p] || p] && playerIsInSquad(p));
     const usedDataNames = new Set([
       ...rosterPlayers,
       ...rosterBench.map(p => ROSTER_DATA_NAMES[p] || p)
     ]);
 
     const additionalPlayers = Object.keys(PLAYERS)
-      .filter(p => !usedDataNames.has(p))
+      .filter(p => !usedDataNames.has(p) && playerIsInSquad(p))
       .sort((a,b) => displayName(a).localeCompare(displayName(b), "de"));
 
     const benchPlayers = [...rosterBench, ...additionalPlayers];
@@ -4770,6 +4845,6 @@ if ("serviceWorker" in navigator) {
 }
 </script>
 
-<div class="install-hint">SpVgg Erdweg U11 (<a href="./U11-Coach-Versionshistory.md" target="_blank" rel="noopener noreferrer" class="footer-version-link" aria-label="Versionshistory">V1.197</a> by Mike)</div>
+<div class="install-hint">SpVgg Erdweg U11 (<a href="./U11-Coach-Versionshistory.md" target="_blank" rel="noopener noreferrer" class="footer-version-link" aria-label="Versionshistory">V1.199</a> by Mike)</div>
 </body>
 </html>
