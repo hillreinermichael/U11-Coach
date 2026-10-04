@@ -1,3 +1,9 @@
+## V1.200
+
+- Neues Punktspiel in die Spielhistorie aufgenommen: **04.10.2026, SpVgg Erdweg U11 – [SG] Amperland U11 3, 5:4**.
+- Das Spiel wird als **Heimspiel** und **Punktspiel** geführt.
+- Sichtbare Versionsanzeige und Service Worker auf **V1.200** aktualisiert.
+
 ## V1.199
 
 - Fehler bei der Filterung des Spielerkaders korrigiert.
