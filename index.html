@@ -1155,7 +1155,7 @@ color:#fff;
             <tbody id="ligaTableBody"></tbody>
           </table>
         </div>
-        <div class="liga-table-note">Tabellenstand nach BFV-Screenshot vom 27.09.2026.</div>
+        <div class="liga-table-note">Tabellenstand nach BFV-Screenshot vom 04.10.2026.</div>
       </div>
 
       <div class="liga-section">
@@ -4639,19 +4639,19 @@ const TIMER_WHISTLE_AUDIO = "data:audio/mpeg;base64,SUQzBAAAAAAAI1RTU0UAAAAPAAAD
   /* ===================== Liga ===================== */
   const BFV_ICAL_URL = "https://service.bfv.de/rest/icsexport/Spielplan?staffel=031I9A7C5O000007VS5489BUVVKNMR0J-G&id=00ES8GNH1O00000PVV0AG08LVUPGND5I";
   const BFV_TEAM_URL = "https://www.bfv.de/mannschaften/spvgg-erdweg-u11/011MIEAC5O000000VTVG0001VTR8C1K7";
-  // Aktueller Tabellenstand nach dem vom Trainer bereitgestellten BFV-Screenshot vom 27.09.2026.
+  // Aktueller Tabellenstand nach dem vom Trainer bereitgestellten BFV-Screenshot vom 04.10.2026.
   // Spalten: Platz, Mannschaft, Spiele, Siege, Unentschieden, Niederlagen, Tore, Differenz, Punkte
   const CURRENT_BFV_TABLE = [
-    [1,"SV Haimhausen U11",2,2,0,0,"22:8",14,6],
-    [2,"SV Sulzemoos U11",2,2,0,0,"12:4",8,6],
-    [3,"SpVgg Erdweg U11",2,2,0,0,"11:7",4,6],
-    [4,"SV Lohhof U11 3",2,1,0,1,"13:8",5,3],
-    [5,"[SG] Vierkirchen/Petershausen U11",2,1,0,1,"6:7",-1,3],
-    [6,"VfL Egenburg U11",2,1,0,1,"2:3",-1,3],
-    [7,"[SG] Niederroth/Arnbach U11",2,1,0,1,"16:18",-2,3],
-    [8,"[SG] Tandern/Hilgertshausen/Pipinsried U11",2,0,0,2,"2:6",-4,0],
-    [9,"SV Odelzhausen U11",2,0,0,2,"8:16",-8,0],
-    [10,"[SG] Amperland U11 3",2,0,0,2,"4:19",-15,0]
+    [1,"SV Haimhausen U11",3,3,0,0,"31:14",17,9],
+    [2,"SpVgg Erdweg U11",3,3,0,0,"16:11",5,9],
+    [3,"[SG] Niederroth/Arnbach U11",3,2,0,1,"27:21",6,6],
+    [4,"SV Sulzemoos U11",3,2,0,1,"18:13",5,6],
+    [5,"[SG] Vierkirchen/Petershausen U11",3,2,0,1,"13:10",3,6],
+    [6,"SV Odelzhausen U11",3,1,0,2,"16:16",0,3],
+    [7,"SV Lohhof U11 3",3,1,0,2,"16:19",-3,3],
+    [8,"VfL Egenburg U11",3,1,0,2,"2:11",-9,3],
+    [9,"[SG] Tandern/Hilgertshausen/Pipinsried U11",3,0,0,3,"5:13",-8,0],
+    [10,"[SG] Amperland U11 3",3,0,0,3,"8:24",-16,0]
   ];
 
   function renderLigaTable(){
@@ -4665,7 +4665,7 @@ const TIMER_WHISTLE_AUDIO = "data:audio/mpeg;base64,SUQzBAAAAAAAI1RTU0UAAAAPAAAD
       </tr>
     `).join("");
 
-    if(note) note.textContent = "Tabellenstand nach BFV-Screenshot vom 27.09.2026.";
+    if(note) note.textContent = "Tabellenstand nach BFV-Screenshot vom 04.10.2026.";
   }
 
   function unfoldICal(text){
@@ -4846,6 +4846,6 @@ if ("serviceWorker" in navigator) {
 }
 </script>
 
-<div class="install-hint">SpVgg Erdweg U11 (<a href="./U11-Coach-Versionshistory.md" target="_blank" rel="noopener noreferrer" class="footer-version-link" aria-label="Versionshistory">V1.200</a> by Mike)</div>
+<div class="install-hint">SpVgg Erdweg U11 (<a href="./U11-Coach-Versionshistory.md" target="_blank" rel="noopener noreferrer" class="footer-version-link" aria-label="Versionshistory">V1.201</a> by Mike)</div>
 </body>
 </html>

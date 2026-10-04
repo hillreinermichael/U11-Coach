@@ -1,3 +1,10 @@
+## V1.201
+
+- Ligatabelle anhand des neuen BFV-Screenshots vom **04.10.2026** aktualisiert.
+- Aktueller Stand: **SpVgg Erdweg U11 auf Platz 2 mit 16:11 Toren, +5 und 9 Punkten**.
+- Das Datum unter der Tabelle auf **04.10.2026** angepasst.
+- Sichtbare Versionsanzeige und Service Worker auf **V1.201** aktualisiert.
+
 ## V1.200
 
 - Neues Punktspiel in die Spielhistorie aufgenommen: **04.10.2026, SpVgg Erdweg U11 – [SG] Amperland U11 3, 5:4**.
