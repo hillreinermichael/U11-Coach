@@ -1,3 +1,8 @@
+## V1.204
+
+- Versionsanzeige im Footer der PWA auf **V1.204** aktualisiert.
+- Vorher wurde im Footer fälschlicherweise noch **V1.202** angezeigt.
+
 ## V1.203
 
 - Fehlerhafte 404-Anfragen auf `u11-coach-icon-192.png` und `u11-coach-icon-512.png` entfernt.
