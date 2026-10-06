@@ -1,3 +1,10 @@
+## V1.205
+
+- Trainingsgruppen-Stärkeberechnung angepasst.
+- Beste Feldpositionswertung aus Abwehr, Mittelfeld und Sturm wird jetzt mit **5 statt 10** gewichtet.
+- Ausdauer wird jetzt mit **1 statt 0,8** gewichtet.
+- Alle übrigen Gewichtungen bleiben unverändert.
+
 ## V1.204
 
 - Versionsanzeige im Footer der PWA auf **V1.204** aktualisiert.

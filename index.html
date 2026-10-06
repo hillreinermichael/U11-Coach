@@ -4143,7 +4143,7 @@ const TIMER_WHISTLE_AUDIO = "data:audio/mpeg;base64,SUQzBAAAAAAAI1RTU0UAAAAPAAAD
       ? p.positions.find(pos => ["AB","MF","ST"].includes(pos))
       : null;
     const primaryRating = primary && typeof ratings[primary] === "number" ? ratings[primary] : best;
-    return best*10 + avg*2 + primaryRating*2 + (p.body||0)*1.0 + (p.stamina||0)*0.8;
+    return best*5 + avg*2 + primaryRating*2 + (p.body||0)*1.0 + (p.stamina||0)*1.0;
   }
 
   function displayTeamStrength(value){ return value.toFixed(1); }
@@ -4846,6 +4846,6 @@ if ("serviceWorker" in navigator) {
 }
 </script>
 
-<div class="install-hint">SpVgg Erdweg U11 (<a href="./U11-Coach-Versionshistory.md" target="_blank" rel="noopener noreferrer" class="footer-version-link" aria-label="Versionshistory">V1.204</a> by Mike)</div>
+<div class="install-hint">SpVgg Erdweg U11 (<a href="./U11-Coach-Versionshistory.md" target="_blank" rel="noopener noreferrer" class="footer-version-link" aria-label="Versionshistory">V1.205</a> by Mike)</div>
 </body>
 </html>
