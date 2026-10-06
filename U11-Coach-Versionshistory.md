@@ -1,3 +1,11 @@
+## V1.207
+
+- **Johannes Wiedmuth** vollständig aus dem U11-Coach entfernt.
+- Der Spieler ist nicht mehr als Fallback-/Standardspieler in der PWA hinterlegt.
+- Die seitenspezifische Zuordnung für Johannes Wiedmuth wurde ebenfalls entfernt.
+- `Spielerwerte.xlsx` wird nicht verändert; die Spielerliste wird vom Nutzer separat angepasst.
+- Sichtbare Versionsanzeige und Service Worker auf **V1.207** aktualisiert.
+
 ## V1.206
 
 - Spielgruppen: Die Auswahl mit 2 Mannschaften benötigt nicht mehr zwingend 12 Feldspieler.
