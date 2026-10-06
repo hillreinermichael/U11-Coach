@@ -1,3 +1,11 @@
+## V1.203
+
+- Fehlerhafte 404-Anfragen auf `u11-coach-icon-192.png` und `u11-coach-icon-512.png` entfernt.
+- Favicon und Apple-Touch-Icon verwenden jetzt die vorhandene Datei `bilder/u11-coach-logo-header.png`.
+- `manifest.webmanifest` auf die vorhandene Logo-Datei umgestellt.
+- Nicht vorhandene Icon-Dateien aus dem Service-Worker-App-Shell entfernt.
+- Service-Worker-Cache auf V1.203 aktualisiert.
+
 ## V1.202
 
 - Spieltags-Checkliste um **Kapitänsbinde** und **Schlachtruf** ergänzt.
