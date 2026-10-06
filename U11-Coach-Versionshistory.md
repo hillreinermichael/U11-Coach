@@ -1,3 +1,9 @@
+## V1.208
+
+- Spielgruppen: Bei **2 Mannschaften** werden keine „Mögliche Aushilfe“-Empfehlungen mehr angezeigt.
+- Eine Aushilfe zwischen anderen Mannschaften bleibt bei **3 Mannschaften** möglich, wenn eine Mannschaft unterbesetzt ist und die Aushilfe aus einer Mannschaft kommt, die gerade nicht spielt.
+- Versionsanzeige und Service Worker auf **V1.208** aktualisiert.
+
 ## V1.207
 
 - **Johannes Wiedmuth** vollständig aus dem U11-Coach entfernt.
