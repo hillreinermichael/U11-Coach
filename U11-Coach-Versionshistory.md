@@ -1,3 +1,8 @@
+## V1.202
+
+- Spieltags-Checkliste um **Kapitänsbinde** und **Schlachtruf** ergänzt.
+- Sichtbare Versionsanzeige und Service Worker auf **V1.202** aktualisiert.
+
 ## V1.201
 
 - Ligatabelle anhand des neuen BFV-Screenshots vom **04.10.2026** aktualisiert.
