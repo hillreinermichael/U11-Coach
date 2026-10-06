@@ -1113,7 +1113,7 @@ color:#fff;
         <label for="teamCountSelect">Mannschaften</label>
         <select id="teamCountSelect">
           <option value="3">3 Mannschaften · 4 Spieler je Mannschaft</option>
-          <option value="2">2 Mannschaften · 6 Spieler je Mannschaft</option>
+          <option value="2">2 Mannschaften · bis zu 6 Spieler je Mannschaft</option>
         </select>
       </div>
 
@@ -4207,8 +4207,9 @@ const TIMER_WHISTLE_AUDIO = "data:audio/mpeg;base64,SUQzBAAAAAAAI1RTU0UAAAAPAAAD
   }
 
   function getBalancedTeamSizes(totalPlayers, teamCount, activeSize){
-    const requiredPlayers=teamCount===2 ? teamCount*activeSize : teamCount;
-    if(totalPlayers < requiredPlayers) return null;
+    // Bei 2 Mannschaften sind 6 Spieler je Mannschaft das Ziel.
+    // Sind weniger Spieler ausgewählt, werden die vorhandenen Spieler
+    // trotzdem möglichst gleichmäßig verteilt.
     const base=Math.floor(totalPlayers/teamCount);
     const remainder=totalPlayers%teamCount;
     const sizes=Array(teamCount).fill(base);
@@ -4236,7 +4237,8 @@ const TIMER_WHISTLE_AUDIO = "data:audio/mpeg;base64,SUQzBAAAAAAAI1RTU0UAAAAPAAAD
       const teams=Array.from({length:teamCount},()=>[]);
 
       // Zuerst werden die Plaetze auf dem Feld besetzt. Dadurch haben bei
-      // 2 Mannschaften immer beide Teams exakt 6 Spieler auf dem Feld.
+      // 2 Mannschaften: 6 Spieler je Mannschaft sind das Ziel. Bei weniger
+      // ausgewählten Spielern werden die vorhandenen möglichst gleichmäßig verteilt.
       for(const p of order){
         const available=teams
           .map((t,i)=>({i,t,remaining:targetSizes[i]-t.length}))
@@ -4317,17 +4319,6 @@ const TIMER_WHISTLE_AUDIO = "data:audio/mpeg;base64,SUQzBAAAAAAAI1RTU0UAAAAPAAAD
     const fixedGoalkeepers=["Maximilian Rohbeck","Maximilian Mätzig"];
     const goalkeepers=checked.filter(p=>fixedGoalkeepers.includes(p));
     const fieldPlayers=checked.filter(p=>!fixedGoalkeepers.includes(p));
-
-    const minimumFieldPlayers=teamCount===2 ? teamCount*activeSize : teamCount;
-    if(fieldPlayers.length<minimumFieldPlayers){
-      const minText=teamCount===2
-        ? `Bitte mindestens ${minimumFieldPlayers} Feldspieler auswählen, damit beide Mannschaften jeweils ${activeSize} Spieler auf dem Feld haben können.`
-        : `Bitte mindestens ${minimumFieldPlayers} Feldspieler auswählen, damit jede Mannschaft mindestens einen Spieler erhält.`;
-      result.innerHTML=`<div class="material-empty">${minText} Maximilian Rohbeck und Maximilian Mätzig zählen als feste Torhüter nicht mit.</div>`;
-      reshuffleBtn.disabled=true;
-      window.u11LastTeamSignature=null;
-      return;
-    }
 
     const previous=window.u11LastTeamSignature||null;
     let chosen=null, chosenSig=null, bestCost=Infinity, bestDifferentCost=Infinity;
@@ -4846,6 +4837,6 @@ if ("serviceWorker" in navigator) {
 }
 </script>
 
-<div class="install-hint">SpVgg Erdweg U11 (<a href="./U11-Coach-Versionshistory.md" target="_blank" rel="noopener noreferrer" class="footer-version-link" aria-label="Versionshistory">V1.205</a> by Mike)</div>
+<div class="install-hint">SpVgg Erdweg U11 (<a href="./U11-Coach-Versionshistory.md" target="_blank" rel="noopener noreferrer" class="footer-version-link" aria-label="Versionshistory">V1.206</a> by Mike)</div>
 </body>
 </html>

@@ -1,3 +1,10 @@
+## V1.206
+
+- Spielgruppen: Die Auswahl mit 2 Mannschaften benötigt nicht mehr zwingend 12 Feldspieler.
+- Bei weniger als 12 ausgewählten Feldspielern wird trotzdem eine möglichst gleich große und ausgeglichene Aufteilung erstellt.
+- 6 Spieler pro Mannschaft bleiben die Zielgröße; bei Unterbesetzung sind auch weniger als 6 Spieler pro Mannschaft möglich.
+- Die Auswahlbezeichnung wurde entsprechend auf „bis zu 6 Spieler je Mannschaft“ angepasst.
+
 ## V1.205
 
 - Trainingsgruppen-Stärkeberechnung angepasst.
