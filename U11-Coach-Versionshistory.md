@@ -1,3 +1,16 @@
+## V1.210
+
+- Ligatabelle anhand des bereitgestellten BFV-Screenshots vom **11.10.2026** aktualisiert.
+- Nach vier Spielen steht die **SpVgg Erdweg U11 auf Platz 4** mit **9 Punkten** und einem Torverhältnis von **16:14**.
+- Alle zehn Mannschaften, Spiele, Ergebnisse, Tordifferenzen und Punkte wurden übernommen.
+- Sichtbare Versionsanzeige und Service-Worker-Cache auf **V1.210** aktualisiert.
+
+## V1.209
+
+- Neues Punktspiel vom **11.10.2026** in die Spielhistorie aufgenommen.
+- Auswärts: **(SG) Vierkirchen/Petershausen U11 – SpVgg Erdweg U11**, Ergebnis **3:0**.
+- Versionsanzeige und Service-Worker-Cache auf **V1.209** aktualisiert.
+
 ## V1.208
 
 - Spielgruppen: Bei **2 Mannschaften** werden keine „Mögliche Aushilfe“-Empfehlungen mehr angezeigt.
