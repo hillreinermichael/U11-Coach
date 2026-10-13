@@ -648,9 +648,12 @@
 
   .team-selection{border:1px solid var(--line);border-radius:10px;padding:10px;margin-bottom:10px;background:#fafafa;}
   .team-player-list{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:6px;}
-  .team-player-item{display:flex;align-items:center;gap:7px;padding:7px 8px;border:1px solid var(--line);border-radius:8px;background:#fff;}
+  .team-player-item{display:flex;align-items:center;gap:7px;padding:7px 8px;border:1px solid var(--line);border-radius:8px;background:#fff;min-width:0;}
   .team-player-item input{width:17px;height:17px;accent-color:var(--erdweg-red);flex-shrink:0;}
-  .team-player-item label{font-size:11px;cursor:pointer;}
+  .team-player-name{font-size:11px;cursor:pointer;flex:1;min-width:0;}
+  .team-goalkeeper-toggle{display:flex;align-items:center;gap:3px;font-size:10px;font-weight:800;color:var(--ink-soft);cursor:pointer;white-space:nowrap;}
+  .team-player-item .team-goalkeeper-toggle input{width:14px;height:14px;margin:0;}
+  .team-selection-note{font-size:11px;line-height:1.4;color:var(--ink-soft);margin:-3px 0 9px;}
   .team-split-result{display:grid;grid-template-columns:repeat(3,1fr);gap:9px;margin-top:12px;}
   .team-goalkeepers{grid-column:1 / -1;display:flex;flex-wrap:wrap;gap:8px;margin-top:2px;}
   .team-goalkeepers .team-section-title{width:100%;margin-top:0;}
@@ -1102,6 +1105,7 @@ color:#fff;
 
       <div class="team-selection">
         <div class="material-title">Anwesende Kinder</div>
+        <div class="team-selection-note">Links auswählen, wer anwesend ist. Mit „TW“ markierst du, welche ausgewählten Kinder als Torwart eingesetzt werden sollen.</div>
         <div class="team-select-actions">
           <button type="button" class="timer-action secondary" id="teamSelectAllBtn">Alle auswählen</button>
           <button type="button" class="timer-action secondary" id="teamClearAllBtn">Alle abwählen</button>
@@ -4143,6 +4147,70 @@ const TIMER_WHISTLE_AUDIO = "data:audio/mpeg;base64,SUQzBAAAAAAAI1RTU0UAAAAPAAAD
 
   function displayTeamStrength(value){ return value.toFixed(1); }
 
+  function activeTeamStrength(team, activeSize){
+    return team.slice(0,activeSize).reduce((sum,p)=>sum+playerTeamStrength(p),0);
+  }
+
+  // Ermittelt dieselben Aushilfen, die auch in den Ergebniskarten angezeigt
+  // werden. Diese Simulation wird schon bei der Auswahl der Teamaufteilung
+  // verwendet, damit eine starke Aushilfe nicht erst nachträglich ein Team
+  // deutlich stärker macht.
+  function selectTeamHelpers(teams, activeSize, teamCount){
+    const helpersByTeam=teams.map(()=>null);
+    if(teamCount!==3) return helpersByTeam;
+
+    const helperUsed=new Set();
+    const underfilled=teams
+      .map((team,i)=>({i,team,deficit:Math.max(0,activeSize-team.length),strength:activeTeamStrength(team,activeSize)}))
+      .filter(x=>x.deficit>0)
+      .sort((a,b)=>a.strength-b.strength || a.i-b.i);
+
+    for(const target of underfilled){
+      const candidates=[];
+      const otherTeamStrengths=teams
+        .map((team,i)=>i===target.i ? null : activeTeamStrength(team,activeSize))
+        .filter(v=>v!==null);
+      const referenceStrength=otherTeamStrengths.length
+        ? otherTeamStrengths.reduce((sum,v)=>sum+v,0)/otherTeamStrengths.length
+        : 0;
+
+      teams.forEach((team,sourceIndex)=>{
+        if(sourceIndex===target.i) return;
+        team.slice(0,activeSize).forEach(p=>{
+          if(playerStamina(p)<8 || helperUsed.has(p)) return;
+          const helperStrength=playerTeamStrength(p);
+          const targetWithHelper=target.strength+helperStrength;
+          const balanceCost=Math.abs(targetWithHelper-referenceStrength);
+          candidates.push({player:p,sourceIndex,helperStrength,balanceCost});
+        });
+      });
+
+      candidates.sort((a,b)=>{
+        const d=a.balanceCost-b.balanceCost;
+        if(Math.abs(d)>0.0001) return d;
+        const sd=b.helperStrength-a.helperStrength;
+        return Math.abs(sd)>0.0001 ? sd : displayName(a.player).localeCompare(displayName(b.player),"de");
+      });
+
+      if(candidates.length){
+        helpersByTeam[target.i]=candidates[0];
+        helperUsed.add(candidates[0].player);
+      }
+    }
+    return helpersByTeam;
+  }
+
+  function teamBalanceMetrics(teams, activeSize, teamCount){
+    const helpers=selectTeamHelpers(teams,activeSize,teamCount);
+    const rawSums=teams.map(team=>activeTeamStrength(team,activeSize));
+    const effectiveSums=rawSums.map((sum,i)=>sum+(helpers[i]?helpers[i].helperStrength:0));
+    const rawRange=Math.max(...rawSums)-Math.min(...rawSums);
+    const effectiveRange=Math.max(...effectiveSums)-Math.min(...effectiveSums);
+    // Das Ergebnis nach einer möglichen Aushilfe ist das Hauptkriterium.
+    // Eine kleine Restgewichtung berücksichtigt zusätzlich die regulären Teams.
+    return {helpers,rawSums,effectiveSums,rawRange,effectiveRange,cost:effectiveRange+rawRange*0.05};
+  }
+
   // Die in „Trainingsgruppen“ ausgewählten Kinder werden beim ersten
   // Öffnen der „Spielgruppen“ automatisch als anwesend vorausgewählt.
   // Danach bleiben die beiden Auswahlen unabhängig voneinander.
@@ -4155,7 +4223,7 @@ const TIMER_WHISTLE_AUDIO = "data:audio/mpeg;base64,SUQzBAAAAAAAI1RTU0UAAAAPAAAD
       .map(cb=>cb.value);
     if(!trainingChecked.length) return;
 
-    const teamCheckboxes=[...document.querySelectorAll("#teamPlayerList input[type=checkbox]")];
+    const teamCheckboxes=[...document.querySelectorAll("#teamPlayerList .team-player-attendance")];
     if(!teamCheckboxes.length) return;
 
     const alreadySelected=teamCheckboxes.some(cb=>cb.checked);
@@ -4169,30 +4237,58 @@ const TIMER_WHISTLE_AUDIO = "data:audio/mpeg;base64,SUQzBAAAAAAAI1RTU0UAAAAPAAAD
     window.u11TeamSelectionInitializedFromTraining=true;
   }
 
+  // Torhüter werden für jede Berechnung ausdrücklich vom Trainer ausgewählt.
+  // Es gibt keine fest hinterlegten Spielernamen mehr.
+  if(!(window.u11SelectedTeamGoalkeepers instanceof Set)) window.u11SelectedTeamGoalkeepers=new Set();
+
   function renderTeamPlayerSelection(){
     const box=document.getElementById("teamPlayerList");
     if(!box) return;
     const names=Object.keys(PLAYERS).sort((a,b)=>displayName(a).localeCompare(displayName(b),"de"));
-    const old=new Set([...box.querySelectorAll("input:checked")].map(x=>x.value));
+    const old=new Set([...box.querySelectorAll(".team-player-attendance:checked")].map(x=>x.value));
     if(!old.size){
       names.forEach(n=>{
         const cb=document.querySelector(`input[data-player-name="${CSS.escape(n)}"]`);
         if(cb && cb.checked) old.add(n);
       });
     }
+    // Alte Torwartmarkierungen nur für Spieler behalten, die noch existieren.
+    window.u11SelectedTeamGoalkeepers=new Set([...window.u11SelectedTeamGoalkeepers].filter(n=>names.includes(n)));
     box.innerHTML="";
     names.forEach((name,i)=>{
       const row=document.createElement("div");
       row.className="team-player-item";
       const cb=document.createElement("input");
-      cb.type="checkbox"; cb.id="teamPlayer"+i; cb.value=name; cb.checked=old.has(name);
+      cb.type="checkbox"; cb.id="teamPlayer"+i; cb.value=name; cb.className="team-player-attendance"; cb.checked=old.has(name);
       const label=document.createElement("label");
-      label.htmlFor=cb.id; label.textContent=displayName(name);
+      label.className="team-player-name"; label.htmlFor=cb.id; label.textContent=displayName(name);
+      const keeperLabel=document.createElement("label");
+      keeperLabel.className="team-goalkeeper-toggle";
+      keeperLabel.title="Als Torwart einsetzen";
+      const keeperCb=document.createElement("input");
+      keeperCb.type="checkbox"; keeperCb.className="team-player-goalkeeper"; keeperCb.value=name;
+      keeperCb.checked=window.u11SelectedTeamGoalkeepers.has(name);
+      const keeperText=document.createElement("span"); keeperText.textContent="TW";
+      keeperLabel.append(keeperCb,keeperText);
       cb.addEventListener("change",()=>{
         window.u11TeamSelectionInitializedFromTraining=true;
         window.u11LastTeamSignature=null;
+        if(!cb.checked){
+          window.u11SelectedTeamGoalkeepers.delete(name);
+          keeperCb.checked=false;
+        }
       });
-      row.append(cb,label); box.appendChild(row);
+      keeperCb.addEventListener("change",()=>{
+        window.u11TeamSelectionInitializedFromTraining=true;
+        window.u11LastTeamSignature=null;
+        if(keeperCb.checked){
+          cb.checked=true;
+          window.u11SelectedTeamGoalkeepers.add(name);
+        }else{
+          window.u11SelectedTeamGoalkeepers.delete(name);
+        }
+      });
+      row.append(cb,label,keeperLabel); box.appendChild(row);
     });
     syncTeamSelectionFromTrainingGroups();
   }
@@ -4222,8 +4318,20 @@ const TIMER_WHISTLE_AUDIO = "data:audio/mpeg;base64,SUQzBAAAAAAAI1RTU0UAAAAPAAAD
       return Math.abs(d)>0.0001 ? d : displayName(a).localeCompare(displayName(b),"de");
     });
 
+    // Bei einer Unterbesetzung wird bereits während der Verteilung ein
+    // typischer möglicher Aushilfswert eingerechnet. So erhält das kleinere
+    // Team bewusst eine niedrigere Grundstärke, wenn es später eine Aushilfe
+    // bekommt.
+    const possibleHelperStrengths=players
+      .filter(p=>playerStamina(p)>=8)
+      .map(p=>playerTeamStrength(p));
+    const anticipatedHelperStrength=teamCount===3 && possibleHelperStrengths.length
+      ? possibleHelperStrengths.reduce((sum,v)=>sum+v,0)/possibleHelperStrengths.length
+      : 0;
+    const helperOffsets=targetSizes.map(size=>size<activeSize?anticipatedHelperStrength:0);
+
     let best=null, bestCost=Infinity;
-    const runs=260;
+    const runs=360;
 
     for(let run=0;run<runs;run++){
       const order=run===0
@@ -4245,15 +4353,16 @@ const TIMER_WHISTLE_AUDIO = "data:audio/mpeg;base64,SUQzBAAAAAAAI1RTU0UAAAAPAAAD
         let bestTeam=null, bestTeamCost=Infinity;
         for(const candidate of candidates){
           const projectedActiveSums=teams.map((t,i)=>{
-            const active=t.slice(0,activeSize).reduce((sum,n)=>sum+playerTeamStrength(n),0);
-            return i===candidate.i && t.length<activeSize
+            const active=activeTeamStrength(t,activeSize);
+            const withPlayer=i===candidate.i && t.length<activeSize
               ? active+playerTeamStrength(p)
               : active;
+            return withPlayer+helperOffsets[i];
           });
           const activeRange=Math.max(...projectedActiveSums)-Math.min(...projectedActiveSums);
           const projectedTotalSums=teams.map((t,i)=>{
             const total=t.reduce((sum,n)=>sum+playerTeamStrength(n),0);
-            return i===candidate.i ? total+playerTeamStrength(p) : total;
+            return (i===candidate.i ? total+playerTeamStrength(p) : total)+helperOffsets[i];
           });
           const totalRange=Math.max(...projectedTotalSums)-Math.min(...projectedTotalSums);
           const countRange=Math.max(...teams.map((t,i)=>t.length+(i===candidate.i?1:0)))
@@ -4275,12 +4384,10 @@ const TIMER_WHISTLE_AUDIO = "data:audio/mpeg;base64,SUQzBAAAAAAAI1RTU0UAAAAPAAAD
 
       if(teams.some((t,i)=>t.length!==targetSizes[i])) continue;
 
-      const activeSums=teams.map(t=>t.slice(0,activeSize)
-        .reduce((sum,p)=>sum+playerTeamStrength(p),0));
+      const metrics=teamBalanceMetrics(teams,activeSize,teamCount);
       const totalSums=teams.map(t=>t.reduce((sum,p)=>sum+playerTeamStrength(p),0));
-      const activeRange=Math.max(...activeSums)-Math.min(...activeSums);
       const totalRange=Math.max(...totalSums)-Math.min(...totalSums);
-      const cost=activeRange + totalRange*0.02;
+      const cost=metrics.cost+totalRange*0.01;
 
       if(cost<bestCost){
         bestCost=cost;
@@ -4306,14 +4413,27 @@ const TIMER_WHISTLE_AUDIO = "data:audio/mpeg;base64,SUQzBAAAAAAAI1RTU0UAAAAPAAAD
     const reshuffle=!!options.reshuffle;
     const teamCount=Number(document.getElementById("teamCountSelect")?.value||3);
     const activeSize=getTeamActiveSize(teamCount);
-    const checked=[...document.querySelectorAll("#teamPlayerList input[type=checkbox]:checked")].map(x=>x.value);
+    const checked=[...document.querySelectorAll("#teamPlayerList .team-player-attendance:checked")].map(x=>x.value);
     const result=document.getElementById("teamSplitResult");
     const reshuffleBtn=document.getElementById("reshuffleTeamsBtn");
 
-    // Diese beiden Spieler bleiben bei den Trainingsgruppen fest im Tor.
-    const fixedGoalkeepers=["Maximilian Rohbeck","Maximilian Mätzig"];
-    const goalkeepers=checked.filter(p=>fixedGoalkeepers.includes(p));
-    const fieldPlayers=checked.filter(p=>!fixedGoalkeepers.includes(p));
+    // Nur ausdrücklich markierte und zugleich anwesende Spieler werden als Torhüter geführt.
+    const selectedGoalkeepers=window.u11SelectedTeamGoalkeepers instanceof Set
+      ? window.u11SelectedTeamGoalkeepers
+      : new Set();
+    const goalkeepers=checked.filter(p=>selectedGoalkeepers.has(p));
+    const goalkeeperSet=new Set(goalkeepers);
+    const fieldPlayers=checked.filter(p=>!goalkeeperSet.has(p));
+    if(!checked.length){
+      result.innerHTML='<div class="material-empty">Bitte zuerst anwesende Kinder auswählen.</div>';
+      reshuffleBtn.disabled=true;
+      return;
+    }
+    if(!fieldPlayers.length){
+      result.innerHTML='<div class="material-empty">Bitte mindestens einen Feldspieler auswählen. Torhüter werden separat angezeigt.</div>';
+      reshuffleBtn.disabled=true;
+      return;
+    }
 
     const previous=window.u11LastTeamSignature||null;
     let chosen=null, chosenSig=null, bestCost=Infinity, bestDifferentCost=Infinity;
@@ -4324,9 +4444,8 @@ const TIMER_WHISTLE_AUDIO = "data:audio/mpeg;base64,SUQzBAAAAAAAI1RTU0UAAAAPAAAD
       const candidate=createBalancedTeams(shuffled,teamCount);
       if(!candidate) continue;
       const signature=teamSignature(candidate.teams);
-      const activeSums=candidate.teams.map(t=>t.slice(0,activeSize).reduce((sum,p)=>sum+playerTeamStrength(p),0));
-      const activeRange=Math.max(...activeSums)-Math.min(...activeSums);
-      const cost=activeRange + candidate.teams.reduce((sum,t)=>sum+Math.max(0,t.length-activeSize),0)*0.01;
+      const metrics=teamBalanceMetrics(candidate.teams,activeSize,teamCount);
+      const cost=metrics.cost + candidate.teams.reduce((sum,t)=>sum+Math.max(0,t.length-activeSize),0)*0.01;
       if(cost<bestCost){
         bestCost=cost;
         if(!reshuffle || !previous || signature===previous){ chosen=candidate; chosenSig=signature; }
@@ -4347,17 +4466,9 @@ const TIMER_WHISTLE_AUDIO = "data:audio/mpeg;base64,SUQzBAAAAAAAI1RTU0UAAAAPAAAD
     }
 
     result.className=`team-split-result team-count-${teamCount}`;
-    const goalkeeperHtml=goalkeepers.length ? `
-      <div class="team-goalkeepers">
-        <div class="team-section-title">Feste Torhüter</div>
-        <div class="team-members">
-          ${goalkeepers.map(p=>`<div class="team-member-line"><span>${displayName(p)}</span><span>Torwart</span></div>`).join("")}
-        </div>
-      </div>` : "";
-
     const goalkeeperMarkup = goalkeepers.length ? `
       <div class="team-goalkeepers">
-        <div class="team-section-title">Feste Torhüter</div>
+        <div class="team-section-title">Torhüter</div>
         ${goalkeepers.map(p=>`
           <div class="team-goalkeeper-box">
             <div class="goalkeeper-icon" aria-hidden="true">
@@ -4376,57 +4487,9 @@ const TIMER_WHISTLE_AUDIO = "data:audio/mpeg;base64,SUQzBAAAAAAAI1RTU0UAAAAPAAAD
           </div>`).join("")}
       </div>` : "";
 
-    // Bei 3 Mannschaften kann bei Unterbesetzung pro zu kleinem Team genau
-    // eine mögliche Aushilfe aus einer anderen Mannschaft empfohlen werden.
-    // Bei 2 Mannschaften gibt es keine Aushilfe, weil beide Mannschaften
-    // gegeneinander spielen und somit keine dritte Mannschaft als Reserve da ist.
-    const helperUsed=new Set();
-    const helpersByTeam=chosen.teams.map(()=>null);
-    const underfilled=(teamCount===3 ? chosen.teams : [])
-      .map((team,i)=>({i, team, deficit:Math.max(0,activeSize-team.length), strength:team.slice(0,activeSize).reduce((sum,p)=>sum+playerTeamStrength(p),0)}))
-      .filter(x=>x.deficit>0)
-      .sort((a,b)=>a.strength-b.strength || a.i-b.i);
-
-    for(const target of underfilled){
-      const candidates=[];
-      const otherTeamStrengths=chosen.teams
-        .map((team,i)=>i===target.i ? null : team.slice(0,activeSize).reduce((sum,p)=>sum+playerTeamStrength(p),0))
-        .filter(v=>v!==null);
-      const referenceStrength = otherTeamStrengths.length
-        ? otherTeamStrengths.reduce((sum,v)=>sum+v,0)/otherTeamStrengths.length
-        : 0;
-
-      chosen.teams.forEach((team,sourceIndex)=>{
-        if(sourceIndex===target.i) return;
-        team.slice(0,activeSize).forEach(p=>{
-          // Spieler mit Ausdauer < 8 sind keine möglichen Aushilfen.
-          // Sie bleiben als normale Spieler ihrer eigenen Mannschaft verfügbar.
-          if(playerStamina(p) < 8) return;
-          if(!helperUsed.has(p)) {
-            const helperStrength=playerTeamStrength(p);
-            const targetWithHelper=target.strength+helperStrength;
-            const balanceCost=Math.abs(targetWithHelper-referenceStrength);
-            candidates.push({player:p,sourceIndex,helperStrength,balanceCost});
-          }
-        });
-      });
-
-      // Nicht automatisch den stärksten Spieler nehmen: Die Aushilfe soll die
-      // unterbesetzte Mannschaft nach der Aushilfe möglichst nah an die
-      // Stärke der übrigen gleichzeitig spielenden Mannschaften bringen.
-      candidates.sort((a,b)=>{
-        const d=a.balanceCost-b.balanceCost;
-        if(Math.abs(d)>0.0001) return d;
-        const sd=b.helperStrength-a.helperStrength;
-        return Math.abs(sd)>0.0001 ? sd : displayName(a.player).localeCompare(displayName(b.player),"de");
-      });
-
-      if(candidates.length) {
-        const pick=candidates[0];
-        helpersByTeam[target.i]=pick;
-        helperUsed.add(pick.player);
-      }
-    }
+    // Die bei der Optimierung verwendete Aushilfsberechnung wird identisch
+    // für die Anzeige wiederverwendet.
+    const helpersByTeam=selectTeamHelpers(chosen.teams,activeSize,teamCount);
 
     result.innerHTML = chosen.teams.map((team,i)=>{
       const active=team.slice(0,activeSize);
@@ -4469,13 +4532,14 @@ const TIMER_WHISTLE_AUDIO = "data:audio/mpeg;base64,SUQzBAAAAAAAI1RTU0UAAAAPAAAD
   });
   document.getElementById("teamSelectAllBtn").addEventListener("click",()=>{
     window.u11TeamSelectionInitializedFromTraining=true;
-    document.querySelectorAll("#teamPlayerList input[type=checkbox]").forEach(cb=>cb.checked=true);
+    document.querySelectorAll("#teamPlayerList .team-player-attendance").forEach(cb=>cb.checked=true);
     window.u11LastTeamSignature=null;
     document.getElementById("reshuffleTeamsBtn").disabled=true;
   });
   document.getElementById("teamClearAllBtn").addEventListener("click",()=>{
     window.u11TeamSelectionInitializedFromTraining=true;
-    document.querySelectorAll("#teamPlayerList input[type=checkbox]").forEach(cb=>cb.checked=false);
+    document.querySelectorAll("#teamPlayerList .team-player-attendance, #teamPlayerList .team-player-goalkeeper").forEach(cb=>cb.checked=false);
+    window.u11SelectedTeamGoalkeepers=new Set();
     document.getElementById("teamSplitResult").innerHTML="";
     window.u11LastTeamSignature=null;
     document.getElementById("reshuffleTeamsBtn").disabled=true;
@@ -4584,7 +4648,7 @@ const TIMER_WHISTLE_AUDIO = "data:audio/mpeg;base64,SUQzBAAAAAAAI1RTU0UAAAAPAAAD
   }
 
   function saveAttendance(){
-    const names=[...document.querySelectorAll("#teamPlayerList input[type=checkbox]:checked")]
+    const names=[...document.querySelectorAll("#teamPlayerList .team-player-attendance:checked")]
       .map(cb=>cb.value)
       .filter(Boolean);
     const status=document.getElementById("attendanceSaveStatus");
@@ -4833,6 +4897,6 @@ if ("serviceWorker" in navigator) {
 }
 </script>
 
-<div class="install-hint">SpVgg Erdweg U11 (<a href="./U11-Coach-Versionshistory.md" target="_blank" rel="noopener noreferrer" class="footer-version-link" aria-label="Versionshistory">V1.210</a> by Mike)</div>
+<div class="install-hint">SpVgg Erdweg U11 (<a href="./U11-Coach-Versionshistory.md" target="_blank" rel="noopener noreferrer" class="footer-version-link" aria-label="Versionshistory">V1.212</a> by Mike)</div>
 </body>
 </html>

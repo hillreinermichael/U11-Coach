@@ -1,3 +1,19 @@
+## V1.212
+
+- Spielgruppen: Eine mögliche Aushilfe wird bereits während der Teamverteilung berücksichtigt.
+- Bei unterbesetzten Mannschaften wird die erwartete Stärke einer Aushilfe schon bei der Zusammenstellung eingerechnet, damit das kleinere Team nicht mit zu starken Spielern besetzt wird und anschließend durch die Aushilfe deutlich zu stark wird.
+- Die Teamaufteilung wird zusätzlich anhand der tatsächlichen vorgeschlagenen Aushilfen bewertet; die Stärken in der Ergebnisanzeige und bei der Optimierung verwenden dieselbe Aushilfsberechnung.
+- Bei 2 Mannschaften bleibt die Aushilfe deaktiviert; die Torhüter werden weiterhin separat behandelt.
+- Sichtbare Versionsanzeige und Service-Worker-Cache auf **V1.212** aktualisiert.
+
+## V1.211
+
+- Spielgruppen: Torhüter werden nicht mehr automatisch über zwei fest hinterlegte Maximilian-Spieler bestimmt.
+- Jeder anwesende Spieler kann mit der zusätzlichen Auswahl **„TW“** als Torhüter markiert werden.
+- Markiert man einen Spieler als Torwart, wird er automatisch auch als anwesend ausgewählt; wird er abgewählt, wird seine Torwartmarkierung entfernt.
+- Nur ausgewählte Torhüter werden getrennt von den Feldspielern angezeigt und bei der Teamaufteilung nicht als Feldspieler berücksichtigt.
+- Versionsanzeige und Service-Worker-Cache auf **V1.211** aktualisiert.
+
 ## V1.210
 
 - Ligatabelle anhand des bereitgestellten BFV-Screenshots vom **11.10.2026** aktualisiert.
