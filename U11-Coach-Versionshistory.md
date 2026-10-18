@@ -1,3 +1,10 @@
+## V1.213
+
+- Neues Punktspiel vom **18.10.2026** in die Spielhistorie aufgenommen.
+- Heimspiel: **SpVgg Erdweg U11 – [SG] Niederroth/Arnbach U11**, Ergebnis **8:3**.
+- Ausgangsbasis bleibt V1.212; die zwischenzeitliche Testspiel-Kachel ist nicht enthalten.
+- Sichtbare Versionsanzeige und Service-Worker-Cache auf **V1.213** aktualisiert.
+
 ## V1.212
 
 - Spielgruppen: Eine mögliche Aushilfe wird bereits während der Teamverteilung berücksichtigt.
