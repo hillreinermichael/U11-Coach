@@ -1,3 +1,9 @@
+## V1.215
+
+- Neues Auswärtspunktspiel vom **24.10.2026** in die Spielhistorie aufgenommen.
+- **SV Odelzhausen U11 – SpVgg Erdweg U11**, Ergebnis **5:0** aus Sicht der in der Anzeige zuerst genannten Heimmannschaft (Niederlage aus Sicht der SpVgg Erdweg U11).
+- Sichtbare Versionsanzeige und Service-Worker-Cache auf **V1.215** aktualisiert.
+
 ## V1.214
 
 - Ligatabelle anhand des bereitgestellten BFV-Screenshots vom **21.10.2026** aktualisiert.
