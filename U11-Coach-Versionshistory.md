@@ -1,3 +1,12 @@
+## V1.216
+
+- Die Seite **Spielgruppen** bietet jetzt auch **4 Mannschaften** zur Auswahl.
+- Die vier Teams werden möglichst gleichmäßig nach Spieleranzahl und Spielerstärke aufgeteilt; je Mannschaft sind bis zu vier Spieler zunächst auf dem Feld, weitere Spieler werden als Auswechselspieler angezeigt.
+- Team 4 wird als **Team Blau** bezeichnet; die drei bisherigen Teamnamen bleiben erhalten.
+- Bei vier Mannschaften werden die Ergebniskarten auf größeren Bildschirmen zweispaltig und auf Mobilgeräten einspaltig dargestellt.
+- Ausgangsbasis ist V1.215; die Auswahl der Trainingsgruppen bleibt unverändert.
+- Sichtbare Versionsanzeige und Service-Worker-Cache auf **V1.216** aktualisiert.
+
 ## V1.215
 
 - Neues Auswärtspunktspiel vom **24.10.2026** in die Spielhistorie aufgenommen.

@@ -665,6 +665,8 @@
   .goalkeeper-role{font-size:11px;color:var(--ink-soft);}
   .team-split-result.team-count-2{grid-template-columns:repeat(2,1fr);}
   .team-split-result.team-count-2 .team-goalkeepers{grid-column:1 / -1;}
+  .team-split-result.team-count-4{grid-template-columns:repeat(2,minmax(0,1fr));}
+  .team-split-result.team-count-4 .team-goalkeepers{grid-column:1 / -1;}
   .team-card{border:1px solid var(--line);border-top:4px solid var(--erdweg-red);border-radius:10px;padding:10px;background:#fff;}
   .team-card h3{margin:0 0 5px;font-size:14px;}
   .team-card .team-strength{font-size:10px;color:var(--ink-soft);margin-bottom:7px;}
@@ -677,6 +679,7 @@
   @media(max-width:700px){
     .team-player-list{grid-template-columns:1fr;}
     .team-split-result{grid-template-columns:1fr;}
+    .team-split-result.team-count-4{grid-template-columns:1fr;}
   }
 
   .team-select-actions{display:flex;gap:7px;flex-wrap:wrap;margin-bottom:9px;}
@@ -1116,8 +1119,9 @@ color:#fff;
       <div class="team-mode-select">
         <label for="teamCountSelect">Mannschaften</label>
         <select id="teamCountSelect">
-          <option value="3">3 Mannschaften · 4 Spieler je Mannschaft</option>
           <option value="2">2 Mannschaften · bis zu 6 Spieler je Mannschaft</option>
+          <option value="3" selected>3 Mannschaften · 4 Spieler je Mannschaft</option>
+          <option value="4">4 Mannschaften · 4 Spieler je Mannschaft</option>
         </select>
       </div>
 
@@ -4409,7 +4413,7 @@ const TIMER_WHISTLE_AUDIO = "data:audio/mpeg;base64,SUQzBAAAAAAAI1RTU0UAAAAPAAAD
       .sort().join("||");
   }
 
-  const TRAINING_TEAM_NAMES = ["Team Rot", "Team Gelb", "Team Bunt"];
+  const TRAINING_TEAM_NAMES = ["Team Rot", "Team Gelb", "Team Bunt", "Team Blau"];
 
   function calculateTeams(options={}){
     const reshuffle=!!options.reshuffle;
@@ -4900,6 +4904,6 @@ if ("serviceWorker" in navigator) {
 }
 </script>
 
-<div class="install-hint">SpVgg Erdweg U11 (<a href="./U11-Coach-Versionshistory.md" target="_blank" rel="noopener noreferrer" class="footer-version-link" aria-label="Versionshistory">V1.215</a> by Mike)</div>
+<div class="install-hint">SpVgg Erdweg U11 (<a href="./U11-Coach-Versionshistory.md" target="_blank" rel="noopener noreferrer" class="footer-version-link" aria-label="Versionshistory">V1.216</a> by Mike)</div>
 </body>
 </html>
