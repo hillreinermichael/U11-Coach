@@ -374,7 +374,18 @@
   .subplan-empty-note{padding:10px;border:1px dashed var(--line);border-radius:10px;background:#fafafa;font-size:11px;color:var(--ink-soft);margin-bottom:12px;}
   .subplan-pitch-player{cursor:pointer;}
   .subplan-pitch-player:hover{filter:brightness(1.08);}
-  @media(max-width:760px){.subplan-grid{grid-template-columns:1fr;}.subplan-actions{grid-template-columns:1fr;}}
+  .subplan-pitch-player.static{cursor:default;}
+  .auto-subplan-intro{background:#f4f5f7;border-left:4px solid var(--erdweg-red);padding:10px 12px;border-radius:8px;margin-bottom:12px;font-size:12px;line-height:1.5;}
+  .auto-subplan-actions{display:grid;grid-template-columns:1fr;gap:8px;margin-bottom:12px;}
+  .auto-subplan-summary{padding:10px 12px;border:1px solid var(--line);border-radius:10px;background:#fafafa;margin-bottom:12px;font-size:12px;line-height:1.5;}
+  .auto-subplan-summary strong{color:var(--erdweg-red-dark);}
+  .auto-subplan-time-table{width:100%;border-collapse:collapse;margin-top:8px;font-size:11px;}
+  .auto-subplan-time-table th,.auto-subplan-time-table td{padding:6px 5px;border-bottom:1px solid var(--line);text-align:left;}
+  .auto-subplan-time-table th{font-size:10px;text-transform:uppercase;letter-spacing:.04em;color:var(--ink-soft);}
+  .auto-subplan-time-table td:last-child,.auto-subplan-time-table th:last-child{text-align:right;white-space:nowrap;}
+  .auto-subplan-quarter-info{margin-top:7px;font-size:10px;color:var(--ink-soft);line-height:1.4;}
+  .auto-subplan-warning{padding:9px 10px;margin:8px 0;border-radius:8px;background:#fff5e6;border:1px solid #f0d39c;color:#684b16;font-size:11px;line-height:1.45;}
+  @media(max-width:760px){.subplan-grid{grid-template-columns:1fr;}.subplan-actions{grid-template-columns:1fr;}.auto-subplan-actions{grid-template-columns:1fr;}}
 
   /* Training – 3 Stationen */
   #trainingCard .training-intro{
@@ -653,7 +664,15 @@
   .team-player-name{font-size:11px;cursor:pointer;flex:1;min-width:0;}
   .team-goalkeeper-toggle{display:flex;align-items:center;gap:3px;font-size:10px;font-weight:800;color:var(--ink-soft);cursor:pointer;white-space:nowrap;}
   .team-player-item .team-goalkeeper-toggle input{width:14px;height:14px;margin:0;}
+  .team-player-item .team-goalkeeper-toggle input:disabled{opacity:.45;cursor:not-allowed;}
   .team-selection-note{font-size:11px;line-height:1.4;color:var(--ink-soft);margin:-3px 0 9px;}
+  .team-no-goalkeeper-option{margin:0 0 10px;}
+  .team-no-goalkeeper-option label{display:flex;align-items:flex-start;gap:8px;padding:9px 10px;border:1px solid var(--line);border-radius:8px;background:#fff;cursor:pointer;}
+  .team-no-goalkeeper-option.active label{border-color:var(--erdweg-red);}
+  .team-no-goalkeeper-option input{width:16px;height:16px;margin:2px 0 0;accent-color:var(--erdweg-red);flex-shrink:0;}
+  .team-no-goalkeeper-copy{display:flex;flex-direction:column;gap:2px;min-width:0;}
+  .team-no-goalkeeper-copy strong{font-size:11px;}
+  .team-no-goalkeeper-copy small{font-size:10px;line-height:1.35;color:var(--ink-soft);}
   .team-split-result{display:grid;grid-template-columns:repeat(3,1fr);gap:9px;margin-top:12px;}
   .team-goalkeepers{grid-column:1 / -1;display:flex;flex-wrap:wrap;gap:8px;margin-top:2px;}
   .team-goalkeepers .team-section-title{width:100%;margin-top:0;}
@@ -1079,6 +1098,10 @@ color:#fff;
           <strong>Wechselplanung</strong>
           <span>4 Viertel vor dem Spiel planen</span>
         </button>
+        <button type="button" class="start-choice" id="matchdayAutoSubPlanBtn">
+          <strong>autom. Wechselplanung</strong>
+          <span>Alle vier Viertel automatisch berechnen</span>
+        </button>
         <button type="button" class="start-choice" id="matchdayChecklistBtn">
           <strong>Spieltags-Checkliste</strong>
           <span>Alles für den Spieltag im Blick</span>
@@ -1108,7 +1131,16 @@ color:#fff;
 
       <div class="team-selection">
         <div class="material-title">Anwesende Kinder</div>
-        <div class="team-selection-note">Links auswählen, wer anwesend ist. Mit „TW“ markierst du, welche ausgewählten Kinder als Torwart eingesetzt werden sollen.</div>
+        <div class="team-selection-note">Links auswählen, wer anwesend ist. „TW“ ist optional und markiert Kinder, die als Torwart eingesetzt werden sollen.</div>
+        <div class="team-no-goalkeeper-option" id="teamNoGoalkeeperOption">
+          <label for="teamNoGoalkeeperMode">
+            <input type="checkbox" id="teamNoGoalkeeperMode">
+            <span class="team-no-goalkeeper-copy">
+              <strong>Ohne Torwart spielen (Minitore)</strong>
+              <small>Alle ausgewählten Kinder werden als Feldspieler auf die Teams verteilt.</small>
+            </span>
+          </label>
+        </div>
         <div class="team-select-actions">
           <button type="button" class="timer-action secondary" id="teamSelectAllBtn">Alle auswählen</button>
           <button type="button" class="timer-action secondary" id="teamClearAllBtn">Alle abwählen</button>
@@ -1292,6 +1324,22 @@ color:#fff;
       </div>
       <div id="subPlanStatus" class="subplan-empty-note"></div>
       <div id="subPlanGrid" class="subplan-grid"></div>
+    </div>
+  </div>
+
+  <div id="autoSubstitutionPlanMode" class="mode-section" style="display:none;">
+    <button type="button" class="mode-back" data-back="matchdayHub">← Spieltag</button>
+    <div class="card">
+      <h2>autom. Wechselplanung</h2>
+      <div class="auto-subplan-intro">
+        Die vier Viertel werden anhand der anwesenden Spieler, der Spielerwerte und der Positionsprioritäten automatisch besetzt. Jeder Spieler soll mindestens ein Viertel spielen und – sofern mit der Kadergröße möglich – mindestens ein Viertel aussetzen. Stärkere Spieler erhalten tendenziell mehr Spielzeit.
+      </div>
+      <div class="auto-subplan-actions">
+        <button type="button" class="primary" id="autoSubPlanCalculateBtn">Wechselplanung automatisch berechnen</button>
+      </div>
+      <div id="autoSubPlanStatus" class="subplan-empty-note">Bitte zuerst auf der Seite „Aufstellung“ die anwesenden Spieler auswählen.</div>
+      <div id="autoSubPlanSummary"></div>
+      <div id="autoSubPlanGrid" class="subplan-grid"></div>
     </div>
   </div>
 
@@ -3329,12 +3377,14 @@ function pickRandomTraining(list, unit){
   const teamsMode = document.getElementById("teamsMode");
   const trainingStrengthGroupsMode = document.getElementById("trainingStrengthGroupsMode");
   const substitutionPlanMode = document.getElementById("substitutionPlanMode");
+  const autoSubstitutionPlanMode = document.getElementById("autoSubstitutionPlanMode");
   const ligaMode = document.getElementById("ligaMode");
   const startMatchdayBtn = document.getElementById("startMatchdayBtn");
   const matchdayLineupBtn = document.getElementById("matchdayLineupBtn");
   const matchdayChecklistBtn = document.getElementById("matchdayChecklistBtn");
   const matchdayWarmupBtn = document.getElementById("matchdayWarmupBtn");
   const matchdaySubPlanBtn = document.getElementById("matchdaySubPlanBtn");
+  const matchdayAutoSubPlanBtn = document.getElementById("matchdayAutoSubPlanBtn");
   const startTrainingBtn = document.getElementById("startTrainingBtn");
   const trainingUnitsBtn = document.getElementById("trainingUnitsBtn");
   const trainingWarmupBtn = document.getElementById("trainingWarmupBtn");
@@ -3504,12 +3554,14 @@ function showMode(mode){
     teamsMode.style.display = mode === "teams" ? "block" : "none";
     trainingStrengthGroupsMode.style.display = mode === "trainingStrengthGroups" ? "block" : "none";
     substitutionPlanMode.style.display = mode === "substitutionPlan" ? "block" : "none";
+    autoSubstitutionPlanMode.style.display = mode === "autoSubstitutionPlan" ? "block" : "none";
     ligaMode.style.display = mode === "liga" ? "block" : "none";
     if(mode === "matchHistory") renderMatchHistory();
     if(mode === "checklist") renderChecklist();
     if(mode === "teams") renderTeamPlayerSelection();
     if(mode === "trainingStrengthGroups") renderStrengthGroupPlayerSelection();
     if(mode === "substitutionPlan") renderSubstitutionPlan();
+    if(mode === "autoSubstitutionPlan") calculateAutoSubstitutionPlan();
     if(mode === "liga") refreshLiga();
     window.scrollTo({top:0, behavior:"smooth"});
   }
@@ -3528,6 +3580,7 @@ function showMode(mode){
     teamsMode.style.display = "none";
     trainingStrengthGroupsMode.style.display = "none";
     substitutionPlanMode.style.display = "none";
+    autoSubstitutionPlanMode.style.display = "none";
     ligaMode.style.display = "none";
     window.scrollTo({top:0, behavior:"smooth"});
   }
@@ -3539,6 +3592,7 @@ function showMode(mode){
   matchdayLineupBtn.addEventListener("click", () => showMode("lineup"));
   matchdayChecklistBtn.addEventListener("click", () => showMode("checklist"));
   matchdaySubPlanBtn?.addEventListener("click", () => showMode("substitutionPlan"));
+  matchdayAutoSubPlanBtn?.addEventListener("click", () => showMode("autoSubstitutionPlan"));
   matchdayWarmupBtn.addEventListener("click", () => {
     window.warmupReturnMode = "matchdayHub";
     updateWarmupBackButton();
@@ -3768,7 +3822,7 @@ const TIMER_WHISTLE_AUDIO = "data:audio/mpeg;base64,SUQzBAAAAAAAI1RTU0UAAAAPAAAD
     saveSubstitutionPlan();
   }
 
-  function subPlanDrawPitch(svg, assign, formation, quarterIndex){
+  function subPlanDrawPitch(svg, assign, formation, quarterIndex, interactive=true){
     if(!svg) return;
     svg.innerHTML = "";
     const W = 260, H = 380, margin = 12;
@@ -3792,17 +3846,19 @@ const TIMER_WHISTLE_AUDIO = "data:audio/mpeg;base64,SUQzBAAAAAAAI1RTU0UAAAAPAAAD
       const x = margin + fx*(W-2*margin), y = margin + fy*(H-2*margin);
       const player = assign ? assign[slot] : null;
       const g = el("g", {});
-      g.setAttribute("class", "subplan-pitch-player");
-      g.setAttribute("tabindex", "0");
-      g.setAttribute("role", "button");
-      g.setAttribute("aria-label", player ? displayName(player) + " bearbeiten" : (LABEL[slot] || slot) + " besetzen");
-      g.addEventListener("click", () => openSubPlanPlayerPicker(quarterIndex, slot));
-      g.addEventListener("keydown", (event) => {
-        if(event.key === "Enter" || event.key === " "){
-          event.preventDefault();
-          openSubPlanPlayerPicker(quarterIndex, slot);
-        }
-      });
+      g.setAttribute("class", interactive ? "subplan-pitch-player" : "subplan-pitch-player static");
+      if(interactive){
+        g.setAttribute("tabindex", "0");
+        g.setAttribute("role", "button");
+        g.setAttribute("aria-label", player ? displayName(player) + " bearbeiten" : (LABEL[slot] || slot) + " besetzen");
+        g.addEventListener("click", () => openSubPlanPlayerPicker(quarterIndex, slot));
+        g.addEventListener("keydown", (event) => {
+          if(event.key === "Enter" || event.key === " "){
+            event.preventDefault();
+            openSubPlanPlayerPicker(quarterIndex, slot);
+          }
+        });
+      }
 
       if(player){
         g.appendChild(el("circle",{cx:x,cy:y,r:r,fill:"#c8102e",stroke:"#ffffff","stroke-width":2.5}));
@@ -3814,9 +3870,11 @@ const TIMER_WHISTLE_AUDIO = "data:audio/mpeg;base64,SUQzBAAAAAAAI1RTU0UAAAAPAAAD
         const t = el("text",{x:x,y:y-2,"text-anchor":"middle","font-size":"8","font-weight":"700",fill:"#ffffff","font-family":"Inter,sans-serif"});
         t.textContent = LABEL[slot] || slot;
         g.appendChild(t);
-        const t2 = el("text",{x:x,y:y+9,"text-anchor":"middle","font-size":"7","font-weight":"700",fill:"#ffffff","font-family":"Inter,sans-serif"});
-        t2.textContent = "antippen";
-        g.appendChild(t2);
+        if(interactive){
+          const t2 = el("text",{x:x,y:y+9,"text-anchor":"middle","font-size":"7","font-weight":"700",fill:"#ffffff","font-family":"Inter,sans-serif"});
+          t2.textContent = "antippen";
+          g.appendChild(t2);
+        }
       }
       svg.appendChild(g);
     }
@@ -3865,6 +3923,512 @@ const TIMER_WHISTLE_AUDIO = "data:audio/mpeg;base64,SUQzBAAAAAAAI1RTU0UAAAAPAAAD
       subPlanDrawPitch(svg, assign, formation, q);
     });
   }
+
+  /* ===================== Automatische Wechselplanung ===================== */
+  function getAutoSubPlanAvailablePlayers(){
+    return Object.keys(PLAYERS)
+      .filter(p => !GROUP_ONLY_PLAYERS.has(p) && Boolean(attendance[p]))
+      .sort((a,b) => displayName(a).localeCompare(displayName(b), "de"));
+  }
+
+  function getAutoSubPlanPlayerQuality(player){
+    const data = PLAYERS[player] || {};
+    const ratings = data.ratings || {};
+    const priorities = Array.isArray(data.positions) ? data.positions : [];
+    if(priorities.length && typeof getPlayerQuality === "function"){
+      const quality = getPlayerQuality(player);
+      if(Number.isFinite(quality)) return quality;
+    }
+    const fieldRatings = [ratings.AB, ratings.MF, ratings.ST]
+      .map(value => Number(value))
+      .filter(Number.isFinite);
+    const average = fieldRatings.length
+      ? fieldRatings.reduce((sum,value) => sum + value, 0) / fieldRatings.length
+      : 5;
+    const best = fieldRatings.length ? Math.max(...fieldRatings) : 5;
+    const body = Number.isFinite(Number(data.body)) ? Number(data.body) : 5;
+    const stamina = Number.isFinite(Number(data.stamina)) ? Number(data.stamina) : 5;
+    const playmaker = Number.isFinite(Number(ratings.SM)) ? Number(ratings.SM) : 5;
+    return best * 10 + average * 5
+      + body * 1.2
+      + stamina * 1.6
+      + playmaker * 0.5;
+  }
+
+  function getAutoSubPlanGoalkeeperQuality(player){
+    const data = PLAYERS[player] || {};
+    const stamina = Number.isFinite(Number(data.stamina)) ? Number(data.stamina) : 5;
+    return getPlayerPosRating(player, "TW") * 10
+      + getAutoSubPlanPlayerQuality(player) * 0.15
+      + stamina * 0.4;
+  }
+
+  function buildAutoSubPlanRoleLocks(available){
+    const hasRohbeck = available.includes("Maximilian Rohbeck");
+    const hasMaetzig = available.includes("Maximilian Mätzig");
+    const goalkeeper = [null,null,null,null];
+    const fixedField = [[],[],[],[]];
+    const notes = [];
+    let specialGoalkeeperRule = false;
+
+    if(hasRohbeck && hasMaetzig){
+      goalkeeper[0] = "Maximilian Rohbeck";
+      goalkeeper[1] = "Maximilian Rohbeck";
+      goalkeeper[2] = "Maximilian Mätzig";
+      goalkeeper[3] = "Maximilian Mätzig";
+      fixedField[1].push("Maximilian Mätzig");
+      fixedField[2].push("Maximilian Rohbeck");
+      specialGoalkeeperRule = true;
+      notes.push("Rohbeck: 1.–2. Viertel im Tor, 3. Viertel Feldspieler");
+      notes.push("Mätzig: 3.–4. Viertel im Tor, 2. Viertel Feldspieler");
+    } else if(hasRohbeck || hasMaetzig){
+      const primary = hasRohbeck ? "Maximilian Rohbeck" : "Maximilian Mätzig";
+      const otherKeepers = available
+        .filter(p => p !== primary)
+        .sort((a,b) => getAutoSubPlanGoalkeeperQuality(b) - getAutoSubPlanGoalkeeperQuality(a));
+      goalkeeper[0] = primary;
+      goalkeeper[1] = primary;
+      goalkeeper[2] = otherKeepers[0] || primary;
+      goalkeeper[3] = otherKeepers[1] || otherKeepers[0] || primary;
+      fixedField[2].push(primary);
+      specialGoalkeeperRule = true;
+      notes.push(`${displayName(primary)}: 1.–2. Viertel im Tor und 3. Viertel als Feldspieler`);
+      notes.push("Die übrigen Torwartviertel werden nach Torwartwert verteilt");
+    } else {
+      const ordered = available.slice()
+        .sort((a,b) => getAutoSubPlanGoalkeeperQuality(b) - getAutoSubPlanGoalkeeperQuality(a));
+      if(ordered.length >= 2){
+        goalkeeper[0] = ordered[0];
+        goalkeeper[1] = ordered[0];
+        goalkeeper[2] = ordered[1];
+        goalkeeper[3] = ordered[1];
+      } else {
+        goalkeeper.fill(ordered[0] || null);
+      }
+      notes.push("Torwartposition nach den hinterlegten Torwartwerten verteilt");
+    }
+
+    return {goalkeeper, fixedField, notes, specialGoalkeeperRule};
+  }
+
+  function countAutoSubPlanLockedAppearances(available, goalkeeper, fixedField){
+    const lockedByQuarter = [];
+    const lockedCounts = Object.fromEntries(available.map(p => [p, 0]));
+    for(let q=0;q<4;q++){
+      const set = new Set();
+      if(goalkeeper[q]) set.add(goalkeeper[q]);
+      for(const player of fixedField[q] || []) set.add(player);
+      lockedByQuarter.push(set);
+      for(const player of set){
+        if(Object.prototype.hasOwnProperty.call(lockedCounts, player)) lockedCounts[player]++;
+      }
+    }
+    return {lockedByQuarter, lockedCounts};
+  }
+
+  function buildAutoSubPlanTargets(available, lockedCounts){
+    const count = available.length;
+    if(count > 28) return null;
+
+    // Bei 7–14 Spielern zunächst zwei Viertel als Ziel, bei größeren Kadern
+    // mindestens ein Viertel. Zusätzliche Spielzeit geht vorrangig an stärkere Spieler.
+    const base = count <= 14 ? 2 : 1;
+    const max = count >= 10 ? 3 : 4;
+    const targets = Object.fromEntries(available.map(p => [p, Math.max(base, lockedCounts[p] || 0)]));
+    const quality = Object.fromEntries(available.map(p => [p, getAutoSubPlanPlayerQuality(p)]));
+
+    let total = Object.values(targets).reduce((sum,value) => sum + value, 0);
+
+    // Feste Torwart-/Feldspielerrollen haben Vorrang. Falls die Kadergröße
+    // dies nicht zulässt, werden zunächst zusätzliche Zielviertel reduziert.
+    while(total > 28){
+      const reducible = available
+        .filter(p => targets[p] > Math.max(1, lockedCounts[p] || 0))
+        .sort((a,b) => quality[a] - quality[b]);
+      if(!reducible.length) break;
+      targets[reducible[0]]--;
+      total--;
+    }
+
+    // Die Torwart-Sonderregel ist ausdrücklich eine Wunschregel („wenn möglich“).
+    // Bei sehr großen Kadern wird zuerst auf das zusätzliche Feldspieler-Viertel
+    // verzichtet, bevor die Mindestspielzeit eines Kindes gefährdet wird.
+    if(total > 28){
+      return {targets:null, quality, reason:"Für die gewünschte Torwartverteilung bleibt bei dieser Anzahl an Spielern nicht genügend Spielzeit übrig."};
+    }
+
+    while(total < 28){
+      const eligible = available.filter(p => targets[p] < max);
+      if(!eligible.length){
+        return {targets:null, quality, reason:"Mit dieser Kadergröße lassen sich 28 Spielerplätze nicht verteilen, ohne die Aussetzregel zu verletzen."};
+      }
+      eligible.sort((a,b) => {
+        const aLoad = Math.max(1, targets[a] - base + 1);
+        const bLoad = Math.max(1, targets[b] - base + 1);
+        return (quality[b] / bLoad) - (quality[a] / aLoad);
+      });
+      targets[eligible[0]]++;
+      total++;
+    }
+
+    return {targets, quality, reason:""};
+  }
+
+  function buildAutoSubPlanFlowSchedule(available, targets, lockedByQuarter, fixedField, goalkeeper){
+    const quarterCapacities = [0,1,2,3].map(q => 6 - fixedField[q].length);
+    const lockedCounts = Object.fromEntries(available.map(p => [p, 0]));
+    for(const set of lockedByQuarter){
+      for(const p of set){ if(lockedCounts[p] !== undefined) lockedCounts[p]++; }
+    }
+    const demands = available.map(p => Math.max(0, targets[p] - lockedCounts[p]));
+    const totalDemand = demands.reduce((sum,value) => sum + value, 0);
+    const totalCapacity = quarterCapacities.reduce((sum,value) => sum + value, 0);
+    if(totalDemand !== totalCapacity) return null;
+
+    // Kleine bipartite Max-Flow-Berechnung: Jeder Spieler kann pro Viertel
+    // höchstens einmal als Feldspieler eingeplant werden.
+    const playerCount = available.length;
+    const source = 0;
+    const playerStart = 1;
+    const quarterStart = playerStart + playerCount;
+    const sink = quarterStart + 4;
+    const graph = Array.from({length:sink+1}, () => []);
+    const addEdge = (from,to,capacity) => {
+      const forward = {to, rev:graph[to].length, cap:capacity, initial:capacity};
+      const reverse = {to:from, rev:graph[from].length, cap:0, initial:0};
+      graph[from].push(forward);
+      graph[to].push(reverse);
+      return forward;
+    };
+
+    const assignmentEdges = {};
+    const orderPlayers = available.slice().sort((a,b) => {
+      const demandDiff = (targets[b] - lockedCounts[b]) - (targets[a] - lockedCounts[a]);
+      return demandDiff || getAutoSubPlanPlayerQuality(b) - getAutoSubPlanPlayerQuality(a);
+    });
+    const playerNode = Object.fromEntries(available.map((p,i) => [p, playerStart+i]));
+
+    orderPlayers.forEach(player => {
+      const demand = Math.max(0, targets[player] - lockedCounts[player]);
+      addEdge(source, playerNode[player], demand);
+      assignmentEdges[player] = {};
+      const preferredQuarters = [0,1,2,3].sort((a,b) => {
+        const capDiff = quarterCapacities[b] - quarterCapacities[a];
+        return capDiff || a-b;
+      });
+      preferredQuarters.forEach(q => {
+        if(lockedByQuarter[q].has(player) || quarterCapacities[q] <= 0) return;
+        assignmentEdges[player][q] = addEdge(playerNode[player], quarterStart+q, 1);
+      });
+    });
+
+    for(let q=0;q<4;q++) addEdge(quarterStart+q, sink, quarterCapacities[q]);
+
+    let flow = 0;
+    while(true){
+      const parent = Array(graph.length).fill(null);
+      const queue = [source];
+      parent[source] = {node:-1, edge:-1};
+      for(let head=0;head<queue.length && parent[sink]===null;head++){
+        const node = queue[head];
+        for(let i=0;i<graph[node].length;i++){
+          const edge = graph[node][i];
+          if(edge.cap > 0 && parent[edge.to] === null){
+            parent[edge.to] = {node, edge:i};
+            queue.push(edge.to);
+            if(edge.to === sink) break;
+          }
+        }
+      }
+      if(parent[sink] === null) break;
+      let amount = Infinity;
+      for(let node=sink;node!==source;){
+        const step = parent[node];
+        amount = Math.min(amount, graph[step.node][step.edge].cap);
+        node = step.node;
+      }
+      for(let node=sink;node!==source;){
+        const step = parent[node];
+        const edge = graph[step.node][step.edge];
+        edge.cap -= amount;
+        graph[node][edge.rev].cap += amount;
+        node = step.node;
+      }
+      flow += amount;
+    }
+
+    if(flow !== totalDemand) return null;
+
+    const fieldByQuarter = fixedField.map(list => list.slice());
+    for(const player of available){
+      for(let q=0;q<4;q++){
+        const edge = assignmentEdges[player][q];
+        if(edge && edge.initial === 1 && edge.cap === 0) fieldByQuarter[q].push(player);
+      }
+    }
+
+    for(let q=0;q<4;q++){
+      if(fieldByQuarter[q].length !== 6) return null;
+      if(new Set([...fieldByQuarter[q], goalkeeper[q]]).size !== 7) return null;
+    }
+    return fieldByQuarter;
+  }
+
+  function autoSubPlanBestPositionAssignment(fieldPlayers, goalkeeper, formation){
+    const slots = (FORMATIONS[formation] || FORMATIONS["2-2-2"]).filter(slot => slot !== "TW");
+    let bestAssignment = null;
+    let bestScore = -Infinity;
+
+    const tryAssignment = strict => {
+      function rec(index, remaining, assignment){
+        if(index === slots.length){
+          const candidate = Object.assign({TW:goalkeeper}, assignment);
+          const score = scoreLineup(candidate, formation);
+          if(score > bestScore){
+            bestScore = score;
+            bestAssignment = candidate;
+          }
+          return;
+        }
+        const slot = slots[index];
+        let candidates = remaining;
+        if(strict) candidates = remaining.filter(player => canPlay(player, slot));
+        candidates = candidates.slice().sort((a,b) => {
+          const valueA = getPlayerPosRating(a, slot) * 10 + positionPriorityBonus(a, slot);
+          const valueB = getPlayerPosRating(b, slot) * 10 + positionPriorityBonus(b, slot);
+          return valueB - valueA;
+        });
+        for(const player of candidates){
+          rec(index+1, remaining.filter(p => p !== player), Object.assign({}, assignment, {[slot]:player}));
+        }
+      }
+      rec(0, fieldPlayers.slice(), {});
+    };
+
+    tryAssignment(true);
+    if(!bestAssignment) tryAssignment(false);
+    return bestAssignment;
+  }
+
+  function calculateAutoSubstitutionPlan(){
+    const status = document.getElementById("autoSubPlanStatus");
+    const summary = document.getElementById("autoSubPlanSummary");
+    const grid = document.getElementById("autoSubPlanGrid");
+    if(!status || !summary || !grid) return;
+
+    summary.innerHTML = "";
+    grid.innerHTML = "";
+    window.u11AutoSubstitutionPlan = null;
+
+    const available = getAutoSubPlanAvailablePlayers();
+    if(available.length < 7){
+      status.textContent = available.length
+        ? `Aktuell sind ${available.length} Spieler ausgewählt. Für eine vollständige Aufstellung werden mindestens 7 benötigt.`
+        : "Bitte zuerst auf der Seite „Aufstellung“ die anwesenden Spieler auswählen.";
+      return;
+    }
+    if(available.length > 28){
+      status.textContent = `Es sind ${available.length} Spieler ausgewählt. Bei vier Vierteln können maximal 28 unterschiedliche Spielerplätze vergeben werden. Bitte die Anwesenheit prüfen.`;
+      return;
+    }
+
+    const formation = formationSelect.value || "2-2-2";
+    const roles = buildAutoSubPlanRoleLocks(available);
+    let fixedField = roles.fixedField.map(list => list.slice());
+    let goalkeeper = roles.goalkeeper.slice();
+    let specialRuleApplied = roles.specialGoalkeeperRule;
+
+    let locked = countAutoSubPlanLockedAppearances(available, goalkeeper, fixedField);
+    let targetResult = buildAutoSubPlanTargets(available, locked.lockedCounts);
+
+    // Falls die Sonderregel bei sehr großem Kader nicht mehr passt, zunächst
+    // die zusätzlichen Feldspieler-Viertel der Wunsch-Torhüter lockern.
+    if(!targetResult || !targetResult.targets){
+      if(specialRuleApplied){
+        fixedField = [[],[],[],[]];
+        locked = countAutoSubPlanLockedAppearances(available, goalkeeper, fixedField);
+        targetResult = buildAutoSubPlanTargets(available, locked.lockedCounts);
+        specialRuleApplied = false;
+      }
+    }
+
+    // Bei außergewöhnlich vielen Anwesenden wird auch die Torwartpaarung gelockert,
+    // damit weiterhin jeder Spieler mindestens ein Viertel bekommt.
+    if(!targetResult || !targetResult.targets){
+      const ordered = available.slice().sort((a,b) => getAutoSubPlanGoalkeeperQuality(b) - getAutoSubPlanGoalkeeperQuality(a));
+      goalkeeper = [ordered[0], ordered[1] || ordered[0], ordered[2] || ordered[0], ordered[3] || ordered[1] || ordered[0]];
+      fixedField = [[],[],[],[]];
+      locked = countAutoSubPlanLockedAppearances(available, goalkeeper, fixedField);
+      targetResult = buildAutoSubPlanTargets(available, locked.lockedCounts);
+      specialRuleApplied = false;
+    }
+
+    if(!targetResult || !targetResult.targets){
+      status.textContent = targetResult?.reason || "Die automatische Verteilung konnte mit dieser Spielerauswahl nicht berechnet werden.";
+      return;
+    }
+
+    let fieldByQuarter = buildAutoSubPlanFlowSchedule(available, targetResult.targets, locked.lockedByQuarter, fixedField, goalkeeper);
+    if(!fieldByQuarter){
+      // Zweiter Versuch: gleiche Zielspielzeiten, aber ohne feste Feldspieler-Viertel
+      // für die beiden Wunsch-Torhüter. Die Torwartviertel bleiben dabei erhalten.
+      if(fixedField.some(list => list.length)){
+        fixedField = [[],[],[],[]];
+        locked = countAutoSubPlanLockedAppearances(available, goalkeeper, fixedField);
+        targetResult = buildAutoSubPlanTargets(available, locked.lockedCounts);
+        fieldByQuarter = targetResult.targets
+          ? buildAutoSubPlanFlowSchedule(available, targetResult.targets, locked.lockedByQuarter, fixedField, goalkeeper)
+          : null;
+        specialRuleApplied = false;
+      }
+    }
+
+    if(!fieldByQuarter){
+      status.textContent = "Die automatische Verteilung konnte mit den aktuellen Positions- und Torwartvorgaben nicht vollständig berechnet werden. Bitte die Formation oder die Spieler-Auswahl prüfen.";
+      return;
+    }
+
+    const quarters = [];
+    const played = Object.fromEntries(available.map(p => [p, 0]));
+    for(let q=0;q<4;q++){
+      const assignment = autoSubPlanBestPositionAssignment(fieldByQuarter[q], goalkeeper[q], formation);
+      if(!assignment){
+        status.textContent = `Für das ${q+1}. Viertel konnte keine vollständige Positionszuordnung erstellt werden.`;
+        return;
+      }
+      for(const player of Object.values(assignment)) played[player] = (played[player] || 0) + 1;
+      quarters.push(assignment);
+    }
+
+    const unmetMinimum = available.filter(p => (played[p] || 0) < 1);
+    const overRestLimit = available.filter(p => (played[p] || 0) > 3);
+    if(unmetMinimum.length){
+      status.textContent = "Die Verteilung konnte nicht alle ausgewählten Spieler berücksichtigen. Bitte die Auswahl prüfen.";
+      return;
+    }
+
+    const planNotes = roles.specialGoalkeeperRule && !specialRuleApplied
+      ? ["Die Zusatzrolle als Feldspieler wurde wegen der Kadergröße gelockert."]
+      : roles.notes.slice();
+    const plan = {formation, available:available.slice(), quarters, played, targets:targetResult.targets, goalkeeper:goalkeeper.slice(), notes:planNotes, specialRuleApplied};
+    window.u11AutoSubstitutionPlan = plan;
+    renderAutoSubstitutionPlan(plan, {overRestLimit, specialRuleApplied, roles});
+  }
+
+  function renderAutoSubstitutionPlan(plan, meta={}){
+    const status = document.getElementById("autoSubPlanStatus");
+    const summary = document.getElementById("autoSubPlanSummary");
+    const grid = document.getElementById("autoSubPlanGrid");
+    if(!status || !summary || !grid) return;
+
+    const count = plan.available.length;
+    const warnings = [];
+    if(count < 10){
+      warnings.push(`Bei ${count} anwesenden Spielern ist es rechnerisch nicht möglich, dass jeder mindestens ein Viertel aussetzt: Dafür werden mindestens 10 Spieler benötigt. Alle ausgewählten Spieler werden trotzdem mindestens einmal eingesetzt.`);
+    }
+    if(meta.overRestLimit && meta.overRestLimit.length){
+      warnings.push("Mindestens ein Spieler muss wegen der Kadergröße mehr als drei Viertel spielen.");
+    }
+    if(!meta.specialRuleApplied && (plan.available.includes("Maximilian Rohbeck") || plan.available.includes("Maximilian Mätzig"))){
+      warnings.push("Die gewünschte Zusatzrolle der Torhüter (zwei Viertel im Tor plus ein Viertel als Feldspieler) war mit der Kadergröße oder den verfügbaren Positionen nicht vollständig umsetzbar.");
+    }
+
+    status.textContent = `${count} anwesende Spieler · Formation ${plan.formation} · vier Viertel à 15 Minuten. Die stärkeren Spieler erhalten entsprechend ihrer Spielerwerte tendenziell mehr Spielzeit.`;
+    summary.innerHTML = "";
+    if(warnings.length){
+      const warning = document.createElement("div");
+      warning.className = "auto-subplan-warning";
+      warning.textContent = warnings.join(" ");
+      summary.appendChild(warning);
+    }
+
+    const summaryBox = document.createElement("div");
+    summaryBox.className = "auto-subplan-summary";
+    const summaryTitle = document.createElement("strong");
+    summaryTitle.textContent = "Torwartplanung";
+    summaryBox.appendChild(summaryTitle);
+    const goalieText = document.createElement("div");
+    goalieText.style.marginTop = "4px";
+    goalieText.textContent = plan.goalkeeper.map((p,q) => `${q+1}. Viertel: ${displayName(p)}`).join(" · ");
+    summaryBox.appendChild(goalieText);
+    if(plan.notes && plan.notes.length){
+      const note = document.createElement("div");
+      note.className = "auto-subplan-quarter-info";
+      note.textContent = plan.notes.join(" · ");
+      summaryBox.appendChild(note);
+    }
+
+    const timeTitle = document.createElement("div");
+    timeTitle.style.marginTop = "10px";
+    timeTitle.innerHTML = "<strong>Geplante Spielzeit</strong>";
+    summaryBox.appendChild(timeTitle);
+    const table = document.createElement("table");
+    table.className = "auto-subplan-time-table";
+    const thead = document.createElement("thead");
+    const headRow = document.createElement("tr");
+    ["Spieler","Viertel","Spielzeit","Pause"].forEach(label => {
+      const th = document.createElement("th"); th.textContent = label; headRow.appendChild(th);
+    });
+    thead.appendChild(headRow); table.appendChild(thead);
+    const tbody = document.createElement("tbody");
+    plan.available.slice().sort((a,b) => {
+      const diff = (plan.played[b] || 0) - (plan.played[a] || 0);
+      return diff || getAutoSubPlanPlayerQuality(b) - getAutoSubPlanPlayerQuality(a) || displayName(a).localeCompare(displayName(b),"de");
+    }).forEach(player => {
+      const row = document.createElement("tr");
+      const quartersPlayed = plan.quarters.map((assignment,q) => Object.values(assignment).includes(player) ? q+1 : null).filter(Boolean);
+      const rests = [1,2,3,4].filter(q => !quartersPlayed.includes(q));
+      [displayName(player), `${quartersPlayed.length}/4`, `${quartersPlayed.length*15} Min.`, rests.length ? rests.map(q=>`V${q}`).join(", ") : "–"]
+        .forEach(value => { const td = document.createElement("td"); td.textContent = value; row.appendChild(td); });
+      tbody.appendChild(row);
+    });
+    table.appendChild(tbody); summaryBox.appendChild(table);
+    summary.appendChild(summaryBox);
+
+    grid.innerHTML = "";
+    plan.quarters.forEach((assignment,q) => {
+      const card = document.createElement("div");
+      card.className = "subplan-card";
+      const heading = document.createElement("h3");
+      heading.textContent = `${q+1}. Viertel · 15 Minuten`;
+      card.appendChild(heading);
+
+      const wrap = document.createElement("div");
+      wrap.className = "subplan-pitch-wrap";
+      const svg = document.createElementNS(SVGNS, "svg");
+      svg.classList.add("pitch", "subplan-pitch");
+      wrap.appendChild(svg); card.appendChild(wrap);
+      subPlanDrawPitch(svg, assignment, plan.formation, q, false);
+
+      const goalieInfo = document.createElement("div");
+      goalieInfo.className = "auto-subplan-quarter-info";
+      goalieInfo.textContent = `Torwart: ${displayName(assignment.TW)}`;
+      card.appendChild(goalieInfo);
+
+      const bench = document.createElement("div");
+      bench.className = "subplan-bench";
+      const playing = new Set(Object.values(assignment).filter(Boolean));
+      const onBench = plan.available.filter(p => !playing.has(p)).sort((a,b)=>displayName(a).localeCompare(displayName(b),"de"));
+      const benchTitle = document.createElement("strong"); benchTitle.textContent = "Pause: ";
+      bench.appendChild(benchTitle);
+      bench.appendChild(document.createTextNode(onBench.length ? onBench.map(displayName).join(", ") : "keine"));
+      card.appendChild(bench);
+
+      if(q > 0){
+        const prev = new Set(Object.values(plan.quarters[q-1]));
+        const now = new Set(Object.values(assignment));
+        const out = [...prev].filter(p => !now.has(p));
+        const inside = [...now].filter(p => !prev.has(p));
+        const change = document.createElement("div");
+        change.className = "auto-subplan-quarter-info";
+        change.textContent = `Wechsel: ${out.length ? "raus: " + out.map(displayName).join(", ") : "keine raus"} · ${inside.length ? "rein: " + inside.map(displayName).join(", ") : "keine rein"}`;
+        card.appendChild(change);
+      }
+      grid.appendChild(card);
+    });
+  }
+
+  document.getElementById("autoSubPlanCalculateBtn")?.addEventListener("click", calculateAutoSubstitutionPlan);
 
   function openSubPlanPlayerPicker(quarterIndex, slot){
     const plan = window.u11SubstitutionPlan;
@@ -4243,9 +4807,21 @@ const TIMER_WHISTLE_AUDIO = "data:audio/mpeg;base64,SUQzBAAAAAAAI1RTU0UAAAAPAAAD
     window.u11TeamSelectionInitializedFromTraining=true;
   }
 
-  // Torhüter werden für jede Berechnung ausdrücklich vom Trainer ausgewählt.
-  // Es gibt keine fest hinterlegten Spielernamen mehr.
+  // Torhüter sind optional; es gibt keine fest hinterlegten Spielernamen.
   if(!(window.u11SelectedTeamGoalkeepers instanceof Set)) window.u11SelectedTeamGoalkeepers=new Set();
+
+  function syncTeamGoalkeeperControls(){
+    const noGoalkeeperMode=!!document.getElementById("teamNoGoalkeeperMode")?.checked;
+    document.querySelectorAll("#teamPlayerList .team-player-goalkeeper").forEach(cb=>{
+      cb.disabled=noGoalkeeperMode;
+      const label=cb.closest(".team-goalkeeper-toggle");
+      if(label){
+        label.style.opacity=noGoalkeeperMode?".45":"";
+        label.title=noGoalkeeperMode?"Bei Minitoren wird kein Torwart benötigt":"Als Torwart einsetzen";
+      }
+    });
+    document.getElementById("teamNoGoalkeeperOption")?.classList.toggle("active",noGoalkeeperMode);
+  }
 
   function renderTeamPlayerSelection(){
     const box=document.getElementById("teamPlayerList");
@@ -4296,6 +4872,7 @@ const TIMER_WHISTLE_AUDIO = "data:audio/mpeg;base64,SUQzBAAAAAAAI1RTU0UAAAAPAAAD
       });
       row.append(cb,label,keeperLabel); box.appendChild(row);
     });
+    syncTeamGoalkeeperControls();
     syncTeamSelectionFromTrainingGroups();
   }
 
@@ -4423,8 +5000,10 @@ const TIMER_WHISTLE_AUDIO = "data:audio/mpeg;base64,SUQzBAAAAAAAI1RTU0UAAAAPAAAD
     const result=document.getElementById("teamSplitResult");
     const reshuffleBtn=document.getElementById("reshuffleTeamsBtn");
 
-    // Nur ausdrücklich markierte und zugleich anwesende Spieler werden als Torhüter geführt.
-    const selectedGoalkeepers=window.u11SelectedTeamGoalkeepers instanceof Set
+    // Torwart ist optional. Im Minitor-Modus werden alle ausgewählten Kinder
+    // als Feldspieler behandelt, unabhängig von vorherigen TW-Markierungen.
+    const noGoalkeeperMode=!!document.getElementById("teamNoGoalkeeperMode")?.checked;
+    const selectedGoalkeepers=!noGoalkeeperMode && window.u11SelectedTeamGoalkeepers instanceof Set
       ? window.u11SelectedTeamGoalkeepers
       : new Set();
     const goalkeepers=checked.filter(p=>selectedGoalkeepers.has(p));
@@ -4531,6 +5110,22 @@ const TIMER_WHISTLE_AUDIO = "data:audio/mpeg;base64,SUQzBAAAAAAAI1RTU0UAAAAPAAAD
 
   document.getElementById("createTeamsBtn").addEventListener("click",()=>calculateTeams());
   document.getElementById("reshuffleTeamsBtn").addEventListener("click",()=>calculateTeams({reshuffle:true}));
+  document.getElementById("teamNoGoalkeeperMode").addEventListener("change",event=>{
+    const noGoalkeeperMode=event.target.checked;
+    if(noGoalkeeperMode){
+      window.u11SelectedTeamGoalkeepers=new Set();
+      document.querySelectorAll("#teamPlayerList .team-player-goalkeeper").forEach(cb=>cb.checked=false);
+    }
+    syncTeamGoalkeeperControls();
+    window.u11LastTeamSignature=null;
+    const result=document.getElementById("teamSplitResult");
+    if(result.querySelector(".team-card")){
+      calculateTeams();
+    }else{
+      result.innerHTML="";
+      document.getElementById("reshuffleTeamsBtn").disabled=true;
+    }
+  });
   document.getElementById("teamCountSelect").addEventListener("change",()=>{
     window.u11LastTeamSignature=null;
     document.getElementById("teamSplitResult").innerHTML="";
@@ -4904,6 +5499,6 @@ if ("serviceWorker" in navigator) {
 }
 </script>
 
-<div class="install-hint">SpVgg Erdweg U11 (<a href="./U11-Coach-Versionshistory.md" target="_blank" rel="noopener noreferrer" class="footer-version-link" aria-label="Versionshistory">V1.216</a> by Mike)</div>
+<div class="install-hint">SpVgg Erdweg U11 (<a href="./U11-Coach-Versionshistory.md" target="_blank" rel="noopener noreferrer" class="footer-version-link" aria-label="Versionshistory">V1.218</a> by Mike)</div>
 </body>
 </html>

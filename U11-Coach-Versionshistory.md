@@ -1,3 +1,22 @@
+## V1.218
+
+- Neue Kachel **„autom. Wechselplanung“** im Bereich **Spieltag** ergänzt.
+- Die Seite berechnet die Besetzung aller vier Viertel automatisch anhand der anwesenden Spieler, der Spielerwerte und der hinterlegten Positionsprioritäten.
+- Jeder anwesende Spieler wird mindestens einmal eingeplant; bei ausreichend großem Kader (ab 10 Spielern) setzt jeder mindestens ein Viertel aus.
+- Stärkere Spieler erhalten tendenziell mehr Spielzeit; die geplanten Minuten und Pausen je Spieler werden übersichtlich zusammengefasst.
+- Rohbeck und Mätzig werden – sofern beide anwesend und die Kadergröße passend ist – jeweils zwei aufeinanderfolgende Viertel im Tor sowie mindestens ein Viertel als Feldspieler eingeplant.
+- Die bisherige manuelle **Wechselplanung** bleibt unverändert erhalten.
+- Sichtbare Versionsanzeige und Service-Worker-Cache auf **V1.218** aktualisiert.
+
+## V1.217
+
+- Auf der Seite **Spielgruppen** ist der Torwart jetzt ausdrücklich optional.
+- Neue Option **„Ohne Torwart spielen (Minitore)“**: Alle ausgewählten Kinder werden als Feldspieler auf die ausgewählten 2, 3 oder 4 Teams verteilt.
+- Beim Aktivieren des Minitor-Modus werden vorhandene TW-Markierungen entfernt und die Torwart-Kontrollen deaktiviert; bei bereits berechneten Gruppen wird die Verteilung direkt aktualisiert.
+- Ohne aktivierten Minitor-Modus bleibt die TW-Auswahl weiterhin freiwillig; es muss kein Torwart markiert werden.
+- Die Team-Auswahl mit bis zu vier Mannschaften aus V1.216 bleibt erhalten.
+- Sichtbare Versionsanzeige und Service-Worker-Cache auf **V1.217** aktualisiert.
+
 ## V1.216
 
 - Die Seite **Spielgruppen** bietet jetzt auch **4 Mannschaften** zur Auswahl.
