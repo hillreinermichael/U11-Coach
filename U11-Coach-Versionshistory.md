@@ -1,3 +1,10 @@
+## V1.220
+
+- Ligatabelle anhand des bereitgestellten BFV-Screenshots vom **08.11.2026** aktualisiert.
+- Alle zehn Mannschaften mit den Tabellenwerten nach sieben Spielen übernommen: Siege/Unentschieden/Niederlagen, Tore, Tordifferenz und Punkte.
+- Die **SpVgg Erdweg U11 steht auf Platz 4** mit **13 Punkten** und einem Torverhältnis von **26:24**.
+- Sichtbare Versionsanzeige und Service-Worker-Cache auf **V1.220** aktualisiert.
+
 ## V1.219
 
 - Neues Heim-Punktspiel vom **08.11.2026** in die Spielhistorie aufgenommen.
