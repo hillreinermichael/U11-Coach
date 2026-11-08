@@ -1,3 +1,10 @@
+## V1.219
+
+- Neues Heim-Punktspiel vom **08.11.2026** in die Spielhistorie aufgenommen.
+- **SpVgg Erdweg U11 – SV Sulzemoos U11**, Ergebnis **2:2**.
+- Das Spiel wird als Unentschieden dargestellt; Mannschaftsreihenfolge und Ergebnisanzeige richten sich nach dem Heimspiel.
+- Sichtbare Versionsanzeige und Service-Worker-Cache auf **V1.219** aktualisiert.
+
 ## V1.218
 
 - Neue Kachel **„autom. Wechselplanung“** im Bereich **Spieltag** ergänzt.
