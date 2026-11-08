@@ -1,3 +1,12 @@
+## V1.221
+
+- Die automatische Wechselplanung verteilt die Bankpausen jetzt gezielt so, dass möglichst jeder anwesende Spieler mindestens ein Viertel aussetzt.
+- Ab zehn anwesenden Spielern erhält jeder Spieler mindestens ein Pausenviertel; die Spielzeit bleibt dabei möglichst nach Spielerwerten gewichtet.
+- Bei acht oder neun Spielern werden die verfügbaren Pausen auf möglichst viele unterschiedliche Spieler verteilt. Wenn Rohbeck und Mätzig beide anwesend sind, erhalten beide vorrangig jeweils ein Pausenviertel; weitere Spielerpausen gehen bevorzugt an Spieler mit niedrigeren Spielerwerten.
+- Bei weniger als zehn Spielern zeigt die Übersicht zusätzlich an, welche Spieler aufgrund der begrenzten Anzahl an Bankplätzen durchspielen müssen.
+- Manuelle Wechselplanung und alle übrigen Funktionen bleiben unverändert.
+- Sichtbare Versionsanzeige und Service-Worker-Cache auf **V1.221** aktualisiert.
+
 ## V1.220
 
 - Ligatabelle anhand des bereitgestellten BFV-Screenshots vom **08.11.2026** aktualisiert.

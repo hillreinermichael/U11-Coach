@@ -4030,14 +4030,63 @@ const TIMER_WHISTLE_AUDIO = "data:audio/mpeg;base64,SUQzBAAAAAAAI1RTU0UAAAAPAAAD
   function buildAutoSubPlanTargets(available, lockedCounts){
     const count = available.length;
     if(count > 28) return null;
-
-    // Bei 7–14 Spielern zunächst zwei Viertel als Ziel, bei größeren Kadern
-    // mindestens ein Viertel. Zusätzliche Spielzeit geht vorrangig an stärkere Spieler.
-    const base = count <= 14 ? 2 : 1;
-    const max = count >= 10 ? 3 : 4;
-    const targets = Object.fromEntries(available.map(p => [p, Math.max(base, lockedCounts[p] || 0)]));
     const quality = Object.fromEntries(available.map(p => [p, getAutoSubPlanPlayerQuality(p)]));
 
+    // Bei weniger als zehn Spielern sind nicht genug Bankplätze vorhanden,
+    // damit jedes Kind mindestens einmal aussetzen kann. In diesem Fall werden
+    // zunächst möglichst viele unterschiedliche Spieler für genau ein
+    // Pausenviertel vorgesehen. Mätzig und Rohbeck haben dabei Vorrang, wenn
+    // beide als wechselnde Torhüter anwesend sind.
+    if(count < 10){
+      let benchPlacesToDistribute = Math.max(0, count * 4 - 28);
+      const targets = Object.fromEntries(available.map(p => [p, 4]));
+      const canRest = available.filter(p => (lockedCounts[p] || 0) <= 3);
+      const bothKeepersAvailable = available.includes("Maximilian Rohbeck")
+        && available.includes("Maximilian Mätzig");
+      const preferredRestOrder = bothKeepersAvailable
+        ? ["Maximilian Mätzig", "Maximilian Rohbeck"]
+        : [];
+      const restOrder = [
+        ...preferredRestOrder.filter(p => canRest.includes(p)),
+        ...canRest
+          .filter(p => !preferredRestOrder.includes(p))
+          .sort((a,b) => quality[a] - quality[b] || displayName(a).localeCompare(displayName(b), "de"))
+      ];
+
+      // Erste Priorität: möglichst viele verschiedene Spieler einmal pausieren lassen.
+      for(const player of restOrder){
+        if(benchPlacesToDistribute <= 0) break;
+        targets[player] = Math.max(3, lockedCounts[player] || 0);
+        benchPlacesToDistribute--;
+      }
+
+      // Nur falls feste Rollen einzelne Spieler bereits zu oft binden, werden
+      // zusätzliche Pausen bei Spielern verteilt, die noch weitere Viertel abgeben können.
+      for(const player of restOrder){
+        while(benchPlacesToDistribute > 0 && targets[player] > Math.max(1, lockedCounts[player] || 0)){
+          targets[player]--;
+          benchPlacesToDistribute--;
+        }
+      }
+
+      const total = Object.values(targets).reduce((sum,value) => sum + value, 0);
+      if(benchPlacesToDistribute > 0 || total !== 28){
+        return {
+          targets:null,
+          quality,
+          reason:"Die Torwart- und Positionsvorgaben lassen bei dieser Kadergröße keine vollständige Verteilung aller 28 Spielerplätze zu."
+        };
+      }
+      return {targets, quality, reason:""};
+    }
+
+    // Ab zehn Spielern ist es rechnerisch möglich, jedem mindestens ein
+    // Pausenviertel zu geben. Deshalb spielt niemand mehr als drei Viertel.
+    // Bei 7–14 Spielern werden zunächst zwei Viertel als Ziel angesetzt;
+    // stärkere Spieler erhalten zusätzliche Spielzeit bevorzugt.
+    const base = count <= 14 ? 2 : 1;
+    const max = 3;
+    const targets = Object.fromEntries(available.map(p => [p, Math.max(base, lockedCounts[p] || 0)]));
     let total = Object.values(targets).reduce((sum,value) => sum + value, 0);
 
     // Feste Torwart-/Feldspielerrollen haben Vorrang. Falls die Kadergröße
@@ -4051,9 +4100,6 @@ const TIMER_WHISTLE_AUDIO = "data:audio/mpeg;base64,SUQzBAAAAAAAI1RTU0UAAAAPAAAD
       total--;
     }
 
-    // Die Torwart-Sonderregel ist ausdrücklich eine Wunschregel („wenn möglich“).
-    // Bei sehr großen Kadern wird zuerst auf das zusätzliche Feldspieler-Viertel
-    // verzichtet, bevor die Mindestspielzeit eines Kindes gefährdet wird.
     if(total > 28){
       return {targets:null, quality, reason:"Für die gewünschte Torwartverteilung bleibt bei dieser Anzahl an Spielern nicht genügend Spielzeit übrig."};
     }
@@ -4324,11 +4370,27 @@ const TIMER_WHISTLE_AUDIO = "data:audio/mpeg;base64,SUQzBAAAAAAAI1RTU0UAAAAPAAAD
 
     const count = plan.available.length;
     const warnings = [];
+    const playingAllFour = plan.available.filter(player =>
+      plan.quarters.every(assignment => Object.values(assignment).includes(player))
+    );
     if(count < 10){
       warnings.push(`Bei ${count} anwesenden Spielern ist es rechnerisch nicht möglich, dass jeder mindestens ein Viertel aussetzt: Dafür werden mindestens 10 Spieler benötigt. Alle ausgewählten Spieler werden trotzdem mindestens einmal eingesetzt.`);
+      if(playingAllFour.length){
+        warnings.push(`Durchspielen müssen: ${playingAllFour.map(displayName).join(", ")}.`);
+      }
     }
-    if(meta.overRestLimit && meta.overRestLimit.length){
-      warnings.push("Mindestens ein Spieler muss wegen der Kadergröße mehr als drei Viertel spielen.");
+    if(meta.overRestLimit && meta.overRestLimit.length && count >= 10){
+      warnings.push("Mindestens ein Spieler muss wegen der festen Torwart- oder Positionsvorgaben mehr als drei Viertel spielen.");
+    }
+    if(plan.available.includes("Maximilian Rohbeck") && plan.available.includes("Maximilian Mätzig")){
+      const mätzigHasRest = plan.quarters.some(assignment => !Object.values(assignment).includes("Maximilian Mätzig"));
+      const rohbeckHasRest = plan.quarters.some(assignment => !Object.values(assignment).includes("Maximilian Rohbeck"));
+      if(count >= 8 && !mätzigHasRest){
+        warnings.push("Mätzig konnte trotz anwesender Torwartbesetzung kein Pausenviertel erhalten.");
+      }
+      if(count >= 8 && playingAllFour.length && !rohbeckHasRest){
+        warnings.push("Rohbeck konnte trotz notwendiger Durchspieler kein Pausenviertel erhalten.");
+      }
     }
     if(!meta.specialRuleApplied && (plan.available.includes("Maximilian Rohbeck") || plan.available.includes("Maximilian Mätzig"))){
       warnings.push("Die gewünschte Zusatzrolle der Torhüter (zwei Viertel im Tor plus ein Viertel als Feldspieler) war mit der Kadergröße oder den verfügbaren Positionen nicht vollständig umsetzbar.");
@@ -5500,6 +5562,6 @@ if ("serviceWorker" in navigator) {
 }
 </script>
 
-<div class="install-hint">SpVgg Erdweg U11 (<a href="./U11-Coach-Versionshistory.md" target="_blank" rel="noopener noreferrer" class="footer-version-link" aria-label="Versionshistory">V1.220</a> by Mike)</div>
+<div class="install-hint">SpVgg Erdweg U11 (<a href="./U11-Coach-Versionshistory.md" target="_blank" rel="noopener noreferrer" class="footer-version-link" aria-label="Versionshistory">V1.221</a> by Mike)</div>
 </body>
 </html>
