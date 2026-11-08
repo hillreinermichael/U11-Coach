@@ -1,3 +1,11 @@
+## V1.222
+
+- Automatische Wechselplanung angepasst: Wenn Rohbeck und Mätzig beide anwesend sind und nicht alle Spieler ein Pausenviertel erhalten können, wird Mätzig weiterhin bevorzugt einmal auf die Bank gesetzt.
+- Rohbeck darf als Torwart durchspielen, damit möglichst die Feldspieler ihre Pausen erhalten; er wird bei knappen Bankplätzen nicht mehr vor einem Feldspieler zum Aussetzen ausgewählt.
+- Bei der Verteilung der übrigen Pausen werden weiterhin zuerst möglichst viele unterschiedliche Spieler berücksichtigt; innerhalb der Feldspieler erhalten stärkere Spieler tendenziell mehr Spielzeit.
+- Die bisherige manuelle Wechselplanung sowie alle übrigen Funktionen bleiben unverändert.
+- Sichtbare Versionsanzeige und Service-Worker-Cache auf **V1.222** aktualisiert.
+
 ## V1.221
 
 - Die automatische Wechselplanung verteilt die Bankpausen jetzt gezielt so, dass möglichst jeder anwesende Spieler mindestens ein Viertel aussetzt.

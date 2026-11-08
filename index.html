@@ -4033,10 +4033,11 @@ const TIMER_WHISTLE_AUDIO = "data:audio/mpeg;base64,SUQzBAAAAAAAI1RTU0UAAAAPAAAD
     const quality = Object.fromEntries(available.map(p => [p, getAutoSubPlanPlayerQuality(p)]));
 
     // Bei weniger als zehn Spielern sind nicht genug Bankplätze vorhanden,
-    // damit jedes Kind mindestens einmal aussetzen kann. In diesem Fall werden
-    // zunächst möglichst viele unterschiedliche Spieler für genau ein
-    // Pausenviertel vorgesehen. Mätzig und Rohbeck haben dabei Vorrang, wenn
-    // beide als wechselnde Torhüter anwesend sind.
+    // damit jedes Kind mindestens einmal aussetzen kann. Deshalb werden die
+    // verfügbaren Pausen möglichst auf unterschiedliche Feldspieler verteilt.
+    // Sind Rohbeck und Mätzig beide anwesend, erhält Mätzig weiterhin bevorzugt
+    // ein Pausenviertel. Rohbeck darf als Torwart dagegen durchspielen, damit
+    // nicht ein Feldspieler (z. B. Lukas B.) dafür auf die Bank muss.
     if(count < 10){
       let benchPlacesToDistribute = Math.max(0, count * 4 - 28);
       const targets = Object.fromEntries(available.map(p => [p, 4]));
@@ -4044,12 +4045,15 @@ const TIMER_WHISTLE_AUDIO = "data:audio/mpeg;base64,SUQzBAAAAAAAI1RTU0UAAAAPAAAD
       const bothKeepersAvailable = available.includes("Maximilian Rohbeck")
         && available.includes("Maximilian Mätzig");
       const preferredRestOrder = bothKeepersAvailable
-        ? ["Maximilian Mätzig", "Maximilian Rohbeck"]
+        ? ["Maximilian Mätzig"]
+        : [];
+      const protectedFromRest = bothKeepersAvailable
+        ? ["Maximilian Rohbeck"]
         : [];
       const restOrder = [
         ...preferredRestOrder.filter(p => canRest.includes(p)),
         ...canRest
-          .filter(p => !preferredRestOrder.includes(p))
+          .filter(p => !preferredRestOrder.includes(p) && !protectedFromRest.includes(p))
           .sort((a,b) => quality[a] - quality[b] || displayName(a).localeCompare(displayName(b), "de"))
       ];
 
@@ -4384,13 +4388,11 @@ const TIMER_WHISTLE_AUDIO = "data:audio/mpeg;base64,SUQzBAAAAAAAI1RTU0UAAAAPAAAD
     }
     if(plan.available.includes("Maximilian Rohbeck") && plan.available.includes("Maximilian Mätzig")){
       const mätzigHasRest = plan.quarters.some(assignment => !Object.values(assignment).includes("Maximilian Mätzig"));
-      const rohbeckHasRest = plan.quarters.some(assignment => !Object.values(assignment).includes("Maximilian Rohbeck"));
       if(count >= 8 && !mätzigHasRest){
         warnings.push("Mätzig konnte trotz anwesender Torwartbesetzung kein Pausenviertel erhalten.");
       }
-      if(count >= 8 && playingAllFour.length && !rohbeckHasRest){
-        warnings.push("Rohbeck konnte trotz notwendiger Durchspieler kein Pausenviertel erhalten.");
-      }
+      // Rohbeck darf bewusst alle vier Viertel spielen, wenn dadurch die
+      // Feldspieler ihre Pausen erhalten können.
     }
     if(!meta.specialRuleApplied && (plan.available.includes("Maximilian Rohbeck") || plan.available.includes("Maximilian Mätzig"))){
       warnings.push("Die gewünschte Zusatzrolle der Torhüter (zwei Viertel im Tor plus ein Viertel als Feldspieler) war mit der Kadergröße oder den verfügbaren Positionen nicht vollständig umsetzbar.");
@@ -5562,6 +5564,6 @@ if ("serviceWorker" in navigator) {
 }
 </script>
 
-<div class="install-hint">SpVgg Erdweg U11 (<a href="./U11-Coach-Versionshistory.md" target="_blank" rel="noopener noreferrer" class="footer-version-link" aria-label="Versionshistory">V1.221</a> by Mike)</div>
+<div class="install-hint">SpVgg Erdweg U11 (<a href="./U11-Coach-Versionshistory.md" target="_blank" rel="noopener noreferrer" class="footer-version-link" aria-label="Versionshistory">V1.222</a> by Mike)</div>
 </body>
 </html>
