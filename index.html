@@ -387,6 +387,42 @@
   .auto-subplan-warning{padding:9px 10px;margin:8px 0;border-radius:8px;background:#fff5e6;border:1px solid #f0d39c;color:#684b16;font-size:11px;line-height:1.45;}
   @media(max-width:760px){.subplan-grid{grid-template-columns:1fr;}.subplan-actions{grid-template-columns:1fr;}.auto-subplan-actions{grid-template-columns:1fr;}}
 
+  /* Trainingsplan nach der Trainingsphilosophie Deutschland */
+  .tpd-principles{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:8px;margin:12px 0 16px;}
+  .tpd-principle{background:#f7f7f8;border:1px solid var(--line);border-radius:10px;padding:10px;min-width:0;}
+  .tpd-principle strong{display:block;color:var(--erdweg-red-dark);font-size:13px;margin-bottom:4px;}
+  .tpd-principle span{display:block;font-size:11px;line-height:1.4;color:var(--ink-soft);}
+  .tpd-plan-actions{display:flex;align-items:center;justify-content:space-between;gap:10px;margin:0 0 12px;}
+  .tpd-plan-hint{font-size:11px;color:var(--ink-soft);line-height:1.45;}
+  .tpd-stage-grid{display:grid;grid-template-columns:1fr;gap:12px;}
+  .tpd-stage-card{border:1px solid var(--line);border-radius:12px;padding:12px;background:#fff;box-shadow:0 2px 8px rgba(0,0,0,.035);}
+  .tpd-stage-head{display:flex;justify-content:space-between;align-items:flex-start;gap:10px;margin-bottom:8px;}
+  .tpd-stage-kicker{font-size:10px;font-weight:800;text-transform:uppercase;letter-spacing:.08em;color:var(--erdweg-red-dark);margin-bottom:3px;}
+  .tpd-stage-card h3{font-size:17px;margin:0;color:var(--erdweg-black);}
+  .tpd-stage-duration{flex-shrink:0;border-radius:6px;padding:5px 8px;background:var(--erdweg-red);color:#fff;font-size:11px;font-weight:800;}
+  .tpd-stage-purpose{font-size:12px;line-height:1.45;color:var(--ink-soft);margin:0 0 10px;}
+  .tpd-activity-controls{display:grid;grid-template-columns:minmax(0,1fr) auto;gap:8px;align-items:center;}
+  .tpd-activity-select{width:100%;min-width:0;padding:10px;border:1px solid var(--line);border-radius:8px;background:#fff;font:inherit;font-size:12px;color:var(--ink);}
+  .tpd-random-btn{border:0;border-radius:8px;padding:10px 11px;background:#222;color:#fff;font-size:11px;font-weight:800;cursor:pointer;white-space:nowrap;}
+  .tpd-activity-detail{margin-top:10px;border-radius:9px;background:#f7f8fa;border:1px solid #e6e8eb;padding:11px;font-size:12px;line-height:1.5;}
+  .tpd-activity-detail h4{margin:0 0 7px;font-size:14px;color:var(--erdweg-black);}
+  .tpd-detail-grid{display:grid;grid-template-columns:1fr 1fr;gap:8px 12px;}
+  .tpd-detail-item strong{display:block;font-size:10px;text-transform:uppercase;letter-spacing:.05em;color:var(--ink-soft);margin-bottom:2px;}
+  .tpd-detail-item span{display:block;}
+  .tpd-detail-item.tpd-detail-wide{grid-column:1/-1;}
+  .tpd-key-note{margin-top:14px;}
+  .tpd-source{margin-top:8px;font-size:11px;}
+  .tpd-source a{color:var(--erdweg-red-dark);text-decoration:underline;font-weight:700;}
+  @media(max-width:620px){
+    .tpd-principles{grid-template-columns:1fr;gap:6px;}
+    .tpd-principle{padding:8px 10px;}
+    .tpd-plan-actions{align-items:stretch;flex-direction:column;}
+    .tpd-detail-grid{grid-template-columns:1fr;}
+    .tpd-detail-item.tpd-detail-wide{grid-column:auto;}
+    .tpd-activity-controls{grid-template-columns:1fr;}
+    .tpd-random-btn{width:100%;}
+  }
+
   /* Training – 3 Stationen */
   #trainingCard .training-intro{
     background:#f4f5f7;
@@ -999,8 +1035,8 @@ color:#fff;
       <div class="start-menu-sub">Was möchtest du im Training machen?</div>
       <div class="start-menu-buttons">
         <button type="button" class="start-choice" id="trainingUnitsBtn">
-          <strong>Trainingseinheiten</strong>
-          <span>3 Stationen auswählen und vorbereiten</span>
+          <strong>Trainingsplan</strong>
+          <span>4 Phasen nach der Trainingsphilosophie Deutschland · 90 Minuten</span>
         </button>
         <button type="button" class="start-choice" id="trainingStrengthGroupsBtn">
           <strong>Trainingsgruppen</strong>
@@ -1346,6 +1382,34 @@ color:#fff;
   <div class="mode-section" id="trainingMode" style="display:none;">
     <button type="button" class="mode-back" data-back="trainingHub">← Training</button>
     <div class="card" id="trainingCard">
+    <div id="tpdTrainingPlan">
+      <h2>Trainingsplan – Trainingsphilosophie Deutschland</h2>
+      <div class="training-intro">
+        <strong>90 Minuten · 4 aufeinanderfolgende Phasen</strong><br>
+        Aktivierung 15 Min. → Spielphase 1 30 Min. → Zwischenblock 15 Min. → Spielphase 2 30 Min.
+      </div>
+
+      <div class="tpd-principles">
+        <div class="tpd-principle"><strong>Freude</strong><span>Viele Erfolgserlebnisse und möglichst viel Beteiligung.</span></div>
+        <div class="tpd-principle"><strong>Intensität</strong><span>Kurze Erklärungen, wenig Wartezeit und viel Nettospielzeit.</span></div>
+        <div class="tpd-principle"><strong>Wiederholung</strong><span>Viele Ballaktionen und häufige Wiederholungen wichtiger Spielsituationen.</span></div>
+      </div>
+
+      <div class="tpd-plan-actions">
+        <div class="tpd-plan-hint">Wähle für jede Phase eine Trainingsform. Die Vorschläge lassen sich an Spielerzahl, Platz und Leistungsstand anpassen.</div>
+        <button type="button" class="timer-action secondary" id="tpdRandomizeAllBtn">Alle vier Phasen neu zusammenstellen</button>
+      </div>
+
+      <div id="tpdStageCards" class="tpd-stage-grid" aria-live="polite"></div>
+
+      <div class="training-finish tpd-key-note">
+        <strong>Organisationshinweise für die Spielphasen:</strong>
+        Möglichst mehrere kleine Felder aufbauen und in Formaten von 1 gegen 1 bis 4 gegen 4 spielen. Bei zweistelliger Spielerzahl nach Möglichkeit ein weiteres Feld ergänzen. Die Spielblöcke in mehrere intensive Durchgänge aufteilen (Orientierung: 3–4 Minuten Nettospielzeit, anschließend etwa 1–2 Minuten kurze Pause). Umbau- und Erklärzeiten knapp halten.
+        <div class="tpd-source"><a href="https://www.dfb-akademie.de/beste-trainingseinheit/-/id-11011533/" target="_blank" rel="noopener noreferrer">DFB-Akademie: Struktur der besten Trainingseinheit</a></div>
+      </div>
+    </div>
+
+    <div id="legacyTrainingPlan" style="display:none" aria-hidden="true">
     <h2>Trainingseinheiten – 3 Stationen</h2>
 
     <div class="training-intro">
@@ -1498,6 +1562,7 @@ color:#fff;
       <strong>Abschluss:</strong> Abschlussspiel oder Turnier – je nach Zeit und Spielerzahl.
     </div>
 
+    </div><!-- Ende des archivierten bisherigen Trainingsplans -->
     </div>
   </div>
 
@@ -3360,6 +3425,263 @@ function pickRandomTraining(list, unit){
       btn.textContent = document.getElementById(id).classList.contains("open")
         ? "Details ausblenden"
         : "Details anzeigen";
+    });
+  });
+
+  /* ===================== TPD-Trainingsplan: vier Phasen ===================== */
+  const TPD_TRAINING_STAGES = [
+    {
+      id: 1, title: "Aktivierung", duration: "15 Min.",
+      purpose: "Ballbeherrschung, Dribbling und Fintieren. Alle Kinder sollen möglichst oft selbst am Ball sein.",
+      activities: [
+        {
+          id: "dribbel-chaos", name: "Dribbel-Chaos mit Richtungswechseln",
+          goal: "Ballgefühl, enge Ballführung, beidfüßiges Dribbling und Orientierung.",
+          setup: "Ein Feld von etwa 15 × 15 Metern markieren. Jedes Kind hat einen Ball. Hütchentore im Feld verteilen.",
+          flow: "Alle dribbeln frei im Feld. Auf Zuruf wechseln sie die Richtung oder den Fuß, stoppen den Ball, führen eine Wende aus oder dribbeln durch ein Hütchentor. Nach kurzer Zeit neue Aufgaben aufrufen.",
+          coaching: "Viele kleine Kontakte, Kopf regelmäßig heben, Ball nah am Fuß halten und Richtungswechsel mit beiden Füßen ausführen.",
+          variation: "Farbe oder Zahl eines Tores aufrufen; nur mit dem schwächeren Fuß dribbeln; nach einer Finte ein anderes Tor suchen.",
+          material: "1 Ball pro Kind, 12–16 Hütchen."
+        },
+        {
+          id: "fangspiel-ball", name: "Fangspiel mit Ball",
+          goal: "Dribbling unter Zeit- und Gegnerdruck, Ausweichen und Ballkontrolle.",
+          setup: "Kleines Feld markieren. Alle Kinder außer zwei Fängern dribbeln mit Ball; die Fänger bewegen sich ohne Ball.",
+          flow: "Die Fänger versuchen, dribbelnde Kinder kurz an der Schulter zu berühren. Wer gefangen wurde, macht außerhalb des Feldes eine kurze Ballaufgabe und steigt sofort wieder ein. Fänger regelmäßig wechseln.",
+          coaching: "Vor dem Fänger wegdrehen, Tempo wechseln, Ball mit dem fernen Fuß abschirmen und freie Räume erkennen.",
+          variation: "Fänger ebenfalls mit Ball; zwei sichere Dribbelzonen einbauen; nur bestimmte Finten zählen als Befreiung.",
+          material: "1 Ball pro Dribbler, 4–8 Hütchen."
+        },
+        {
+          id: "dribbel-tore", name: "Dribbel-Tore sammeln",
+          goal: "Dribbeln, Fintieren und Wahrnehmen freier Räume.",
+          setup: "Viele kleine Hütchentore im Feld verteilen. Jedes Kind hat einen Ball.",
+          flow: "Die Kinder dribbeln durch möglichst viele unterschiedliche Tore. Ein Tor darf nicht direkt zweimal hintereinander genutzt werden. Nach jeder Runde eine neue Aufgabe geben.",
+          coaching: "Vor dem Tor den Blick heben, den Ball kontrolliert hindurchführen und danach direkt beschleunigen.",
+          variation: "Tore mit Farben/Punkten versehen; nur mit links oder rechts; vor jedem Tor eine Finte einbauen.",
+          material: "1 Ball pro Kind, 16–20 Hütchen."
+        },
+        {
+          id: "ball-schuetzen", name: "Ball schützen und erobern",
+          goal: "Ballabschirmung, Richtungswechsel und Zweikampfverhalten.",
+          setup: "Mehrere kleine Quadrate bilden. Je zwei Kinder mit je einem Ball starten in einem Quadrat.",
+          flow: "Die Kinder versuchen abwechselnd, den eigenen Ball zu behaupten und den Ball des Partners kontrolliert aus dem Feld zu spielen. Nach 30–40 Sekunden Rollen bzw. Gegner wechseln.",
+          coaching: "Zwischen Gegner und Ball bleiben, den Körper einsetzen, Ball nicht wegschlagen und nach Ballgewinn sofort eine neue Lösung suchen.",
+          variation: "1 gegen 1 auf zwei kleine Dribbeltore; Feldgröße anpassen; kurze Zeitduelle mit häufigem Partnerwechsel.",
+          material: "1 Ball pro Kind, Hütchen für mehrere Quadrate."
+        }
+      ]
+    },
+    {
+      id: 2, title: "Spielphase 1", duration: "30 Min.",
+      purpose: "Direkt nach der Aktivierung spielen. Kleine Spielformen auf mehreren Feldern fördern Technik, Taktik und Entscheidungen im Spiel.",
+      activities: [
+        {
+          id: "funino-3v3", name: "3 gegen 3 auf vier Minitore",
+          goal: "Freie Räume erkennen, Breite nutzen, Dribbling und Zusammenspiel verbinden.",
+          setup: "Mehrere kleine Felder mit je vier Minitoren aufbauen. Pro Feld 3 gegen 3 spielen; bei vielen Kindern ein weiteres Feld ergänzen.",
+          flow: "Die Teams greifen auf zwei gegenüberliegende Minitore an und verteidigen die anderen beiden. Nach 3–4 Minuten Nettospielzeit kurz pausieren, Gegner wechseln und direkt weiterspielen.",
+          coaching: "Nach Ballgewinn schnell umschalten, den Kopf heben, freie Tore erkennen und mutig ins 1 gegen 1 gehen.",
+          variation: "Tor zählt doppelt nach einem Dribbling; vor einem Torabschluss muss ein Mitspieler angespielt werden; freie Torwahl.",
+          material: "4 Minitore pro Feld, Bälle, Hütchen zur Feldmarkierung."
+        },
+        {
+          id: "duell-2v2", name: "2 gegen 2 – viele Duelle",
+          goal: "Zweikampfverhalten, Zusammenspiel zu zweit und schnelle Entscheidungen.",
+          setup: "Mehrere kleine Felder mit je zwei Minitoren oder Endzonen einrichten. Auf jedem Feld 2 gegen 2.",
+          flow: "Kurze Spielrunden von 3–4 Minuten. Anschließend Teams oder Gegner wechseln. Ersatzbälle neben den Feldern bereitlegen, damit das Spiel sofort weitergeht.",
+          coaching: "Angreifer lösen sich voneinander, Verteidiger sichern sich gegenseitig ab und beide schalten nach Ballgewinn bzw. Ballverlust schnell um.",
+          variation: "Tor nur nach Pass; Dribbling durch eine Endzone; nach jedem Tor sofort neuer Ball vom Trainer.",
+          material: "Minitore oder Endzonen, Bälle, Hütchen."
+        },
+        {
+          id: "vier-gegen-vier", name: "4 gegen 4 – Spiel auf Minitore",
+          goal: "Zusammenspiel in kleinen Teams, Orientierung und Verhalten in Über- und Unterzahlmomenten.",
+          setup: "Ein Feld mit zwei Minitoren je Angriffsrichtung aufbauen. Maximal vier Feldspieler pro Team gleichzeitig auf dem Feld.",
+          flow: "4 gegen 4 spielen. Mehrere Durchgänge à 3–4 Minuten mit kurzen Pausen und wechselnden Gegnern organisieren. Bei mehr als acht aktiven Spielern ein zweites Feld aufbauen.",
+          coaching: "Abstände halten, anspielbar werden, mutig nach vorne spielen und nach Ballverlust gemeinsam zurückarbeiten.",
+          variation: "Ein neutraler Anspieler außerhalb des Feldes; Überzahl nach Ballgewinn; Tore nur nach Seitenwechsel.",
+          material: "4 Minitore, Bälle, Hütchen."
+        },
+        {
+          id: "eins-gegen-eins", name: "1 gegen 1 – Dribbling zum Tor",
+          goal: "Mut zum Dribbling, Finten, Tempoänderung und zielgerichteter Torabschluss.",
+          setup: "Zwei oder mehr parallele Felder mit je einem Minitor aufbauen. An jedem Feld stehen Angreifer und Verteidiger bereit.",
+          flow: "Der Trainer spielt den Ball ein. Der Angreifer versucht im 1 gegen 1 ein Tor zu erzielen. Nach der Aktion Rollen tauschen oder neuen Gegner stellen. Bälle schnell nachlegen.",
+          coaching: "Verteidiger binden, Gegner durch Finte täuschen, nach der Finte beschleunigen und mit dem ersten Kontakt Raum gewinnen.",
+          variation: "Startposition verändern; Angreifer startet mit Rücken zum Tor; zwei Tore als Wahlmöglichkeit anbieten.",
+          material: "Minitore, Bälle, Hütchen."
+        }
+      ]
+    },
+    {
+      id: 3, title: "Zwischenblock", duration: "15 Min.",
+      purpose: "Ein technischer oder athletischer Schwerpunkt mit vielen Wiederholungen und kurzen Wartezeiten. Die Inhalte greifen Aktionen aus dem Spiel auf.",
+      activities: [
+        {
+          id: "pass-erster-kontakt", name: "Passspiel und erster Kontakt",
+          goal: "Sauberes Passspiel, offene Stellung und Ballmitnahme in Spielrichtung.",
+          setup: "Dreiecke oder Rauten mit 3–4 Hütchen aufbauen. Pro Gruppe 3–4 Spieler und möglichst ein Ball.",
+          flow: "Passen und der Bewegung des Balles nachlaufen. Der nächste Spieler nimmt mit dem ersten Kontakt in eine freie Richtung mit und spielt weiter. Nach einigen Minuten Richtung und Fuß wechseln.",
+          coaching: "Vororientieren, seitlich zum Ball stehen, ersten Kontakt vom Druck weg setzen und den Pass präzise in den Lauf spielen.",
+          variation: "Direktpass; schwächerer Fuß; auf Trainerzeichen andere Passrichtung; ein passiver Gegner als Orientierung.",
+          material: "Hütchen, 1 Ball pro Gruppe."
+        },
+        {
+          id: "abschluss", name: "Torschuss nach Ballmitnahme",
+          goal: "Ballmitnahme, Abschluss aus der Bewegung und beidfüßiges Schießen.",
+          setup: "Zwei parallele Abschlussstationen einrichten. Je Station ein Tor, mehrere Bälle und eine kurze Start-/Dribbellinie.",
+          flow: "Der Spieler bekommt einen Pass, nimmt den Ball in Richtung Tor mit und schließt nach wenigen Kontakten ab. Direkt danach holt ein anderer Spieler den nächsten Ball. Warteschlangen vermeiden.",
+          coaching: "Vor dem ersten Kontakt zum Tor orientieren, Ball vor den Körper legen, Standbein neben den Ball setzen und gezielt abschließen.",
+          variation: "Abschluss mit links/rechts; nach kurzem Hütchen-Dribbling; Pass aus einem anderen Winkel; Nachschuss zulassen.",
+          material: "Tore, Bälle, Hütchen."
+        },
+        {
+          id: "finten", name: "Dribbling und Finten",
+          goal: "Finten sicher anwenden und nach einer Täuschung beschleunigen.",
+          setup: "Mehrere parallele Dribbelgassen mit Hütchen oder Dummys markieren. Jedes Kind hat möglichst einen Ball.",
+          flow: "Die Spieler dribbeln nacheinander, führen vor einem Gegnerdummy eine Finte aus und beschleunigen in einen freien Zielraum. In der Rückbewegung auf der Außenseite zurückdribbeln.",
+          coaching: "Täuschung deutlich ausführen, Körperschwerpunkt verlagern, Ball eng mitnehmen und nach der Finte Tempo aufnehmen.",
+          variation: "Schere, Übersteiger oder Ausfallschritt; Finte mit beiden Füßen; Zielrichtung erst spät anzeigen.",
+          material: "Bälle, Hütchen, optional Dummys."
+        },
+        {
+          id: "schnelligkeit", name: "Schnelligkeit mit und ohne Ball",
+          goal: "Antritt, Reaktion und kurze maximale Beschleunigungen.",
+          setup: "Zwei bis drei kurze Sprintbahnen von etwa 8–12 Metern markieren. Genügend Abstand und freie Auslaufzone vorsehen.",
+          flow: "Kurze Starts auf ein Signal: vorwärts, seitlich oder aus einer Drehung. Danach dieselbe Strecke mit Ball am Fuß. Zwischen den Sprints ausreichend Pause einplanen.",
+          coaching: "Kurze intensive Läufe statt langer Ausdauerläufe; sauber beschleunigen, kontrolliert abbremsen und erst nach Erholung erneut starten.",
+          variation: "Optisches Signal; Start mit Ball; Sprint mit Richtungswechsel; kleine Sprungaufgabe vor dem Antritt.",
+          material: "Hütchen, optional Bälle."
+        }
+      ]
+    },
+    {
+      id: 4, title: "Spielphase 2", duration: "30 Min.",
+      purpose: "Zum Abschluss erneut spielen. Eine neue Regel oder Spielform setzt einen anderen Schwerpunkt, ohne die vielen Spielaktionen zu reduzieren.",
+      activities: [
+        {
+          id: "umschalten-3v3", name: "3 gegen 3 – Umschalten nach Ballgewinn",
+          goal: "Nach Ballgewinn schnell angreifen und nach Ballverlust sofort reagieren.",
+          setup: "Mehrere kleine Felder mit vier Minitoren aufbauen. 3 gegen 3 je Feld; Bälle an den Seiten bereitlegen.",
+          flow: "Freies Spiel. Nach Ballgewinn hat das Team wenige Sekunden Zeit, um einen schnellen Angriff auf eines der beiden gegnerischen Tore zu starten. Kurze Spielrunden mit Gegnerwechsel.",
+          coaching: "Erster Blick nach vorne, Ball sichern oder sofort vertikal spielen und als Team nachrücken.",
+          variation: "Bonuspunkt für Treffer innerhalb von fünf Sekunden nach Ballgewinn; nach Ballverlust sofortiger Rückeroberungsversuch.",
+          material: "4 Minitore pro Feld, Bälle, Hütchen."
+        },
+        {
+          id: "4v4-seitenwechsel", name: "4 gegen 4 – Seitenwechsel schaffen",
+          goal: "Breite nutzen, Spielverlagerung erkennen und gemeinsam Torchancen vorbereiten.",
+          setup: "Kleines Feld mit zwei Toren je Seite. 4 gegen 4; bei mehr als acht Kindern ein zweites Feld einrichten.",
+          flow: "Freies Spiel. Ein Treffer zählt doppelt, wenn der Angriff zuvor erkennbar von einer Seite auf die andere verlagert wurde. Nach kurzen Durchgängen Gegner wechseln.",
+          coaching: "Feld groß machen, Passwege öffnen, den Blick vom Ball lösen und freie Mitspieler auf der anderen Seite finden.",
+          variation: "Vor dem Torabschluss muss ein Seitenwechsel erfolgen; alternativ zählt ein Dribbling in einen freien Raum als Auslöser.",
+          material: "4 Minitore, Bälle, Hütchen."
+        },
+        {
+          id: "2v2-joker", name: "2 gegen 2 mit neutralem Anspieler",
+          goal: "Überzahl erkennen, Zusammenspiel und Entscheidungen unter Gegnerdruck.",
+          setup: "Mehrere kleine Felder mit je zwei Minitoren aufbauen. 2 gegen 2 im Feld und ein neutraler Anspieler außen.",
+          flow: "Der neutrale Spieler unterstützt immer das ballbesitzende Team. Nach jedem Durchgang Anspieler wechseln, damit alle die Rolle übernehmen.",
+          coaching: "Den freien Spieler erkennen, nach dem Pass sofort wieder anbieten und den Gegner durch schnelle Entscheidungen bewegen.",
+          variation: "Neutraler Spieler darf nur direkt spielen; Anspieler wechselt nach jeder Aktion; Feldgröße anpassen.",
+          material: "Minitore, Bälle, Hütchen."
+        },
+        {
+          id: "3v3-endzone", name: "3 gegen 3 auf Endzonen",
+          goal: "Freilaufen, Ball behaupten und gemeinsam in einen Zielraum eindringen.",
+          setup: "Mehrere rechteckige Felder mit einer Endzone an jeder Stirnseite markieren. 3 gegen 3.",
+          flow: "Ein Punkt zählt, wenn ein Mitspieler kontrolliert in die gegnerische Endzone dribbelt oder dort angespielt wird. Nach Punktgewinn startet das andere Team.",
+          coaching: "In freie Räume starten, Passwinkel anbieten, Ball sichern und im richtigen Moment in die Tiefe gehen.",
+          variation: "Punkt nur durch Dribbling; Punkt nur nach Pass in die Endzone; Endzonen schmaler oder breiter machen.",
+          material: "Hütchen zur Markierung, Bälle."
+        }
+      ]
+    }
+  ];
+
+  function renderTpdActivity(stage, activityId){
+    const activity = stage.activities.find(item => item.id === activityId) || stage.activities[0];
+    const target = document.getElementById("tpdActivityDetail" + stage.id);
+    if(!target || !activity) return;
+    target.innerHTML = `
+      <h4>${activity.name}</h4>
+      <div class="tpd-detail-grid">
+        <div class="tpd-detail-item"><strong>Ziel</strong><span>${activity.goal}</span></div>
+        <div class="tpd-detail-item"><strong>Aufbau</strong><span>${activity.setup}</span></div>
+        <div class="tpd-detail-item tpd-detail-wide"><strong>Ablauf</strong><span>${activity.flow}</span></div>
+        <div class="tpd-detail-item"><strong>Coachingpunkte</strong><span>${activity.coaching}</span></div>
+        <div class="tpd-detail-item"><strong>Variationen</strong><span>${activity.variation}</span></div>
+        <div class="tpd-detail-item tpd-detail-wide"><strong>Material</strong><span>${activity.material}</span></div>
+      </div>`;
+  }
+
+  function renderTpdTrainingPlan(){
+    const container = document.getElementById("tpdStageCards");
+    if(!container) return;
+    container.innerHTML = TPD_TRAINING_STAGES.map(stage => {
+      let saved = "";
+      try{ saved = localStorage.getItem("u11coach_tpd_stage_" + stage.id) || ""; }catch(e){}
+      const selected = stage.activities.some(item => item.id === saved) ? saved : stage.activities[0].id;
+      return `
+        <section class="tpd-stage-card" aria-labelledby="tpdStageTitle${stage.id}">
+          <div class="tpd-stage-head">
+            <div><h3 id="tpdStageTitle${stage.id}">${stage.title}</h3></div>
+            <span class="tpd-stage-duration">${stage.duration}</span>
+          </div>
+          <p class="tpd-stage-purpose">${stage.purpose}</p>
+          <div class="tpd-activity-controls">
+            <select class="tpd-activity-select" id="tpdActivitySelect${stage.id}" aria-label="Übung für ${stage.title} auswählen">
+              ${stage.activities.map(activity => `<option value="${activity.id}" ${activity.id === selected ? "selected" : ""}>${activity.name}</option>`).join("")}
+            </select>
+            <button type="button" class="tpd-random-btn" data-tpd-random="${stage.id}">Zufällig wählen</button>
+          </div>
+          <div class="tpd-activity-detail" id="tpdActivityDetail${stage.id}"></div>
+        </section>`;
+    }).join("");
+
+    TPD_TRAINING_STAGES.forEach(stage => {
+      const select = document.getElementById("tpdActivitySelect" + stage.id);
+      if(select) renderTpdActivity(stage, select.value);
+    });
+  }
+
+  function setTpdStageActivity(stageId, activityId){
+    const stage = TPD_TRAINING_STAGES.find(item => item.id === Number(stageId));
+    if(!stage) return;
+    const select = document.getElementById("tpdActivitySelect" + stage.id);
+    if(!select) return;
+    const valid = stage.activities.some(item => item.id === activityId);
+    if(valid) select.value = activityId;
+    try{ localStorage.setItem("u11coach_tpd_stage_" + stage.id, select.value); }catch(e){}
+    renderTpdActivity(stage, select.value);
+  }
+
+  renderTpdTrainingPlan();
+  document.getElementById("tpdStageCards")?.addEventListener("change", event => {
+    const select = event.target.closest(".tpd-activity-select");
+    if(!select) return;
+    const stageId = Number(select.id.replace("tpdActivitySelect", ""));
+    setTpdStageActivity(stageId, select.value);
+  });
+  document.getElementById("tpdStageCards")?.addEventListener("click", event => {
+    const button = event.target.closest("[data-tpd-random]");
+    if(!button) return;
+    const stageId = Number(button.dataset.tpdRandom);
+    const stage = TPD_TRAINING_STAGES.find(item => item.id === stageId);
+    if(!stage) return;
+    const select = document.getElementById("tpdActivitySelect" + stageId);
+    const pool = stage.activities.filter(item => item.id !== select?.value);
+    const activity = (pool.length ? pool : stage.activities)[Math.floor(Math.random() * (pool.length ? pool : stage.activities).length)];
+    if(activity) setTpdStageActivity(stageId, activity.id);
+  });
+  document.getElementById("tpdRandomizeAllBtn")?.addEventListener("click", () => {
+    TPD_TRAINING_STAGES.forEach(stage => {
+      const select = document.getElementById("tpdActivitySelect" + stage.id);
+      const pool = stage.activities.filter(item => item.id !== select?.value);
+      const choices = pool.length ? pool : stage.activities;
+      const activity = choices[Math.floor(Math.random() * choices.length)];
+      if(activity) setTpdStageActivity(stage.id, activity.id);
     });
   });
 
@@ -5564,6 +5886,6 @@ if ("serviceWorker" in navigator) {
 }
 </script>
 
-<div class="install-hint">SpVgg Erdweg U11 (<a href="./U11-Coach-Versionshistory.md" target="_blank" rel="noopener noreferrer" class="footer-version-link" aria-label="Versionshistory">V1.222</a> by Mike)</div>
+<div class="install-hint">SpVgg Erdweg U11 (<a href="./U11-Coach-Versionshistory.md" target="_blank" rel="noopener noreferrer" class="footer-version-link" aria-label="Versionshistory">V1.224</a> by Mike)</div>
 </body>
 </html>

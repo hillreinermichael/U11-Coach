@@ -1,3 +1,18 @@
+## V1.224
+- Im neuen TPD-Trainingsplan wurden die zusätzlichen Kennzeichnungen „Station 1“ bis „Station 4“ oberhalb der Phasenüberschriften entfernt.
+- Die eigentlichen Phasenüberschriften **Aktivierung**, **Spielphase 1**, **Zwischenblock** und **Spielphase 2** sowie deren Inhalte und Funktionen bleiben unverändert.
+- Die ausgeblendete bisherige Trainingsplanung bleibt weiterhin als Archiv erhalten.
+- Sichtbare Versionsanzeige und Service-Worker-Cache auf **V1.224** aktualisiert.
+
+## V1.223
+- Die bisherige Trainingsplanung wurde durch einen neuen 90-Minuten-Ablauf nach der „Trainingsphilosophie Deutschland“ ergänzt: Aktivierung (15 Min.), Spielphase 1 (30 Min.), Zwischenblock (15 Min.) und Spielphase 2 (30 Min.).
+- Für jede Phase stehen mehrere U11-gerechte Trainingsformen mit Ziel, Aufbau, Ablauf, Coachingpunkten, Variationen und Material zur Auswahl.
+- Übungen können je Phase manuell ausgewählt oder zufällig neu zusammengestellt werden; die Auswahl wird lokal auf dem Gerät gespeichert.
+- Die Leitgedanken Freude, Intensität und Wiederholung sowie DFB-Organisationshinweise zu kleinen Spielformen, mehreren Feldern und kurzen Pausen wurden in die Trainingsplan-Seite aufgenommen.
+- Die bisherigen Trainingseinheiten wurden nicht gelöscht, sondern in der HTML-Datei ausgeblendet und als Archiv für eine mögliche spätere Wiederverwendung erhalten.
+- Die übrigen Trainingsfunktionen (Trainingsgruppen, Spielgruppen, Aufwärmen und bestehende App-Bereiche) bleiben bestehen.
+- Sichtbare Versionsanzeige und Service-Worker-Cache auf **V1.223** aktualisiert.
+
 ## V1.222
 
 - Automatische Wechselplanung angepasst: Wenn Rohbeck und Mätzig beide anwesend sind und nicht alle Spieler ein Pausenviertel erhalten können, wird Mätzig weiterhin bevorzugt einmal auf die Bank gesetzt.
