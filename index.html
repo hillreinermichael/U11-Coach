@@ -2390,10 +2390,21 @@ function canPlay(p, slot){
   return PLAYERS[p].positions.length === 0 || PLAYERS[p].positions.includes(pos); 
 }
 
+const DISPLAY_NAME_OVERRIDES = {
+  "Maximilian Rohbeck": "Rohbeck",
+  "Maximilian Mätzig": "Mätzig",
+  "Lucas Stegmair": "Stegi",
+  "Lukas Bühling": "Bühling",
+  "Lukas Kreitmair": "Kreitmair",
+  "Johannes Suppmair": "Suppmair"
+};
+
 function displayName(p){
-  const parts = p.split(" ");
+  if(!p) return "";
+  if(DISPLAY_NAME_OVERRIDES[p]) return DISPLAY_NAME_OVERRIDES[p];
+  const parts = String(p).split(" ");
   if(parts.length >= 2) return parts[0] + " " + parts[1][0] + ".";
-  return p;
+  return String(p);
 }
 
 /* ===================== Bewertungslogik v8 ===================== */
@@ -2614,7 +2625,7 @@ let tempRatings = {};
 function openEdit(p){
   editingPlayer = p;
   tempRatings = Object.assign({}, PLAYERS[p].ratings);
-  editName.textContent = p;
+  editName.textContent = displayName(p);
   
   posRatingGrid.innerHTML = "";
   ["TW", "AB", "MF", "ST", "SM"].forEach(pos => {
@@ -3997,7 +4008,7 @@ function pickRandomTraining(list, unit){
       : "Keine Positionspriorität hinterlegt";
     const jersey = JERSEY_NUMBERS[name] ? ` <span class="roster-player-number">(${JERSEY_NUMBERS[name]})</span>` : "";
     return `<div class="roster-player-card">
-      <div class="roster-player-name">${name}${jersey}</div>
+      <div class="roster-player-name">${displayName(name)}${jersey}</div>
       <div class="roster-player-priority">${positionLabels}</div>
     </div>`;
   }
@@ -6122,6 +6133,6 @@ if ("serviceWorker" in navigator) {
 }
 </script>
 
-<div class="install-hint">SpVgg Erdweg U11 (<a href="./U11-Coach-Versionshistory.md" target="_blank" rel="noopener noreferrer" class="footer-version-link" aria-label="Versionshistory">V1.226</a> by Mike)</div>
+<div class="install-hint">SpVgg Erdweg U11 (<a href="./U11-Coach-Versionshistory.md" target="_blank" rel="noopener noreferrer" class="footer-version-link" aria-label="Versionshistory">V1.227</a> by Mike)</div>
 </body>
 </html>

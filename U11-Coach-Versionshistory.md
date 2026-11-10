@@ -1,3 +1,9 @@
+## V1.227
+- Sichtbare Spielernamen verkürzt: Maximilian Rohbeck → Rohbeck, Maximilian Mätzig → Mätzig, Lucas Stegmair → Stegi, Lukas Bühling → Bühling, Lukas Kreitmair → Kreitmair und Johannes Suppmair → Suppmair.
+- Die internen Spielernamen bleiben unverändert, damit Excel-Zuordnung, Spielerwerte, Trikotnummern, Kaderstatus und Berechnungslogik weiterhin auf den bestehenden Datensätzen basieren.
+- Die Kurzformen werden in den Spieleransichten, Aufstellungen, Wechselplanungen und Auswahl-/Bearbeitungsdialogen verwendet.
+- Sichtbare Versionsanzeige und Service-Worker-Cache auf **V1.227** aktualisiert.
+
 ## V1.226
 - Auf der Seite „Verletzungen“ den einleitenden Informationshinweis sowie den zusätzlichen Untertitel entfernt.
 - Die Abschnittsüberschriften zeigen nur noch **VERLETZUNGEN** und **VORERKRANKUNGEN UND GESUNDHEITLICHE PROBLEME**; die Präfixe „Teil 1:“ und „Teil 2:“ wurden entfernt.
