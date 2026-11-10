@@ -1184,3 +1184,7 @@ zusätzlich in der App
 - Weitere neue Excel-Spieler wie „Florian“ werden automatisch in die App übernommen.
 - Anwesenheitslisten, Trainingsgruppen und Spielerauswahl aktualisieren sich nach dem Excel-Laden mit der aktuellen Spielerliste.
 - Die bestehende 10er-Kernbesetzung bleibt im Spielerkader priorisiert; weitere Spieler aus Excel werden automatisch unter „Ersatz“ ergänzt.
+
+
+## V1.228
+- Anzeige für Frederik/Frederick, Florian, Ludwig und Daniel auf den Vornamen verkürzt; vorhandene interne Spielernamen und Datenzuordnungen bleiben unverändert.

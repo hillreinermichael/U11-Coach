@@ -2402,7 +2402,10 @@ const DISPLAY_NAME_OVERRIDES = {
 function displayName(p){
   if(!p) return "";
   if(DISPLAY_NAME_OVERRIDES[p]) return DISPLAY_NAME_OVERRIDES[p];
-  const parts = String(p).split(" ");
+  const parts = String(p).trim().split(/\s+/);
+  // Bei diesen Spielern wird bewusst nur der Vorname angezeigt.
+  const firstNameOnly = new Set(["Frederik", "Frederick", "Florian", "Ludwig", "Daniel"]);
+  if(firstNameOnly.has(parts[0])) return parts[0];
   if(parts.length >= 2) return parts[0] + " " + parts[1][0] + ".";
   return String(p);
 }
@@ -6133,6 +6136,6 @@ if ("serviceWorker" in navigator) {
 }
 </script>
 
-<div class="install-hint">SpVgg Erdweg U11 (<a href="./U11-Coach-Versionshistory.md" target="_blank" rel="noopener noreferrer" class="footer-version-link" aria-label="Versionshistory">V1.227</a> by Mike)</div>
+<div class="install-hint">SpVgg Erdweg U11 (<a href="./U11-Coach-Versionshistory.md" target="_blank" rel="noopener noreferrer" class="footer-version-link" aria-label="Versionshistory">V1.228</a> by Mike)</div>
 </body>
 </html>
