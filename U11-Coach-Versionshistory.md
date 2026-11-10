@@ -1,3 +1,16 @@
+## V1.226
+- Auf der Seite „Verletzungen“ den einleitenden Informationshinweis sowie den zusätzlichen Untertitel entfernt.
+- Die Abschnittsüberschriften zeigen nur noch **VERLETZUNGEN** und **VORERKRANKUNGEN UND GESUNDHEITLICHE PROBLEME**; die Präfixe „Teil 1:“ und „Teil 2:“ wurden entfernt.
+- Inhalte und aufklappbare Einträge der Verletzungs- und Gesundheitsinformationen bleiben unverändert.
+- Sichtbare Versionsanzeige und Service-Worker-Cache auf **V1.226** aktualisiert.
+
+## V1.225
+- Neue Kachel **„Verletzungen“** auf der Startseite direkt nach „Spielerkader“ und vor „Spielhistorie“ ergänzt.
+- Neue Seite „Verletzungen“ mit aufklappbaren Einträgen zu allen Verletzungen sowie Vorerkrankungen und gesundheitlichen Problemen aus der bereitgestellten Word-Datei.
+- Die Einträge enthalten die vollständigen Abschnitte aus der Quelldatei (Beschreibung, Symptome und Diagnose sowie Erste Hilfe und Behandlung); die ursprünglichen Formulierungen wurden beibehalten.
+- Ergänzender Hinweis in der App: Die Informationen ersetzen keine aktuelle Erste-Hilfe-Ausbildung oder medizinische Beurteilung; bei medizinischen Notfällen ist der Rettungsdienst unter 112 zu verständigen.
+- Sichtbare Versionsanzeige und Service-Worker-Cache auf **V1.225** aktualisiert.
+
 ## V1.224
 - Im neuen TPD-Trainingsplan wurden die zusätzlichen Kennzeichnungen „Station 1“ bis „Station 4“ oberhalb der Phasenüberschriften entfernt.
 - Die eigentlichen Phasenüberschriften **Aktivierung**, **Spielphase 1**, **Zwischenblock** und **Spielphase 2** sowie deren Inhalte und Funktionen bleiben unverändert.
