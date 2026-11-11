@@ -1,3 +1,10 @@
+## V1.230
+- Die vier aktiven TPD-Phasen wurden auf 16 nachvollziehbare Trainingsformen aus veröffentlichten DFB- bzw. BFV-Quellen umgestellt.
+- Die ursprünglichen Übungsbezeichnungen und Übungsaufbauten wurden, soweit verfügbar, an die offiziellen DFB-/BFV-Formen angelehnt und sprachlich für die U11 aufbereitet.
+- Jede Übung enthält jetzt einen Quellenlink, über den die Originalbeschreibung und die dort veröffentlichte Aufbau-Grafik geöffnet werden können. Die fremden Grafiken werden nicht kopiert oder in der PWA neu gehostet.
+- Die bisherige ältere Trainingsplanung vor dem TPD-Umbau sowie alle übrigen App-Bereiche bleiben unverändert.
+- Sichtbare Versionsanzeige und Service-Worker-Cache auf **V1.230** aktualisiert.
+
 ## V1.227
 - Sichtbare Spielernamen verkürzt: Maximilian Rohbeck → Rohbeck, Maximilian Mätzig → Mätzig, Lucas Stegmair → Stegi, Lukas Bühling → Bühling, Lukas Kreitmair → Kreitmair und Johannes Suppmair → Suppmair.
 - Die internen Spielernamen bleiben unverändert, damit Excel-Zuordnung, Spielerwerte, Trikotnummern, Kaderstatus und Berechnungslogik weiterhin auf den bestehenden Datensätzen basieren.
@@ -1188,3 +1195,10 @@ zusätzlich in der App
 
 ## V1.228
 - Anzeige für Frederik/Frederick, Florian, Ludwig und Daniel auf den Vornamen verkürzt; vorhandene interne Spielernamen und Datenzuordnungen bleiben unverändert.
+
+
+## V1.229
+- Die automatisch berechnete Wechselplanung ist jetzt direkt bearbeitbar.
+- Spieler auf dem Spielfeld können angetippt werden, um Positionen zu tauschen, Spieler zu ersetzen oder Positionen zu leeren.
+- Änderungen an der automatischen Wechselplanung gelten nur für das jeweilige Viertel; die übrigen Viertel des Vorschlags bleiben unverändert.
+- Spielzeitübersicht und Torwartübersicht werden nach jeder manuellen Anpassung aktualisiert.
