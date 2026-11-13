@@ -1600,7 +1600,7 @@ color:#fff;
     <div class="card">
       <h2>autom. Wechselplanung</h2>
       <div class="auto-subplan-intro">
-        Die vier Viertel werden anhand der anwesenden Spieler, der Spielerwerte und der Positionsprioritäten automatisch besetzt. Jeder Spieler soll mindestens ein Viertel spielen und – sofern mit der Kadergröße möglich – mindestens ein Viertel aussetzen. Stärkere Spieler erhalten tendenziell mehr Spielzeit. Die automatische Planung ist ein Vorschlag: Tippe anschließend auf einen Spieler im Spielfeld, um die Position zu ändern, Spieler zu tauschen oder einen anderen Spieler einzusetzen. Änderungen gelten jeweils nur für das ausgewählte Viertel.
+        Das 1. Viertel übernimmt die aktuell berechnete Aufstellung einschließlich Formation und Positionen. Für die weiteren Viertel werden die Wechsel anhand der anwesenden Spieler, Spielerwerte und Positionsprioritäten vorgeschlagen; Spieler, die auf dem Feld bleiben, behalten möglichst ihre Ausgangsposition. Jeder Spieler soll mindestens ein Viertel spielen und – sofern mit der Kadergröße möglich – mindestens ein Viertel aussetzen. Die automatische Planung ist ein Vorschlag: Tippe anschließend auf einen Spieler im Spielfeld, um die Position zu ändern, Spieler zu tauschen oder einen anderen Spieler einzusetzen. Änderungen gelten jeweils nur für das ausgewählte Viertel.
       </div>
       <div class="auto-subplan-actions">
         <button type="button" class="primary" id="autoSubPlanCalculateBtn">Wechselplanung automatisch berechnen</button>
@@ -3074,6 +3074,9 @@ function renderRotation(rotation, formation){
 
 /* ===================== Berechnen ===================== */
 document.getElementById("calcBtn").addEventListener("click", () => {
+  // Eine fehlgeschlagene Neuberechnung darf keine veraltete Aufstellung für
+  // die automatische Wechselplanung zurücklassen.
+  window.u11CurrentLineup = null;
   const available = Object.keys(PLAYERS).filter(p => !GROUP_ONLY_PLAYERS.has(p) && attendance[p]);
   const forced = null;
   if(available.length < 7){
@@ -4542,6 +4545,35 @@ const TIMER_WHISTLE_AUDIO = "data:audio/mpeg;base64,SUQzBAAAAAAAI1RTU0UAAAAPAAAD
       .sort((a,b) => displayName(a).localeCompare(displayName(b), "de"));
   }
 
+  function getAutoSubPlanStartingLineup(available){
+    const state = window.u11CurrentLineup;
+    const selectedFormation = formationSelect.value || "2-2-2";
+    if(!state || !state.assignment){
+      return {ok:false, message:"Bitte zuerst auf der Seite „Aufstellung“ die anwesenden Spieler auswählen und auf „Aufstellung berechnen“ klicken."};
+    }
+    if(state.formation !== selectedFormation){
+      return {ok:false, message:"Die Formation wurde seit der letzten Aufstellungsberechnung geändert. Bitte auf der Seite „Aufstellung“ erneut auf „Aufstellung berechnen“ klicken."};
+    }
+    const stateAvailable = Array.isArray(state.available) ? state.available.slice().sort() : [];
+    const currentAvailable = available.slice().sort();
+    if(stateAvailable.length !== currentAvailable.length || stateAvailable.some((player,index) => player !== currentAvailable[index])){
+      return {ok:false, message:"Die Spielerauswahl wurde seit der letzten Aufstellungsberechnung geändert. Bitte auf der Seite „Aufstellung“ erneut auf „Aufstellung berechnen“ klicken."};
+    }
+
+    const requiredSlots = FORMATIONS[selectedFormation] || FORMATIONS["2-2-2"];
+    const assignment = cloneAssignment(state.assignment);
+    const assignedPlayers = requiredSlots.map(slot => assignment[slot]);
+    if(requiredSlots.length !== 7 || Object.keys(assignment).length !== requiredSlots.length ||
+       Object.keys(assignment).some(slot => !requiredSlots.includes(slot)) ||
+       requiredSlots.some(slot => !assignment[slot]) ||
+       new Set(assignedPlayers).size !== requiredSlots.length ||
+       assignedPlayers.some(player => !available.includes(player))){
+      return {ok:false, message:"Die aktuelle Aufstellung ist nicht vollständig oder enthält Spieler, die nicht mehr ausgewählt sind. Bitte die Aufstellung erneut berechnen."};
+    }
+
+    return {ok:true, formation:selectedFormation, assignment};
+  }
+
   function getAutoSubPlanPlayerQuality(player){
     const data = PLAYERS[player] || {};
     const ratings = data.ratings || {};
@@ -4574,49 +4606,69 @@ const TIMER_WHISTLE_AUDIO = "data:audio/mpeg;base64,SUQzBAAAAAAAI1RTU0UAAAAPAAAD
       + stamina * 0.4;
   }
 
-  function buildAutoSubPlanRoleLocks(available){
+  function buildAutoSubPlanRoleLocks(available, startingAssignment){
     const hasRohbeck = available.includes("Maximilian Rohbeck");
     const hasMaetzig = available.includes("Maximilian Mätzig");
-    const goalkeeper = [null,null,null,null];
-    const fixedField = [[],[],[],[]];
-    const notes = [];
+    const startingGoalkeeper = startingAssignment.TW;
+    const startingField = Object.entries(startingAssignment)
+      .filter(([slot, player]) => slot !== "TW" && player)
+      .map(([,player]) => player);
+    const goalkeeper = [startingGoalkeeper,null,null,null];
+    // Das erste Viertel bleibt exakt wie auf der Aufstellungsseite berechnet.
+    const fixedField = [startingField.slice(),[],[],[]];
+    const notes = [`1. Viertel: aktuelle Aufstellung übernommen (${displayName(startingGoalkeeper)} im Tor)`];
     let specialGoalkeeperRule = false;
 
     if(hasRohbeck && hasMaetzig){
-      goalkeeper[0] = "Maximilian Rohbeck";
-      goalkeeper[1] = "Maximilian Rohbeck";
-      goalkeeper[2] = "Maximilian Mätzig";
-      goalkeeper[3] = "Maximilian Mätzig";
-      fixedField[1].push("Maximilian Mätzig");
-      fixedField[2].push("Maximilian Rohbeck");
+      if(startingGoalkeeper === "Maximilian Mätzig"){
+        goalkeeper[1] = "Maximilian Mätzig";
+        goalkeeper[2] = "Maximilian Rohbeck";
+        goalkeeper[3] = "Maximilian Rohbeck";
+        if(!startingField.includes("Maximilian Rohbeck")) fixedField[1].push("Maximilian Rohbeck");
+        if(!startingField.includes("Maximilian Mätzig")) fixedField[2].push("Maximilian Mätzig");
+        notes.push("Mätzig: 1.–2. Viertel im Tor; Rohbeck: 3.–4. Viertel im Tor");
+      }else{
+        goalkeeper[1] = "Maximilian Rohbeck";
+        goalkeeper[2] = "Maximilian Mätzig";
+        goalkeeper[3] = "Maximilian Mätzig";
+        if(!startingField.includes("Maximilian Mätzig")) fixedField[1].push("Maximilian Mätzig");
+        if(!startingField.includes("Maximilian Rohbeck")) fixedField[2].push("Maximilian Rohbeck");
+        if(startingGoalkeeper === "Maximilian Rohbeck"){
+          notes.push("Rohbeck: 1.–2. Viertel im Tor; Mätzig: 3.–4. Viertel im Tor");
+        }else{
+          notes.push(`${displayName(startingGoalkeeper)} bleibt im 1. Viertel im Tor; danach übernehmen Rohbeck und Mätzig`);
+        }
+      }
       specialGoalkeeperRule = true;
-      notes.push("Rohbeck: 1.–2. Viertel im Tor, 3. Viertel Feldspieler");
-      notes.push("Mätzig: 3.–4. Viertel im Tor, 2. Viertel Feldspieler");
+      notes.push("Rohbeck und Mätzig erhalten zusätzlich ein Feldspieler-Viertel, sofern sie nicht bereits in der Ausgangsaufstellung als Feldspieler eingesetzt sind");
     } else if(hasRohbeck || hasMaetzig){
       const primary = hasRohbeck ? "Maximilian Rohbeck" : "Maximilian Mätzig";
       const otherKeepers = available
-        .filter(p => p !== primary)
+        .filter(p => p !== primary && p !== startingGoalkeeper)
         .sort((a,b) => getAutoSubPlanGoalkeeperQuality(b) - getAutoSubPlanGoalkeeperQuality(a));
-      goalkeeper[0] = primary;
-      goalkeeper[1] = primary;
-      goalkeeper[2] = otherKeepers[0] || primary;
-      goalkeeper[3] = otherKeepers[1] || otherKeepers[0] || primary;
-      fixedField[2].push(primary);
-      specialGoalkeeperRule = true;
-      notes.push(`${displayName(primary)}: 1.–2. Viertel im Tor und 3. Viertel als Feldspieler`);
-      notes.push("Die übrigen Torwartviertel werden nach Torwartwert verteilt");
-    } else {
-      const ordered = available.slice()
-        .sort((a,b) => getAutoSubPlanGoalkeeperQuality(b) - getAutoSubPlanGoalkeeperQuality(a));
-      if(ordered.length >= 2){
-        goalkeeper[0] = ordered[0];
-        goalkeeper[1] = ordered[0];
-        goalkeeper[2] = ordered[1];
-        goalkeeper[3] = ordered[1];
-      } else {
-        goalkeeper.fill(ordered[0] || null);
+      if(startingGoalkeeper === primary){
+        goalkeeper[1] = primary;
+        goalkeeper[2] = otherKeepers[0] || primary;
+        goalkeeper[3] = otherKeepers[1] || otherKeepers[0] || primary;
+        fixedField[2].push(primary);
+        notes.push(`${displayName(primary)}: 1.–2. Viertel im Tor und 3. Viertel als Feldspieler`);
+      }else{
+        goalkeeper[1] = primary;
+        goalkeeper[2] = primary;
+        goalkeeper[3] = otherKeepers[0] || primary;
+        if(!startingField.includes(primary)) fixedField[3].push(primary);
+        notes.push(`${displayName(primary)}: 2.–3. Viertel im Tor und 4. Viertel als Feldspieler, sofern der Spieler nicht bereits in der Ausgangsaufstellung auf dem Feld steht`);
       }
-      notes.push("Torwartposition nach den hinterlegten Torwartwerten verteilt");
+      specialGoalkeeperRule = true;
+      notes.push("Die übrigen Torwartviertel werden nach Torwartwerten verteilt");
+    } else {
+      const otherKeepers = available
+        .filter(p => p !== startingGoalkeeper)
+        .sort((a,b) => getAutoSubPlanGoalkeeperQuality(b) - getAutoSubPlanGoalkeeperQuality(a));
+      goalkeeper[1] = startingGoalkeeper;
+      goalkeeper[2] = otherKeepers[0] || startingGoalkeeper;
+      goalkeeper[3] = otherKeepers[1] || otherKeepers[0] || startingGoalkeeper;
+      notes.push("Die erste Torwartbesetzung bleibt erhalten; die weiteren Torwartviertel richten sich nach den hinterlegten Torwartwerten");
     }
 
     return {goalkeeper, fixedField, notes, specialGoalkeeperRule};
@@ -4835,15 +4887,29 @@ const TIMER_WHISTLE_AUDIO = "data:audio/mpeg;base64,SUQzBAAAAAAAI1RTU0UAAAAPAAAD
     return fieldByQuarter;
   }
 
-  function autoSubPlanBestPositionAssignment(fieldPlayers, goalkeeper, formation){
+  function autoSubPlanBestPositionAssignment(fieldPlayers, goalkeeper, formation, startingAssignment=null){
     const slots = (FORMATIONS[formation] || FORMATIONS["2-2-2"]).filter(slot => slot !== "TW");
     let bestAssignment = null;
     let bestScore = -Infinity;
 
+    // Spieler, die aus der Ausgangsaufstellung auf dem Feld bleiben,
+    // behalten nach Möglichkeit ihren dortigen Platz.
+    const anchored = {};
+    const anchoredPlayers = new Set();
+    for(const slot of slots){
+      const originalPlayer = startingAssignment?.[slot];
+      if(originalPlayer && fieldPlayers.includes(originalPlayer) && !anchoredPlayers.has(originalPlayer)){
+        anchored[slot] = originalPlayer;
+        anchoredPlayers.add(originalPlayer);
+      }
+    }
+    const openSlots = slots.filter(slot => !anchored[slot]);
+    const remainingPlayers = fieldPlayers.filter(player => !anchoredPlayers.has(player));
+
     const tryAssignment = strict => {
       function rec(index, remaining, assignment){
-        if(index === slots.length){
-          const candidate = Object.assign({TW:goalkeeper}, assignment);
+        if(index === openSlots.length){
+          const candidate = Object.assign({TW:goalkeeper}, anchored, assignment);
           const score = scoreLineup(candidate, formation);
           if(score > bestScore){
             bestScore = score;
@@ -4851,7 +4917,7 @@ const TIMER_WHISTLE_AUDIO = "data:audio/mpeg;base64,SUQzBAAAAAAAI1RTU0UAAAAPAAAD
           }
           return;
         }
-        const slot = slots[index];
+        const slot = openSlots[index];
         let candidates = remaining;
         if(strict) candidates = remaining.filter(player => canPlay(player, slot));
         candidates = candidates.slice().sort((a,b) => {
@@ -4863,7 +4929,7 @@ const TIMER_WHISTLE_AUDIO = "data:audio/mpeg;base64,SUQzBAAAAAAAI1RTU0UAAAAPAAAD
           rec(index+1, remaining.filter(p => p !== player), Object.assign({}, assignment, {[slot]:player}));
         }
       }
-      rec(0, fieldPlayers.slice(), {});
+      rec(0, remainingPlayers.slice(), {});
     };
 
     tryAssignment(true);
@@ -4893,8 +4959,17 @@ const TIMER_WHISTLE_AUDIO = "data:audio/mpeg;base64,SUQzBAAAAAAAI1RTU0UAAAAPAAAD
       return;
     }
 
-    const formation = formationSelect.value || "2-2-2";
-    const roles = buildAutoSubPlanRoleLocks(available);
+    const startingLineup = getAutoSubPlanStartingLineup(available);
+    if(!startingLineup.ok){
+      status.textContent = startingLineup.message;
+      return;
+    }
+    const formation = startingLineup.formation;
+    const startingAssignment = cloneAssignment(startingLineup.assignment);
+    const startingField = Object.entries(startingAssignment)
+      .filter(([slot, player]) => slot !== "TW" && player)
+      .map(([,player]) => player);
+    const roles = buildAutoSubPlanRoleLocks(available, startingAssignment);
     let fixedField = roles.fixedField.map(list => list.slice());
     let goalkeeper = roles.goalkeeper.slice();
     let specialRuleApplied = roles.specialGoalkeeperRule;
@@ -4906,7 +4981,7 @@ const TIMER_WHISTLE_AUDIO = "data:audio/mpeg;base64,SUQzBAAAAAAAI1RTU0UAAAAPAAAD
     // die zusätzlichen Feldspieler-Viertel der Wunsch-Torhüter lockern.
     if(!targetResult || !targetResult.targets){
       if(specialRuleApplied){
-        fixedField = [[],[],[],[]];
+        fixedField = [startingField.slice(),[],[],[]];
         locked = countAutoSubPlanLockedAppearances(available, goalkeeper, fixedField);
         targetResult = buildAutoSubPlanTargets(available, locked.lockedCounts);
         specialRuleApplied = false;
@@ -4916,9 +4991,10 @@ const TIMER_WHISTLE_AUDIO = "data:audio/mpeg;base64,SUQzBAAAAAAAI1RTU0UAAAAPAAAD
     // Bei außergewöhnlich vielen Anwesenden wird auch die Torwartpaarung gelockert,
     // damit weiterhin jeder Spieler mindestens ein Viertel bekommt.
     if(!targetResult || !targetResult.targets){
-      const ordered = available.slice().sort((a,b) => getAutoSubPlanGoalkeeperQuality(b) - getAutoSubPlanGoalkeeperQuality(a));
-      goalkeeper = [ordered[0], ordered[1] || ordered[0], ordered[2] || ordered[0], ordered[3] || ordered[1] || ordered[0]];
-      fixedField = [[],[],[],[]];
+      const ordered = available.filter(p => p !== startingAssignment.TW)
+        .sort((a,b) => getAutoSubPlanGoalkeeperQuality(b) - getAutoSubPlanGoalkeeperQuality(a));
+      goalkeeper = [startingAssignment.TW, startingAssignment.TW, ordered[0] || startingAssignment.TW, ordered[1] || ordered[0] || startingAssignment.TW];
+      fixedField = [startingField.slice(),[],[],[]];
       locked = countAutoSubPlanLockedAppearances(available, goalkeeper, fixedField);
       targetResult = buildAutoSubPlanTargets(available, locked.lockedCounts);
       specialRuleApplied = false;
@@ -4933,8 +5009,8 @@ const TIMER_WHISTLE_AUDIO = "data:audio/mpeg;base64,SUQzBAAAAAAAI1RTU0UAAAAPAAAD
     if(!fieldByQuarter){
       // Zweiter Versuch: gleiche Zielspielzeiten, aber ohne feste Feldspieler-Viertel
       // für die beiden Wunsch-Torhüter. Die Torwartviertel bleiben dabei erhalten.
-      if(fixedField.some(list => list.length)){
-        fixedField = [[],[],[],[]];
+      if(fixedField.slice(1).some(list => list.length)){
+        fixedField = [startingField.slice(),[],[],[]];
         locked = countAutoSubPlanLockedAppearances(available, goalkeeper, fixedField);
         targetResult = buildAutoSubPlanTargets(available, locked.lockedCounts);
         fieldByQuarter = targetResult.targets
@@ -4952,7 +5028,9 @@ const TIMER_WHISTLE_AUDIO = "data:audio/mpeg;base64,SUQzBAAAAAAAI1RTU0UAAAAPAAAD
     const quarters = [];
     const played = Object.fromEntries(available.map(p => [p, 0]));
     for(let q=0;q<4;q++){
-      const assignment = autoSubPlanBestPositionAssignment(fieldByQuarter[q], goalkeeper[q], formation);
+      const assignment = q === 0
+        ? cloneAssignment(startingAssignment)
+        : autoSubPlanBestPositionAssignment(fieldByQuarter[q], goalkeeper[q], formation, quarters[q-1]);
       if(!assignment){
         status.textContent = `Für das ${q+1}. Viertel konnte keine vollständige Positionszuordnung erstellt werden.`;
         return;
@@ -5020,7 +5098,7 @@ const TIMER_WHISTLE_AUDIO = "data:audio/mpeg;base64,SUQzBAAAAAAAI1RTU0UAAAAPAAAD
       warnings.push("Die gewünschte Zusatzrolle der Torhüter (zwei Viertel im Tor plus ein Viertel als Feldspieler) war mit der Kadergröße oder den verfügbaren Positionen nicht vollständig umsetzbar.");
     }
 
-    status.textContent = `${count} anwesende Spieler · Formation ${plan.formation} · vier Viertel à 15 Minuten. ${plan.manuallyEdited ? "Der automatische Vorschlag wurde manuell angepasst." : "Die stärkeren Spieler erhalten entsprechend ihrer Spielerwerte tendenziell mehr Spielzeit."} Positionen und Spieler lassen sich durch Antippen im Spielfeld ändern.`;
+    status.textContent = `${count} anwesende Spieler · Formation ${plan.formation} · vier Viertel à 15 Minuten. Das 1. Viertel entspricht der berechneten Ausgangsaufstellung. ${plan.manuallyEdited ? "Der automatische Vorschlag wurde manuell angepasst." : "Die stärkeren Spieler erhalten entsprechend ihrer Spielerwerte tendenziell mehr Spielzeit."} Positionen und Spieler lassen sich durch Antippen im Spielfeld ändern.`;
     summary.innerHTML = "";
     if(warnings.length){
       const warning = document.createElement("div");
@@ -6198,6 +6276,6 @@ if ("serviceWorker" in navigator) {
 }
 </script>
 
-<div class="install-hint">SpVgg Erdweg U11 (<a href="./U11-Coach-Versionshistory.md" target="_blank" rel="noopener noreferrer" class="footer-version-link" aria-label="Versionshistory">V1.230</a> by Mike)</div>
+<div class="install-hint">SpVgg Erdweg U11 (<a href="./U11-Coach-Versionshistory.md" target="_blank" rel="noopener noreferrer" class="footer-version-link" aria-label="Versionshistory">V1.231</a> by Mike)</div>
 </body>
 </html>

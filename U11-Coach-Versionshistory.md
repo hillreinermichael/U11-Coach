@@ -1,3 +1,11 @@
+## V1.231
+- Die automatische Wechselplanung übernimmt jetzt vor der Berechnung die zuletzt berechnete Aufstellung aus „Anwesende Spieler & Positionen“.
+- Das 1. Viertel bleibt identisch zur Ausgangsaufstellung: Formation, Torwart, Spieler und konkrete Positionen werden unverändert übernommen.
+- Für die weiteren Viertel werden die Wechsel darauf aufbauend berechnet. Spieler, die aus der Ausgangsaufstellung auf dem Feld bleiben, behalten möglichst ihren bisherigen Platz; freie Positionen werden anhand der hinterlegten Positionswerte besetzt.
+- Wurde die Formation oder Anwesenheitsauswahl nach der letzten Aufstellungsberechnung geändert, fordert die App dazu auf, zunächst die Aufstellung erneut zu berechnen.
+- Die automatische Wechselplanung bleibt anschließend wie bisher manuell bearbeitbar.
+- Sichtbare Versionsanzeige und Service-Worker-Cache auf **V1.231** aktualisiert.
+
 ## V1.230
 - Die vier aktiven TPD-Phasen wurden auf 16 nachvollziehbare Trainingsformen aus veröffentlichten DFB- bzw. BFV-Quellen umgestellt.
 - Die ursprünglichen Übungsbezeichnungen und Übungsaufbauten wurden, soweit verfügbar, an die offiziellen DFB-/BFV-Formen angelehnt und sprachlich für die U11 aufbereitet.
