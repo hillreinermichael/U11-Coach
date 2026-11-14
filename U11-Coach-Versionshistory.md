@@ -1,3 +1,8 @@
+## V1.232
+- Neues Punktspiel vom 14.11.2026 gegen Haimhausen U11 in die Spielhistorie aufgenommen.
+- Auswärtsergebnis aus Sicht der SpVgg Erdweg: 1:6.
+- Sichtbare Versionsanzeige und Service-Worker-Cache auf **V1.232** aktualisiert.
+
 ## V1.231
 - Die automatische Wechselplanung übernimmt jetzt vor der Berechnung die zuletzt berechnete Aufstellung aus „Anwesende Spieler & Positionen“.
 - Das 1. Viertel bleibt identisch zur Ausgangsaufstellung: Formation, Torwart, Spieler und konkrete Positionen werden unverändert übernommen.
