@@ -1215,3 +1215,9 @@ zusätzlich in der App
 - Spieler auf dem Spielfeld können angetippt werden, um Positionen zu tauschen, Spieler zu ersetzen oder Positionen zu leeren.
 - Änderungen an der automatischen Wechselplanung gelten nur für das jeweilige Viertel; die übrigen Viertel des Vorschlags bleiben unverändert.
 - Spielzeitübersicht und Torwartübersicht werden nach jeder manuellen Anpassung aktualisiert.
+
+
+## V1.233
+- Ligatabelle anhand des vom Trainer bereitgestellten BFV-Screenshots vom 14.11.2026 aktualisiert.
+- SpVgg Erdweg U11 steht nach 8 Spielen mit 4 Siegen, 1 Unentschieden, 3 Niederlagen, 27:30 Toren, -3 Tordifferenz und 13 Punkten auf Platz 5.
+- Alle zehn Mannschaften und Tabellenwerte wurden entsprechend dem Screenshot aktualisiert.

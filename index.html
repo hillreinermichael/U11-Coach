@@ -1256,7 +1256,7 @@ color:#fff;
             <tbody id="ligaTableBody"></tbody>
           </table>
         </div>
-        <div class="liga-table-note">Tabellenstand nach BFV-Screenshot vom 08.11.2026.</div>
+        <div class="liga-table-note">Tabellenstand nach BFV-Screenshot vom 14.11.2026.</div>
       </div>
 
       <div class="liga-section">
@@ -6069,20 +6069,20 @@ const TIMER_WHISTLE_AUDIO = "data:audio/mpeg;base64,SUQzBAAAAAAAI1RTU0UAAAAPAAAD
   /* ===================== Liga ===================== */
   const BFV_ICAL_URL = "https://service.bfv.de/rest/icsexport/Spielplan?staffel=031I9A7C5O000007VS5489BUVVKNMR0J-G&id=00ES8GNH1O00000PVV0AG08LVUPGND5I";
   const BFV_TEAM_URL = "https://www.bfv.de/mannschaften/spvgg-erdweg-u11/011MIEAC5O000000VTVG0001VTR8C1K7";
-  // Aktueller Tabellenstand nach dem vom Trainer bereitgestellten BFV-Screenshot vom 08.11.2026.
+  // Aktueller Tabellenstand nach dem vom Trainer bereitgestellten BFV-Screenshot vom 14.11.2026.
   // Spalten: Platz, Mannschaft, Spiele, Siege, Unentschieden, Niederlagen, Tore, Differenz, Punkte
   const CURRENT_BFV_TABLE = [
     // Platz, Mannschaft, Spiele, Siege, Unentschieden, Niederlagen, Tore, Tordifferenz, Punkte
-    [1,"SV Haimhausen U11",7,7,0,0,"65:26",39,21],
-    [2,"SV Sulzemoos U11",7,5,1,1,"42:29",13,16],
-    [3,"SV Lohhof U11 3",7,5,0,2,"59:28",31,15],
-    [4,"SpVgg Erdweg U11",7,4,1,2,"26:24",2,13],
-    [5,"SV Odelzhausen U11",7,4,0,3,"37:22",15,12],
+    [1,"SV Haimhausen U11",8,8,0,0,"71:27",44,24],
+    [2,"SV Sulzemoos U11",8,6,1,1,"48:30",18,19],
+    [3,"SV Lohhof U11 3",8,5,0,3,"61:35",26,15],
+    [4,"SV Odelzhausen U11",8,5,0,3,"44:24",20,15],
+    [5,"SpVgg Erdweg U11",8,4,1,3,"27:30",-3,13],
     [6,"(SG) Vierkirchen/Petershausen U11",7,3,0,4,"24:36",-12,9],
-    [7,"VfL Egenburg U11",7,3,0,4,"15:27",-12,9],
+    [7,"VfL Egenburg U11",8,3,0,5,"16:33",-17,9],
     [8,"(SG) Amperland U11 3",7,2,0,5,"32:34",-2,6],
-    [9,"(SG) Niederroth/Arnbach U11",7,1,0,6,"33:51",-18,3],
-    [10,"(SG) Tandern/Hilgertshausen/Pipinsried U11",7,0,0,7,"12:67",-55,0]
+    [9,"(SG) Niederroth/Arnbach U11",8,2,0,6,"38:56",-18,6],
+    [10,"(SG) Tandern/Hilgertshausen/Pipinsried U11",8,0,0,8,"17:73",-56,0]
   ];
 
   function renderLigaTable(){
