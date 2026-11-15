@@ -1,4 +1,4 @@
-const CACHE_NAME = "u11-coach-v1.233";
+const CACHE_NAME = "u11-coach-v1.234";
 const APP_SHELL = [
   "./",
   "./index.html",
@@ -42,6 +42,13 @@ self.addEventListener("fetch", event => {
   if (request.method !== "GET") return;
 
   const url = new URL(request.url);
+
+  // Die Versionsdatei wird niemals aus dem Service-Worker-Cache bedient.
+  // Der Zeitstempel in der URL und cache:no-store verhindern veraltete Versionsstände.
+  if (url.pathname.endsWith("/version.json")) {
+    event.respondWith(fetch(new Request(request, { cache: "no-store" })));
+    return;
+  }
 
   // Spielerwerte.xlsx ist veränderliche Datenquelle und wird niemals
   // vom Service Worker zwischengespeichert.

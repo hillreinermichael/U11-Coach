@@ -1,3 +1,16 @@
+## V1.234
+- Automatische Versionsprüfung beim Start, bei Rückkehr in die App, bei wiederhergestellter Internetverbindung und anschließend alle 15 Minuten ergänzt.
+- Neue veröffentlichte Versionen werden über eine nicht zwischengespeicherte `version.json` erkannt; bei Abweichungen erscheint ein Aktualisierungshinweis.
+- Der Service Worker wird aktiv auf Updates geprüft; neue Versionen werden nach erfolgreicher Installation automatisch aktiviert und die App lädt sich neu.
+- Eine Schaltfläche „Jetzt aktualisieren“ ermöglicht das manuelle Anstoßen des Updates.
+- Im Footer wird die installierte App-Version angezeigt; zusätzlich erscheint der Zeitpunkt der letzten erfolgreichen Versionsprüfung.
+- Service-Worker-Cache auf **V1.234** aktualisiert.
+
+## V1.233
+- Ligatabelle anhand des vom Trainer bereitgestellten BFV-Screenshots vom 14.11.2026 aktualisiert.
+- SpVgg Erdweg U11 steht nach 8 Spielen mit 4 Siegen, 1 Unentschieden, 3 Niederlagen, 27:30 Toren, -3 Tordifferenz und 13 Punkten auf Platz 5.
+- Alle zehn Mannschaften und Tabellenwerte wurden entsprechend dem Screenshot aktualisiert.
+
 ## V1.232
 - Neues Punktspiel vom 14.11.2026 gegen Haimhausen U11 in die Spielhistorie aufgenommen.
 - Auswärtsergebnis aus Sicht der SpVgg Erdweg: 1:6.
@@ -1217,7 +1230,3 @@ zusätzlich in der App
 - Spielzeitübersicht und Torwartübersicht werden nach jeder manuellen Anpassung aktualisiert.
 
 
-## V1.233
-- Ligatabelle anhand des vom Trainer bereitgestellten BFV-Screenshots vom 14.11.2026 aktualisiert.
-- SpVgg Erdweg U11 steht nach 8 Spielen mit 4 Siegen, 1 Unentschieden, 3 Niederlagen, 27:30 Toren, -3 Tordifferenz und 13 Punkten auf Platz 5.
-- Alle zehn Mannschaften und Tabellenwerte wurden entsprechend dem Screenshot aktualisiert.
