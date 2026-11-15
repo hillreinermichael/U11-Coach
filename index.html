@@ -2675,17 +2675,17 @@ function openEdit(p){
     posRatingGrid.appendChild(row);
   });
 
-  editOverlay.classList.add("open");
+  openAppOverlay(editOverlay);
 }
 
-document.getElementById("editCancel").addEventListener("click", () => editOverlay.classList.remove("open"));
+document.getElementById("editCancel").addEventListener("click", () => closeAppOverlay(editOverlay));
 document.getElementById("editSave").addEventListener("click", () => {
   if(editingPlayer){
     PLAYERS[editingPlayer].ratings = Object.assign({}, tempRatings);
     saveRatings();
     renderRoster();
   }
-  editOverlay.classList.remove("open");
+  closeAppOverlay(editOverlay);
 });
 
 /* ===================== Spielfeld zeichnen (SpVgg Erdweg Design) ===================== */
@@ -4166,7 +4166,7 @@ function pickRandomTraining(list, unit){
     }).join("");
   }
 
-function showMode(mode){
+function renderMode(mode, options = {}){
     startMenu.style.display = "none";
     trainingHubMode.style.display = mode === "trainingHub" ? "block" : "none";
     trainingWarmupMode.style.display = mode === "trainingWarmup" ? "block" : "none";
@@ -4188,12 +4188,18 @@ function showMode(mode){
     if(mode === "teams") renderTeamPlayerSelection();
     if(mode === "trainingStrengthGroups") renderStrengthGroupPlayerSelection();
     if(mode === "substitutionPlan") renderSubstitutionPlan();
-    if(mode === "autoSubstitutionPlan") calculateAutoSubstitutionPlan();
+    if(mode === "autoSubstitutionPlan"){
+      if(options.fromHistory && window.u11AutoSubstitutionPlan){
+        renderAutoSubstitutionPlan(window.u11AutoSubstitutionPlan);
+      } else {
+        calculateAutoSubstitutionPlan();
+      }
+    }
     if(mode === "liga") refreshLiga();
     window.scrollTo({top:0, behavior:"smooth"});
   }
 
-  function showStartMenu(){
+  function renderStartMenu(){
     startMenu.style.display = "block";
     trainingHubMode.style.display = "none";
     trainingWarmupMode.style.display = "none";
@@ -4211,6 +4217,144 @@ function showMode(mode){
     autoSubstitutionPlanMode.style.display = "none";
     ligaMode.style.display = "none";
     window.scrollTo({top:0, behavior:"smooth"});
+  }
+
+  // Browser-History für die internen App-Bereiche. Die PWA bleibt eine einzelne
+  // HTML-Datei; pushState/popstate bildet die Seitenwechsel im Zurück-/Vorwärts-Verlauf ab.
+  const APP_NAV_STATE_KEY = "u11CoachNavigation";
+  const APP_NAV_MODES = new Set([
+    "startMenu", "trainingHub", "trainingWarmup", "matchdayHub", "lineup",
+    "training", "timer", "matchHistory", "playerRoster", "injuries",
+    "checklist", "teams", "trainingStrengthGroups", "substitutionPlan",
+    "autoSubstitutionPlan", "liga"
+  ]);
+  let currentAppMode = "startMenu";
+
+  function appNavigationState(mode, previousMode = null, overlay = null, overlayContext = null){
+    return {
+      mode,
+      previousMode,
+      overlay,
+      overlayContext,
+      warmupReturnMode: window.warmupReturnMode === "matchdayHub" ? "matchdayHub" : "trainingHub"
+    };
+  }
+
+  function writeAppHistory(mode, previousMode, overlay = null, replace = false){
+    const existing = history.state && typeof history.state === "object" ? history.state : {};
+    const overlayContext = overlay === "subPlanPlayerOverlay" && subPlanPlayerContext
+      ? {...subPlanPlayerContext}
+      : null;
+    const nextState = {...existing, [APP_NAV_STATE_KEY]: appNavigationState(mode, previousMode, overlay, overlayContext)};
+    if(replace) history.replaceState(nextState, "", window.location.href);
+    else history.pushState(nextState, "", window.location.href);
+  }
+
+  function showMode(mode, options = {}){
+    if(!APP_NAV_MODES.has(mode) || mode === "startMenu") return;
+    const previousMode = currentAppMode;
+    if(!options.fromHistory && mode !== currentAppMode){
+      writeAppHistory(mode, previousMode, null, !!options.replaceHistory);
+    }
+    currentAppMode = mode;
+    renderMode(mode, {fromHistory: !!options.fromHistory});
+  }
+
+  function showStartMenu(options = {}){
+    const previousMode = currentAppMode;
+    if(!options.fromHistory && currentAppMode !== "startMenu"){
+      writeAppHistory("startMenu", previousMode, null, !!options.replaceHistory);
+    }
+    currentAppMode = "startMenu";
+    renderStartMenu();
+  }
+
+  function navigateBackToMode(targetMode){
+    const state = history.state && history.state[APP_NAV_STATE_KEY];
+    if(state && state.mode === currentAppMode && state.previousMode === targetMode && !state.overlay){
+      history.back();
+    } else if(targetMode === "startMenu") {
+      showStartMenu();
+    } else {
+      showMode(targetMode);
+    }
+  }
+
+  function getOpenAppOverlay(){
+    return [...document.querySelectorAll(".overlay.open")].find(el => el.id) || null;
+  }
+
+  function openAppOverlay(overlay){
+    if(!overlay || overlay.classList.contains("open")) return;
+    writeAppHistory(currentAppMode, currentAppMode, overlay.id);
+    overlay.classList.add("open");
+  }
+
+  function closeAppOverlay(overlay){
+    if(!overlay || !overlay.classList.contains("open")) return;
+    const navState = history.state && history.state[APP_NAV_STATE_KEY];
+    if(navState && navState.overlay === overlay.id){
+      history.back();
+    } else {
+      overlay.classList.remove("open");
+    }
+  }
+
+  window.addEventListener("popstate", event => {
+    const stored = event.state && event.state[APP_NAV_STATE_KEY];
+    const targetMode = stored && APP_NAV_MODES.has(stored.mode) ? stored.mode : "startMenu";
+    const activeOverlay = getOpenAppOverlay();
+
+    if(activeOverlay){
+      activeOverlay.classList.remove("open");
+    }
+
+    if(stored && stored.warmupReturnMode){
+      window.warmupReturnMode = stored.warmupReturnMode === "matchdayHub" ? "matchdayHub" : "trainingHub";
+      updateWarmupBackButton();
+    }
+
+    if(stored && stored.overlay){
+      if(stored.overlay === "subPlanPlayerOverlay" && stored.overlayContext){
+        subPlanPlayerContext = {...stored.overlayContext};
+      }
+      const targetOverlay = document.getElementById(stored.overlay);
+      if(targetOverlay) targetOverlay.classList.add("open");
+      if(targetMode === currentAppMode) return;
+    }
+
+    // Zurück aus einem Dialog soll nur den Dialog schließen, nicht die Seite wechseln.
+    if(activeOverlay && targetMode === currentAppMode && !(stored && stored.overlay)) return;
+
+    if(!stored){
+      const existing = history.state && typeof history.state === "object" ? history.state : {};
+      history.replaceState({...existing, [APP_NAV_STATE_KEY]: appNavigationState("startMenu")}, "", window.location.href);
+    }
+    if(targetMode === "startMenu") showStartMenu({fromHistory:true});
+    else showMode(targetMode, {fromHistory:true});
+  });
+
+  // Nach einem direkten Aufruf oder Neuladen die zuletzt im History-Eintrag
+  // gespeicherte App-Seite wiederherstellen; bei einem frischen Start bleibt es das Menü.
+  const initialNavState = history.state && history.state[APP_NAV_STATE_KEY];
+  const initialMode = initialNavState && APP_NAV_MODES.has(initialNavState.mode) ? initialNavState.mode : "startMenu";
+  if(initialNavState && initialNavState.warmupReturnMode){
+    window.warmupReturnMode = initialNavState.warmupReturnMode === "matchdayHub" ? "matchdayHub" : "trainingHub";
+    updateWarmupBackButton();
+  }
+  history.replaceState(
+    {...(history.state && typeof history.state === "object" ? history.state : {}), [APP_NAV_STATE_KEY]: appNavigationState(initialMode, initialNavState?.previousMode || null, null)},
+    "",
+    window.location.href
+  );
+  if(initialMode === "startMenu") renderStartMenu();
+  else {
+    currentAppMode = initialMode;
+    // Erst nach Abschluss des gesamten Hauptskripts wiederherstellen, damit
+    // alle später deklarierten Daten und Render-Funktionen initialisiert sind.
+    window.setTimeout(() => {
+      if(currentAppMode === initialMode) renderMode(initialMode, {fromHistory:true});
+    }, 0);
   }
 
   document.getElementById("clubLogoLeft")?.addEventListener("click", showStartMenu);
@@ -4330,12 +4474,12 @@ const TIMER_WHISTLE_AUDIO = "data:audio/mpeg;base64,SUQzBAAAAAAAI1RTU0UAAAAPAAAD
     btn.addEventListener("click", () => {
       if(btn.id === "trainingWarmupBackBtn") {
         const target = window.warmupReturnMode === "matchdayHub" ? "matchdayHub" : "trainingHub";
-        showMode(target);
+        navigateBackToMode(target);
         return;
       }
-      if(btn.dataset.back === "trainingHub") showMode("trainingHub");
-      else if(btn.dataset.back === "matchdayHub") showMode("matchdayHub");
-      else showStartMenu();
+      if(btn.dataset.back === "trainingHub") navigateBackToMode("trainingHub");
+      else if(btn.dataset.back === "matchdayHub") navigateBackToMode("matchdayHub");
+      else navigateBackToMode("startMenu");
     });
   });
 
@@ -5271,7 +5415,7 @@ const TIMER_WHISTLE_AUDIO = "data:audio/mpeg;base64,SUQzBAAAAAAAI1RTU0UAAAAPAAAD
       });
     }
 
-    overlay.classList.add("open");
+    openAppOverlay(overlay);
   }
 
   function syncSubstitutionPlanForward(fromQuarterIndex){
@@ -5319,20 +5463,18 @@ const TIMER_WHISTLE_AUDIO = "data:audio/mpeg;base64,SUQzBAAAAAAAI1RTU0UAAAAPAAAD
       syncSubstitutionPlanForward(ctx.quarterIndex);
       saveSubstitutionPlan();
     }
-    if(overlay) overlay.classList.remove("open");
+    if(overlay) closeAppOverlay(overlay);
     subPlanPlayerContext = null;
     if(ctx.planType === "auto") renderAutoSubstitutionPlan(plan);
     else renderSubstitutionPlan();
   }
 
   document.getElementById("subPlanPlayerCancel")?.addEventListener("click", () => {
-    document.getElementById("subPlanPlayerOverlay")?.classList.remove("open");
-    subPlanPlayerContext = null;
+    closeAppOverlay(document.getElementById("subPlanPlayerOverlay"));
   });
   document.getElementById("subPlanPlayerOverlay")?.addEventListener("click", (event) => {
     if(event.target.id === "subPlanPlayerOverlay"){
-      event.currentTarget.classList.remove("open");
-      subPlanPlayerContext = null;
+      closeAppOverlay(event.currentTarget);
     }
   });
   document.getElementById("subPlanImportQ1Btn")?.addEventListener("click", () => {
@@ -5397,7 +5539,7 @@ const TIMER_WHISTLE_AUDIO = "data:audio/mpeg;base64,SUQzBAAAAAAAI1RTU0UAAAAPAAAD
           }
           btn.addEventListener("click", () => {
             applySubstitution(playerOut, playerIn);
-            swapOverlay.classList.remove("open");
+            closeAppOverlay(swapOverlay);
           });
           section.appendChild(btn);
         });
@@ -5409,12 +5551,12 @@ const TIMER_WHISTLE_AUDIO = "data:audio/mpeg;base64,SUQzBAAAAAAAI1RTU0UAAAAPAAAD
     addSection("Spieler auf dem Feld – Plätze tauschen", fieldPlayers, "field");
     addSection("Auswechselspieler", benchPlayers, "bench");
 
-    swapOverlay.classList.add("open");
+    openAppOverlay(swapOverlay);
   }
 
-  document.getElementById("swapCancel")?.addEventListener("click", () => swapOverlay.classList.remove("open"));
+  document.getElementById("swapCancel")?.addEventListener("click", () => closeAppOverlay(swapOverlay));
   swapOverlay?.addEventListener("click", (event) => {
-    if(event.target === swapOverlay) swapOverlay.classList.remove("open");
+    if(event.target === swapOverlay) closeAppOverlay(swapOverlay);
   });
 
   function applySubstitution(playerOut,playerIn){
@@ -6272,7 +6414,7 @@ const TIMER_WHISTLE_AUDIO = "data:audio/mpeg;base64,SUQzBAAAAAAAI1RTU0UAAAAPAAAD
 
 <script>
 (() => {
-  const APP_VERSION = "1.234";
+  const APP_VERSION = "1.235";
   const VERSION_URL = "./version.json";
   let serviceWorkerRegistration = null;
   let reloadStarted = false;
@@ -6432,6 +6574,6 @@ const TIMER_WHISTLE_AUDIO = "data:audio/mpeg;base64,SUQzBAAAAAAAI1RTU0UAAAAPAAAD
 })();
 </script>
 
-<div class="install-hint">SpVgg Erdweg U11 (<a href="./U11-Coach-Versionshistory.md" target="_blank" rel="noopener noreferrer" class="footer-version-link" aria-label="Versionshistory">V1.234</a> by Mike)<br><span id="appVersionStatus" aria-live="polite">Versionsprüfung wird gestartet …</span></div>
+<div class="install-hint">SpVgg Erdweg U11 (<a href="./U11-Coach-Versionshistory.md" target="_blank" rel="noopener noreferrer" class="footer-version-link" aria-label="Versionshistory">V1.235</a> by Mike)<br><span id="appVersionStatus" aria-live="polite">Versionsprüfung wird gestartet …</span></div>
 </body>
 </html>

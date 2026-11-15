@@ -1,3 +1,11 @@
+## V1.235
+- Browser-Navigation über die History API ergänzt: Wechsel zwischen Startseite und App-Bereichen werden im Zurück-/Vorwärts-Verlauf des Browsers gespeichert.
+- Die Browser-Zurück- und Vorwärts-Funktion sowie die Zurück-Taste auf Android navigieren dadurch zwischen den zuvor geöffneten App-Bereichen, ohne die HTML-Datei vollständig neu zu laden.
+- Interne Zurück-Schaltflächen verwenden den vorhandenen Verlauf, sofern das Ziel der vorherige Bereich war.
+- Geöffnete Spielerauswahl- und Bearbeitungsdialoge werden als eigener Verlaufsschritt behandelt; Zurück schließt zuerst den Dialog.
+- Beim Wiederherstellen einer Seite wird eine vorhandene automatische Wechselplanung angezeigt, statt sie erneut zu berechnen und manuelle Anpassungen zu überschreiben.
+- Versionsanzeige, Versionsdatei und Service-Worker-Cache auf **V1.235** aktualisiert.
+
 ## V1.234
 - Automatische Versionsprüfung beim Start, bei Rückkehr in die App, bei wiederhergestellter Internetverbindung und anschließend alle 15 Minuten ergänzt.
 - Neue veröffentlichte Versionen werden über eine nicht zwischengespeicherte `version.json` erkannt; bei Abweichungen erscheint ein Aktualisierungshinweis.
