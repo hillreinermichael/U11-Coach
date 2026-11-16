@@ -1,3 +1,10 @@
+## V1.237
+- Ligatabelle anhand des vom Trainer am 16.11.2026 bereitgestellten BFV-Screenshots aktualisiert.
+- (SG) Vierkirchen/Petershausen U11: 8 Spiele, 4 Siege, 0 Unentschieden, 4 Niederlagen, 28:38 Tore, -10 Tordifferenz, 12 Punkte.
+- (SG) Amperland U11 3: 8 Spiele, 2 Siege, 0 Unentschieden, 6 Niederlagen, 34:38 Tore, -4 Tordifferenz, 6 Punkte.
+- Die übrigen Tabellenwerte wurden entsprechend dem Screenshot beibehalten.
+- Versionsanzeige, Versionsdatei und Service-Worker-Cache auf **V1.237** aktualisiert.
+
 ## V1.235
 - Browser-Navigation über die History API ergänzt: Wechsel zwischen Startseite und App-Bereichen werden im Zurück-/Vorwärts-Verlauf des Browsers gespeichert.
 - Die Browser-Zurück- und Vorwärts-Funktion sowie die Zurück-Taste auf Android navigieren dadurch zwischen den zuvor geöffneten App-Bereichen, ohne die HTML-Datei vollständig neu zu laden.
