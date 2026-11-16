@@ -1238,3 +1238,10 @@ zusätzlich in der App
 - Spielzeitübersicht und Torwartübersicht werden nach jeder manuellen Anpassung aktualisiert.
 
 
+
+
+## V1.236
+- Der aktuelle TPD-Trainingsplan wurde geleert; die vier Phasen Aktivierung, Spielphase 1, Zwischenblock und Spielphase 2 sowie ihre Zeitstruktur bleiben erhalten.
+- In der Aktivierung ist jetzt die Passfolge A–F mit anschließendem Hütchenslalom und Torschuss auswählbar; die vom Trainer bereitgestellte Grafik wird direkt in der Übungsbeschreibung angezeigt.
+- In Spielphase 1 ist jetzt die Spielform „Vom 1 gegen 0 zum 6 gegen 6“ auswählbar, bei der sich die Spielerzahl schrittweise um jeweils einen Spieler erhöht.
+- Zwischenblock und Spielphase 2 bleiben vorerst ohne hinterlegte Übungen.

@@ -420,6 +420,10 @@
   .tpd-random-btn{border:0;border-radius:8px;padding:10px 11px;background:#222;color:#fff;font-size:11px;font-weight:800;cursor:pointer;white-space:nowrap;}
   .tpd-activity-detail{margin-top:10px;border-radius:9px;background:#f7f8fa;border:1px solid #e6e8eb;padding:11px;font-size:12px;line-height:1.5;}
   .tpd-activity-detail h4{margin:0 0 7px;font-size:14px;color:var(--erdweg-black);}
+  .tpd-activity-image-wrap{margin:0 0 10px;}
+  .tpd-activity-image{display:block;width:100%;height:auto;max-height:560px;object-fit:contain;border:1px solid var(--line);border-radius:8px;background:#fff;}
+  .tpd-activity-image-caption{margin-top:5px;font-size:10px;color:var(--ink-soft);text-align:center;}
+  .tpd-empty-state{margin:0;color:var(--ink-soft);font-style:italic;}
   .tpd-detail-grid{display:grid;grid-template-columns:1fr 1fr;gap:8px 12px;}
   .tpd-detail-item strong{display:block;font-size:10px;text-transform:uppercase;letter-spacing:.05em;color:var(--ink-soft);margin-bottom:2px;}
   .tpd-detail-item span{display:block;}
@@ -1642,8 +1646,7 @@ color:#fff;
       </div>
 
       <div class="tpd-plan-actions">
-        <div class="tpd-plan-hint">Die Auswahl besteht jetzt aus veröffentlichten DFB-Trainingsformen (teilweise über die BFV-Coaching-Zone). Aufbau und Ablauf sind für die U11 angepasst. Über den Quellenlink öffnest du die Originalübung mit ihrer Grafik.</div>
-        <button type="button" class="timer-action secondary" id="tpdRandomizeAllBtn">Alle vier Phasen neu zusammenstellen</button>
+        <div class="tpd-plan-hint">Aktuell sind eine Übung für die Aktivierung und eine Spielform für Spielphase 1 hinterlegt. Zwischenblock und Spielphase 2 bleiben vorerst frei und können später ergänzt werden.</div>
       </div>
 
       <div id="tpdStageCards" class="tpd-stage-grid" aria-live="polite"></div>
@@ -3695,212 +3698,71 @@ function pickRandomTraining(list, unit){
   const TPD_TRAINING_STAGES = [
     {
       id: 1, title: "Aktivierung", duration: "15 Min.",
-      purpose: "Mit Ball und vielen Wiederholungen in Bewegung kommen. Die vier Auswahlmöglichkeiten stammen aus veröffentlichten DFB-Trainingsformen und wurden für die U11-Gruppe vereinfacht.",
+      purpose: "Mit Ball und vielen Wiederholungen in Bewegung kommen.",
       activities: [
         {
-          id: "dribbel-chaos", name: "Mittlerer Slalom",
-          goal: "Enge Ballführung, Beidfüßigkeit und Orientierung beim Dribbling.",
-          setup: "Zwei Startpunkte etwa 20 Meter gegenüber markieren. Dazwischen vier Hütchen als Slalom aufstellen. Die Kinder auf beide Startpunkte verteilen; die ersten Spieler haben einen Ball.",
-          flow: "Die ersten Spieler dribbeln je nach Runde an einem, zwei, drei oder allen vier Slalomhütchen vorbei. Danach passen sie zum nächsten Spieler am Startpunkt und laufen außen zurück. Anschließend startet die nächste Gruppe.",
-          coaching: "Ball eng führen, vor dem nächsten Hütchen den Blick heben und mit beiden Füßen sowie Innen- und Außenseite arbeiten.",
-          variation: "Slalom von der anderen Seite beginnen; Hütchenabstände verändern; nur mit rechts oder links dribbeln.",
-          material: "8 Start- und Slalomhütchen, mehrere Bälle.",
-          sourceLabel: "BFV-Coaching-Zone · Bildquelle: DFB",
-          sourceUrl: "https://www.bfv.de/bildung-und-foerderung/ausbildung-und-schulungen/bfv-coaching-zone/technik/das-dribbling-spielend-lernen"
-        },
-        {
-          id: "fangspiel-ball", name: "Farben-Fangen",
-          goal: "Reaktion, Tempowechsel und Dribbling unter Zeitdruck.",
-          setup: "Zwei Startpunkte etwa 20 Meter gegenüber markieren. Seitlich davon zwei Hütchentore aufbauen. Eine Gruppe startet als Läufer, die andere als Fänger; der Fänger hat einen Ball in der Hand.",
-          flow: "Der Läufer versucht, durch eines der Hütchentore zu gelangen. Gleichzeitig läuft der Fänger los und versucht, den Läufer mit dem Ball in der Hand am Rücken zu berühren. Danach Aufgaben tauschen. Für die U11 kann der Läufer später ebenfalls mit Ball dribbeln.",
-          coaching: "Früh auf das Startsignal reagieren, Tempo und Laufrichtung variieren und den Fänger im Blick behalten.",
-          variation: "Beide Spieler dribbeln; zwei mögliche Tore anbieten; Punkte für erfolgreiches Entkommen oder Fangen vergeben.",
-          material: "4 Start-/Markierungshütchen, 4 Hütchen für zwei Tore, 1 Ball pro Fänger.",
-          sourceLabel: "BFV-Coaching-Zone · Bildquelle: DFB",
-          sourceUrl: "https://www.bfv.de/bildung-und-foerderung/ausbildung-und-schulungen/bfv-coaching-zone/technik/dribbeln-unter-gegnerdruck"
-        },
-        {
-          id: "dribbel-tore", name: "Gruppendribbeln",
-          goal: "Ballkontrolle, Orientierung und Reaktion auf Trainerkommandos.",
-          setup: "Ein zentrales Dribbelfeld markieren und an den vier Seiten jeweils ein kleines Aufgabenfeld mit drei Hütchen ergänzen. Vier Gruppen bilden; jedes Kind hat einen Ball.",
-          flow: "Alle Kinder dribbeln im zentralen Feld. Der Trainer ruft eine Gruppe und ein Außenfeld auf. Diese Gruppe dribbelt durch das genannte Feld um die Hütchen und anschließend zurück ins zentrale Feld. Danach folgt die nächste Gruppe.",
-          coaching: "Den Ball beidfüßig und eng führen. Beim Kommando schnell reagieren und im Außenfeld das Tempo erhöhen.",
-          variation: "Nur mit einem Fuß dribbeln; Sohle oder Außenseite nutzen; Zusatzball innerhalb einer Gruppe zuwerfen.",
-          material: "Viele Hütchen für das Zentrum und vier Außenfelder, 1 Ball pro Kind.",
-          sourceLabel: "BFV-Coaching-Zone · Bildquelle: DFB",
-          sourceUrl: "https://www.bfv.de/bildung-und-foerderung/ausbildung-und-schulungen/bfv-coaching-zone/technik/das-dribbeln-als-grundlage-fur-den-angriff"
-        },
-        {
-          id: "ball-schuetzen", name: "Finten-Viereck",
-          goal: "Fintenbewegung, Richtungswechsel und anschließendes Beschleunigen.",
-          setup: "Ein Quadrat von etwa 10 × 10 Metern markieren. In die Mitte jeder Seitenlinie ein weiteres Hütchen stellen. Die Spieler mit Bällen an den vier Eckhütchen aufteilen.",
-          flow: "Die ersten Spieler dribbeln zum mittleren Hütchen auf der linken Seite, führen dort eine Finte aus und dribbeln diagonal zum gegenüberliegenden Eckhütchen. Danach startet der nächste Spieler.",
-          coaching: "Vor dem Hütchen eine klare Täuschung ausführen, den Körperschwerpunkt verlagern und nach der Finte in die freie Richtung beschleunigen.",
-          variation: "Finten vorgeben (z. B. Schere oder Übersteiger); von der anderen Seite starten; nach der Finte zum eigenen Startpunkt zurückdribbeln.",
-          material: "8 Hütchen, 1 Ball pro Spieler.",
-          sourceLabel: "BFV-Coaching-Zone · Bildquelle: DFB",
-          sourceUrl: "https://www.bfv.de/bildung-und-foerderung/ausbildung-und-schulungen/bfv-coaching-zone/technik/von-der-vielfalt-der-finten-zum-lieblingstrick"
+          id: "passfolge-a-f-torschuss", name: "Passfolge A–F mit Dribbling und Torschuss",
+          goal: "Passgenauigkeit, Ballmitnahme, Bewegung nach dem Pass, Dribbling und Torabschluss miteinander verbinden.",
+          setup: "Sechs Positionen A bis F wie auf der Grafik mit Hütchen markieren. An Position A mehrere Bälle bereitlegen. An B, C, D, E und F jeweils einen Spieler postieren. Rechts von F eine Slalomstrecke aus Hütchen in Richtung Tor aufbauen. Ein Tor mit Torwart besetzen.",
+          flow: "A passt zu B und läuft seinem Pass zur Position B nach. B passt zu C und läuft weiter. Danach folgen die Pässe C zu D, D zu E und E zu F; jeder Spieler läuft seinem Pass zur nächsten Position nach. F nimmt den Ball mit, dribbelt durch den Hütchenslalom und schließt auf das Tor ab. Danach beginnt die nächste Aktion bei A.",
+          coaching: "Flache und präzise Pässe spielen, vor der Ballannahme orientieren, den ersten Kontakt in die Bewegungsrichtung mitnehmen und nach jedem Pass sofort weiterlaufen. Im Slalom den Ball eng führen und vor dem Abschluss den Blick heben.",
+          variation: "Mit zwei Kontakten spielen; die Passfolge mit dem jeweils anderen Fuß durchführen; Slalomabstände verändern; den Torabschluss mit rechts oder links vorgeben.",
+          material: "Markierungshütchen für die Positionen A–F, 4–5 Slalom-Hütchen, mehrere Bälle, ein Tor und ein Torwart.",
+          image: "./bilder/aktivierung-passfolge-torschuss.jpeg",
+          imageAlt: "Übungsaufbau mit sechs Passpositionen A bis F, anschließendem Hütchenslalom und Torschuss auf ein Tor.",
+          imageCaption: "Übungsbild: Passfolge A–F, Dribbling durch den Slalom und Torabschluss.",
+          sourceLabel: "Übungsbild vom Trainer bereitgestellt"
         }
       ]
     },
     {
       id: 2, title: "Spielphase 1", duration: "30 Min.",
-      purpose: "Kleine, intensive Spielformen mit vielen Ballaktionen. Die Formate können parallel auf mehreren Feldern durchgeführt werden.",
+      purpose: "Eine Spielform mit schrittweise wachsender Spielerzahl und wechselnden Über- und Unterzahlsituationen.",
       activities: [
         {
-          id: "funino-3v3", name: "3 gegen 3 im FUNino-Feld",
-          goal: "Freie Tore erkennen, Breite nutzen und selbstständig zwischen Dribbling und Zusammenspiel entscheiden.",
-          setup: "Ein FUNino-Feld mit zwei Minitoren auf jeder Grundlinie aufbauen. Zwei Dreierteams bilden; bei vielen Kindern ein zweites Feld ergänzen.",
-          flow: "3 gegen 3 auf die vier Minitore. Beide Teams können auf die beiden Tore der gegnerischen Grundlinie angreifen. In mehreren kurzen Durchgängen spielen und die Teams regelmäßig wechseln.",
-          coaching: "Vor dem Ballkontakt orientieren, freie Tore wahrnehmen, mutig ins Dribbling gehen und nach einem Pass wieder anspielbar werden.",
-          variation: "Tore zählen nur aus einer markierten Endzone; mit einem tiefen Anspieler spielen; nach 3–4 Minuten Gegner wechseln.",
-          material: "4 Minitore, Hütchen zur Feldmarkierung, Bälle, Leibchen.",
-          sourceLabel: "DFB-Trainingsdialog · Download über den BFV",
-          sourceUrl: "https://www.bfv.de/binaries/content/assets/inhalt/bildung-und-foerderung/talente-und-auswahlteams/die-bayerischen-talentstutzpunkte/infos-fur-eltern-und-trainer/dfb_trainingsdialog-1.pdf"
-        },
-        {
-          id: "duell-2v2", name: "Finten-Turnier im 2 gegen 2",
-          goal: "Finten unter Gegnerdruck anwenden, Zweikämpfe lösen und nach Ballgewinn umschalten.",
-          setup: "Drei kleine Felder nebeneinander markieren und jeweils ein Minitor aufstellen. Sechs Zweierteams bilden. In jedem Feld spielt ein Team gegen ein anderes.",
-          flow: "2 gegen 2: Ein Team greift auf das Minitor an, das andere versucht über die gegenüberliegende Grundlinie zu kontern. Nach drei Minuten wechseln die Teams. Gewinner steigen ein Feld auf, Verlierer ein Feld ab.",
-          coaching: "Den Gegner durch eine Finte aus dem Gleichgewicht bringen, nach der Täuschung beschleunigen und bei Ballgewinn sofort umschalten.",
-          variation: "3 gegen 3 auf zwei Feldern; Minitore entfernen und nur über die Grundlinie dribbeln; Startpositionen verändern.",
-          material: "3 Minitore, Hütchen, Bälle, Leibchen.",
-          sourceLabel: "BFV-Coaching-Zone · Bildquelle: DFB",
-          sourceUrl: "https://www.bfv.de/bildung-und-foerderung/ausbildung-und-schulungen/bfv-coaching-zone/technik/von-der-vielfalt-der-finten-zum-lieblingstrick"
-        },
-        {
-          id: "vier-gegen-vier", name: "4 gegen 4 auf kleine Tore im Raum",
-          goal: "Ball behaupten, Räume erkennen und aus dem Zusammenspiel zielstrebig in freie Tore dribbeln.",
-          setup: "Ein Feld von etwa 30 × 20 Metern markieren und vier bis fünf Stangentore im Feld verteilen. Zwei Viererteams bilden und Ersatzbälle bereitlegen.",
-          flow: "4 gegen 4. Ein Treffer zählt, wenn das angreifende Team nach einer Kombination durch eines der Stangentore dribbelt. Nach einem Treffer bleibt das Team am Ball und greift ein anderes Tor an. Kurze Runden von zwei bis vier Minuten spielen.",
-          coaching: "Den Körper zwischen Gegner und Ball bringen, sich in Breite und Tiefe anbieten und mit Tempo in freie Räume dribbeln.",
-          variation: "Anzahl und Position der Tore verändern; nach Trainerkommando ein bestimmtes Tor angreifen; mit maximal drei Kontakten kombinieren.",
-          material: "8–10 Stangen oder Hütchen für 4–5 Tore, Bälle, Leibchen.",
-          sourceLabel: "BFV-Coaching-Zone · Bildquelle: DFB",
-          sourceUrl: "https://www.bfv.de/bildung-und-foerderung/ausbildung-und-schulungen/bfv-coaching-zone/technik/den-ball-behaupten"
-        },
-        {
-          id: "eins-gegen-eins", name: "Gegner-Dribbling I – 1 gegen 1",
-          goal: "Im direkten Duell Finten einsetzen, den Gegner überwinden und zielstrebig zum Torabschluss kommen.",
-          setup: "Ein Feld von etwa 20 × 20 Metern markieren. Auf einer Seite ein Tor mit Torhüter und auf den anderen Seiten Minitore aufstellen. Zwei Startpositionen mit Bällen vorbereiten.",
-          flow: "Zwei Spieler starten: Einer dribbelt ins Feld und schließt zunächst auf das große Tor ab. Anschließend wird er Verteidiger. Der zweite Spieler startet ins 1 gegen 1 und greift auf die Minitore an. Nach jedem Durchgang Aufgaben wechseln.",
-          coaching: "Angreifer sollen den Verteidiger aktiv herausfordern und nach einer Finte beschleunigen. Verteidiger bleiben zwischen Ball und Tor.",
-          variation: "Auf alle Minitore angreifen; Angreifer und Verteidiger tauschen die Zielrichtung; den Torhüter regelmäßig wechseln.",
-          material: "1 Jugendtor mit Torhüter, 2–3 Minitore, Bälle, Hütchen.",
-          sourceLabel: "BFV-Coaching-Zone · Bildquelle: DFB",
-          sourceUrl: "https://www.bfv.de/bildung-und-foerderung/ausbildung-und-schulungen/bfv-coaching-zone/technik/dribbeln-unter-gegnerdruck"
+          id: "vom-1v0-zum-6v6", name: "Vom 1 gegen 0 zum 6 gegen 6",
+          goal: "Überzahl zielgerichtet ausspielen, Unterzahl verteidigen, Mitspieler wahrnehmen und nach Ballgewinn oder Ballverlust schnell umschalten.",
+          setup: "Zwei Mannschaften bilden. Auf beiden Seiten steht jeweils ein Tor mit Torwart. Die Feldspieler beider Teams stehen bereit und kommen nacheinander ins Feld. Eine Mannschaft beginnt als angreifendes Team mit einem Spieler.",
+          flow: "Die Spielform startet mit 1 gegen 0: Ein Angreifer spielt gegen den Torwart auf das gegenüberliegende Tor. Danach kommt genau ein Spieler der anderen Mannschaft hinzu – es entsteht 1 gegen 1. Anschließend wird abwechselnd jeweils ein weiterer Spieler ergänzt: 2 gegen 1, 2 gegen 2, 3 gegen 2, 3 gegen 3, 4 gegen 3, 4 gegen 4, 5 gegen 4, 5 gegen 5, 6 gegen 5 und schließlich 6 gegen 6. Die Spielerzahl wächst also nach jeder Stufe nur um einen Spieler.",
+          coaching: "Die angreifende Mannschaft nutzt den kurzzeitigen Raum- und Zahlvorteil konsequent. Die verteidigende Mannschaft organisiert sich schnell und verzögert den Angriff. Nach jedem neuen Spieler sofort neu orientieren und die Über- oder Unterzahl erkennen.",
+          variation: "Die maximale Spielerzahl an die Gruppengröße anpassen. Nach einer vollständigen Runde die Startmannschaft wechseln.",
+          material: "Zwei Tore, zwei Torhüter, Bälle, Leibchen für zwei Mannschaften und ausreichend Platz für ein Spielfeld.",
+          sourceLabel: "Fußballtraining · Vom 1 gegen 0 zum 6 gegen 6",
+          sourceUrl: "https://cdn.fussballtraining.com/FT_Sonderpublikation_digital_v2.pdf#page=7"
         }
       ]
     },
     {
       id: 3, title: "Zwischenblock", duration: "15 Min.",
-      purpose: "Ein klarer Technikschwerpunkt mit vielen Wiederholungen. Bei den Pass- und Mitnahmeformen die Gruppen klein halten und Wartezeiten vermeiden.",
-      activities: [
-        {
-          id: "pass-erster-kontakt", name: "Passen und Entgegenkommen",
-          goal: "Präzise Pässe, aktives Entgegenstarten und Ballmitnahme in die nächste Bewegungsrichtung.",
-          setup: "Vier Quadrate von etwa 6 × 6 Metern mit Abstand zueinander markieren. Die Spieler auf die Quadrate verteilen; an zwei gegenüberliegenden Positionen liegt je ein Ball bereit.",
-          flow: "Die ersten Spieler dribbeln kurz an und passen von außerhalb des Quadrats zu einem entgegenkommenden Mitspieler. Dieser nimmt den Ball seitlich aus dem Quadrat mit und passt zum nächsten Spieler. Anschließend laufen alle ihrem Pass nach.",
-          coaching: "Vor dem Pass Blickkontakt herstellen, dem Zuspiel aktiv entgegenstarten und den ersten Kontakt direkt in die neue Richtung setzen.",
-          variation: "Mit rechts oder links an- und mitnehmen; die Passrichtung wechseln; einen kleinen Wettbewerb zwischen den Gruppen durchführen.",
-          material: "16 Hütchen für vier Quadrate, 2–4 Bälle.",
-          sourceLabel: "BFV-Coaching-Zone · Bildquelle: DFB",
-          sourceUrl: "https://www.bfv.de/bildung-und-foerderung/ausbildung-und-schulungen/bfv-coaching-zone/technik/in-wettbewerben-am-passspiel-feilen"
-        },
-        {
-          id: "abschluss", name: "Ballkontrolle I – erster Kontakt",
-          goal: "Zuspiele kontrolliert annehmen und den Ball gezielt nach vorne oder zur Seite mitnehmen.",
-          setup: "Vier Hütchen rautenförmig mit etwa 20 Metern Abstand aufstellen. Fünf Meter vor jedem Hütchen eine Stange platzieren. An den Stangen stehen Passempfänger, die übrigen Spieler haben Bälle an den Hütchen.",
-          flow: "Die ersten Spieler passen zu den Mitspielern an den Stangen und laufen ihrem Pass nach. Die Passempfänger nehmen den Ball zunächst nach vorne, später nach rechts oder links zum nächsten Hütchen mit. Nach mehreren Durchgängen rotieren die Positionen.",
-          coaching: "Vororientieren, den Körper seitlich zum Zuspiel öffnen und den ersten Kontakt nicht unter den Körper, sondern in den freien Raum setzen.",
-          variation: "Zuspiele hoch zuwerfen oder per Volleyschuss zuspielen; nach dem ersten Kontakt direkt in eine Anschlussaktion gehen.",
-          material: "4 Hütchen, 4 Stangen, mehrere Bälle.",
-          sourceLabel: "BFV-Coaching-Zone · Bildquelle: DFB",
-          sourceUrl: "https://www.bfv.de/bildung-und-foerderung/ausbildung-und-schulungen/bfv-coaching-zone/technik/der-erste-kontakt"
-        },
-        {
-          id: "finten", name: "Passen, Mitnehmen und Schießen",
-          goal: "Passkombination, offene Ballannahme und gezielter Torabschluss verbinden.",
-          setup: "Einen Parcours mit Hütchen und zwei Stangen aufbauen. Am Ende zwei Tore mit Torhütern oder zwei parallel nutzbare Abschlüsse einrichten. Spieler auf die Stationen verteilen; am Start liegen Bälle bereit.",
-          flow: "Der Startspieler passt zu einem Mitspieler, der den Ball auf einen dritten Spieler weiterleitet. Dieser nimmt um eine Stange herum in Richtung Tor mit und schließt ab. Alle Spieler folgen ihrem Pass zur nächsten Position. Seiten regelmäßig wechseln.",
-          coaching: "Mit dem ersten Kontakt in die neue Richtung aufdrehen, Pässe in den richtigen Fuß spielen und den Torabschluss gezielt platzieren.",
-          variation: "Einen Verteidiger statt einer Stange einsetzen; mit genau zwei Kontakten spielen; mit beiden Füßen abschließen.",
-          material: "Hütchen, 2 Stangen, Bälle, 1–2 Tore, ggf. Torhüter.",
-          sourceLabel: "BFV-Coaching-Zone · Bildquelle: DFB",
-          sourceUrl: "https://www.bfv.de/bildung-und-foerderung/ausbildung-und-schulungen/bfv-coaching-zone/technik/kombiniertes-passen-und-mitnehmen"
-        },
-        {
-          id: "schnelligkeit", name: "Dribbelparcours mit Zusatzaufgaben",
-          goal: "Ballführung, koordinative Bewegungen und Tempo in kurzen Laufwegen verbinden.",
-          setup: "Zwei parallele Laufbahnen aufbauen. An beiden Seiten je einen Hütchen- und Stangenparcours markieren. Zwei Gruppen an den Startpunkten aufstellen; jedes Kind hat einen Ball.",
-          flow: "Die Kinder dribbeln nacheinander durch den Parcours. Dabei führen sie Zusatzaufgaben aus, zum Beispiel um Hütchen dribbeln, den Ball mit der Innenseite um Stangen führen oder ihn im Rückweg seitlich mit der Sohle bewegen.",
-          coaching: "Auf enge Ballführung und korrekte Ausführung achten. Tempo erst erhöhen, wenn die Bewegung sauber gelingt.",
-          variation: "Parcours spiegelverkehrt aufbauen; nur mit einem Fuß arbeiten; als Staffel mit sauberer Ausführung statt nur auf Zeit durchführen.",
-          material: "Hütchen, Stangen, 1 Ball pro Kind.",
-          sourceLabel: "BFV-Coaching-Zone · Bildquelle: DFB",
-          sourceUrl: "https://www.bfv.de/bildung-und-foerderung/ausbildung-und-schulungen/bfv-coaching-zone/fitness/kraft-und-schnelligkeit"
-        }
-      ]
+      purpose: "",
+      activities: []
     },
     {
       id: 4, title: "Spielphase 2", duration: "30 Min.",
-      purpose: "Zum Abschluss komplexere Spielformen mit Umschalten, Ballbehauptung und Spielverlagerung. Die Spieler sollen die Technik aus den vorherigen Phasen im Spiel anwenden.",
-      activities: [
-        {
-          id: "umschalten-3v3", name: "Team-Dribbling auf vier Tore",
-          goal: "Nach Ballgewinn schnell in den Angriff umschalten und unterschiedliche Torziele wahrnehmen.",
-          setup: "Ein Feld von etwa 20 × 20 Metern markieren. Auf einer Seite ein großes Tor und auf den übrigen Seiten Minitore aufstellen. Drei Teams bilden; zwei Teams spielen, eines rotiert.",
-          flow: "4 gegen 4: Ein Team verteidigt das große Tor und greift auf die Minitore an; das andere Team verteidigt die Minitore und greift auf das große Tor an. Nach einem Treffer bleibt das erfolgreiche Team am Ball und greift in der neuen Richtung an. Das dritte Team rotiert anschließend ein.",
-          coaching: "Nach Balleroberung schnell erkennen, welches Tor offen ist. Nach einem Treffer das Spiel ohne lange Unterbrechung in der neuen Richtung fortsetzen.",
-          variation: "Das pausierende Team spielt nach jedem Treffer den neuen Ball ein; je nach Spielerzahl 3 gegen 3 spielen; Tore oder Feldgröße anpassen.",
-          material: "1 Jugendtor, 3 Minitore, Bälle, Hütchen, Leibchen.",
-          sourceLabel: "BFV-Coaching-Zone · Bildquelle: DFB",
-          sourceUrl: "https://www.bfv.de/bildung-und-foerderung/ausbildung-und-schulungen/bfv-coaching-zone/technik/dribbeln-unter-gegnerdruck"
-        },
-        {
-          id: "4v4-seitenwechsel", name: "4 gegen 4 – Torejagd nach Ball-Sichern",
-          goal: "Ballbesitz sichern und nach einem Signal schnell in freie Räume und auf ein Zieltor dribbeln.",
-          setup: "Ein Feld von etwa 30 × 20 Metern markieren und vier bis fünf Stangentore im Feld verteilen. Zwei Viererteams bilden. Ausreichend Ersatzbälle bereitlegen.",
-          flow: "Die Teams versuchen zunächst, den Ball in den eigenen Reihen zu halten. Auf ein Trainerkommando greift das ballbesitzende Team sofort eines der Stangentore an und erzielt einen Punkt, indem es hindurchdribbelt. Danach beginnt erneut die Phase des Sicherns.",
-          coaching: "Vor dem Signal den Kopf heben und Mitspieler sehen. Nach dem Kommando schnell entscheiden und mit Tempo in das freie Tor dribbeln.",
-          variation: "Nach jedem Punkt ein anderes Tor wählen; Signal durch eine Farbe oder Zahl ersetzen; Spielzeit auf maximal vier Minuten begrenzen.",
-          material: "8–10 Stangen oder Hütchen für 4–5 Tore, Bälle, Leibchen.",
-          sourceLabel: "BFV-Coaching-Zone · Bildquelle: DFB",
-          sourceUrl: "https://www.bfv.de/bildung-und-foerderung/ausbildung-und-schulungen/bfv-coaching-zone/technik/den-ball-behaupten"
-        },
-        {
-          id: "2v2-joker", name: "4 gegen 4 plus 4 neutrale Außenspieler",
-          goal: "Ballbesitz durch Anspielmöglichkeiten in Breite und Tiefe sichern und gemeinsam Lösungen finden.",
-          setup: "Ein Feld von etwa 25 × 20 Metern markieren. Drei Viererteams bilden. Zwei Teams spielen im Feld, das dritte Team verteilt sich als neutrale Anspielgruppe hinter den vier Seitenlinien.",
-          flow: "4 gegen 4 im Feld. Das ballbesitzende Team darf die vier neutralen Außenspieler in den Kombinationsaufbau einbeziehen. Für zehn aufeinanderfolgende Zuspiele gibt es einen Punkt. Nach vier Minuten Rollen wechseln.",
-          coaching: "Schon vor der Ballannahme nach freien Anspielstationen schauen. Breite und Tiefe anbieten und nach dem Pass sofort eine neue Anspielposition suchen.",
-          variation: "Mit sieben statt zehn Pässen punkten; neutrale Spieler nur direkt spielen lassen; bei kleinerer Gruppe 3 gegen 3 plus zwei Außenspieler.",
-          material: "Hütchen, Bälle, Leibchen für drei Teams.",
-          sourceLabel: "BFV-Coaching-Zone · Bildquelle: DFB",
-          sourceUrl: "https://www.bfv.de/bildung-und-foerderung/ausbildung-und-schulungen/bfv-coaching-zone/technik/den-ball-behaupten"
-        },
-        {
-          id: "3v3-endzone", name: "4 gegen 4 mit Außenzonen",
-          goal: "Spielverlagerung erkennen, Breite nutzen und über Außenzonen kontrolliert Raum gewinnen.",
-          setup: "Ein Spielfeld mit zwei etwa 10 Meter tiefen Außenzonen an den Grundlinien aufbauen. Zwei Teams einteilen und jeweils vier Spieler im Feld aufstellen. Weitere Spieler können als Wandspieler an den Seitenlinien eingesetzt werden.",
-          flow: "4 gegen 4 im Feld. Das ballbesitzende Team versucht, mit dem Ball in eine der Außenzonen zu gelangen und dort über die gegnerische Grundlinie zu dribbeln. Wandspieler der eigenen Mannschaft dürfen unterstützend direkt einbezogen werden. Nach zwei Minuten Aufgaben wechseln.",
-          coaching: "Die ballferne Seite mitdenken, Passdreiecke bilden und den Ball in offener Stellung mitnehmen. Nach einer Verlagerung den freien Raum schnell nutzen.",
-          variation: "Ohne Wandspieler spielen; Außenzonen verkleinern oder vergrößern; Dribblings durch die Außenzone höher bewerten als Angriffe durch die Mitte.",
-          material: "Hütchen zur Feld- und Zonenmarkierung, Bälle, Leibchen.",
-          sourceLabel: "BFV-Coaching-Zone · Bildquelle: DFB",
-          sourceUrl: "https://www.bfv.de/bildung-und-foerderung/ausbildung-und-schulungen/bfv-coaching-zone/taktik/mit-schnellen-seitenwechseln-vor-das-gegner-tor"
-        }
-      ]
+      purpose: "",
+      activities: []
     }
   ];
 
   function renderTpdActivity(stage, activityId){
     const activity = stage.activities.find(item => item.id === activityId) || stage.activities[0];
     const target = document.getElementById("tpdActivityDetail" + stage.id);
-    if(!target || !activity) return;
+    if(!target) return;
+    if(!activity){
+      target.innerHTML = '<p class="tpd-empty-state">Für diese Phase sind derzeit keine Übungen hinterlegt.</p>';
+      return;
+    }
+    const imageMarkup = activity.image ? `
+      <div class="tpd-activity-image-wrap">
+        <img class="tpd-activity-image" src="${activity.image}" alt="${activity.imageAlt || activity.name}">
+        ${activity.imageCaption ? `<div class="tpd-activity-image-caption">${activity.imageCaption}</div>` : ""}
+      </div>` : "";
+    const sourceMarkup = activity.sourceUrl
+      ? `<div class="tpd-source"><strong>Originalquelle:</strong> ${activity.sourceLabel || "Quelle"}<br><a href="${activity.sourceUrl}" target="_blank" rel="noopener noreferrer">Originalübung und Grafik öffnen ↗</a><div class="tpd-source-note">Die Quelle wird in einem neuen Browser-Tab geöffnet.</div></div>`
+      : (activity.sourceLabel ? `<div class="tpd-source"><strong>Bildquelle:</strong> ${activity.sourceLabel}</div>` : "");
     target.innerHTML = `
       <h4>${activity.name}</h4>
+      ${imageMarkup}
       <div class="tpd-detail-grid">
         <div class="tpd-detail-item"><strong>Ziel</strong><span>${activity.goal}</span></div>
         <div class="tpd-detail-item"><strong>Aufbau</strong><span>${activity.setup}</span></div>
@@ -3909,11 +3771,7 @@ function pickRandomTraining(list, unit){
         <div class="tpd-detail-item"><strong>Variationen</strong><span>${activity.variation}</span></div>
         <div class="tpd-detail-item tpd-detail-wide"><strong>Material</strong><span>${activity.material}</span></div>
       </div>
-      <div class="tpd-source">
-        <strong>Originalquelle:</strong> ${activity.sourceLabel}<br>
-        <a href="${activity.sourceUrl}" target="_blank" rel="noopener noreferrer">Originalübung und Grafik öffnen ↗</a>
-        <div class="tpd-source-note">Die Originalgrafik bleibt auf der DFB-/BFV-Seite. Die Angaben oben sind für eure U11 angepasst.</div>
-      </div>`;
+      ${sourceMarkup}`;
   }
 
   function renderTpdTrainingPlan(){
@@ -3922,21 +3780,24 @@ function pickRandomTraining(list, unit){
     container.innerHTML = TPD_TRAINING_STAGES.map(stage => {
       let saved = "";
       try{ saved = localStorage.getItem("u11coach_tpd_stage_" + stage.id) || ""; }catch(e){}
-      const selected = stage.activities.some(item => item.id === saved) ? saved : stage.activities[0].id;
+      const hasActivities = stage.activities.length > 0;
+      const selected = hasActivities && stage.activities.some(item => item.id === saved) ? saved : (hasActivities ? stage.activities[0].id : "");
+      const controls = hasActivities ? `
+        <div class="tpd-activity-controls">
+          <select class="tpd-activity-select" id="tpdActivitySelect${stage.id}" aria-label="Übung für ${stage.title} auswählen">
+            ${stage.activities.map(activity => `<option value="${activity.id}" ${activity.id === selected ? "selected" : ""}>${activity.name}</option>`).join("")}
+          </select>
+          ${stage.activities.length > 1 ? `<button type="button" class="tpd-random-btn" data-tpd-random="${stage.id}">Zufällig wählen</button>` : ""}
+        </div>` : `<div class="tpd-empty-state">Noch keine Übung zur Auswahl hinterlegt.</div>`;
       return `
         <section class="tpd-stage-card" aria-labelledby="tpdStageTitle${stage.id}">
           <div class="tpd-stage-head">
             <div><h3 id="tpdStageTitle${stage.id}">${stage.title}</h3></div>
             <span class="tpd-stage-duration">${stage.duration}</span>
           </div>
-          <p class="tpd-stage-purpose">${stage.purpose}</p>
-          <div class="tpd-activity-controls">
-            <select class="tpd-activity-select" id="tpdActivitySelect${stage.id}" aria-label="Übung für ${stage.title} auswählen">
-              ${stage.activities.map(activity => `<option value="${activity.id}" ${activity.id === selected ? "selected" : ""}>${activity.name}</option>`).join("")}
-            </select>
-            <button type="button" class="tpd-random-btn" data-tpd-random="${stage.id}">Zufällig wählen</button>
-          </div>
-          <div class="tpd-activity-detail" id="tpdActivityDetail${stage.id}"></div>
+          ${stage.purpose ? `<p class="tpd-stage-purpose">${stage.purpose}</p>` : ""}
+          ${controls}
+          ${hasActivities ? `<div class="tpd-activity-detail" id="tpdActivityDetail${stage.id}"></div>` : ""}
         </section>`;
     }).join("");
 
@@ -3948,7 +3809,7 @@ function pickRandomTraining(list, unit){
 
   function setTpdStageActivity(stageId, activityId){
     const stage = TPD_TRAINING_STAGES.find(item => item.id === Number(stageId));
-    if(!stage) return;
+    if(!stage || !stage.activities.length) return;
     const select = document.getElementById("tpdActivitySelect" + stage.id);
     if(!select) return;
     const valid = stage.activities.some(item => item.id === activityId);
@@ -3969,20 +3830,11 @@ function pickRandomTraining(list, unit){
     if(!button) return;
     const stageId = Number(button.dataset.tpdRandom);
     const stage = TPD_TRAINING_STAGES.find(item => item.id === stageId);
-    if(!stage) return;
+    if(!stage || stage.activities.length < 2) return;
     const select = document.getElementById("tpdActivitySelect" + stageId);
     const pool = stage.activities.filter(item => item.id !== select?.value);
     const activity = (pool.length ? pool : stage.activities)[Math.floor(Math.random() * (pool.length ? pool : stage.activities).length)];
     if(activity) setTpdStageActivity(stageId, activity.id);
-  });
-  document.getElementById("tpdRandomizeAllBtn")?.addEventListener("click", () => {
-    TPD_TRAINING_STAGES.forEach(stage => {
-      const select = document.getElementById("tpdActivitySelect" + stage.id);
-      const pool = stage.activities.filter(item => item.id !== select?.value);
-      const choices = pool.length ? pool : stage.activities;
-      const activity = choices[Math.floor(Math.random() * choices.length)];
-      if(activity) setTpdStageActivity(stage.id, activity.id);
-    });
   });
 
   /* ===================== Startauswahl ===================== */
@@ -6414,7 +6266,7 @@ const TIMER_WHISTLE_AUDIO = "data:audio/mpeg;base64,SUQzBAAAAAAAI1RTU0UAAAAPAAAD
 
 <script>
 (() => {
-  const APP_VERSION = "1.235";
+  const APP_VERSION = "1.236";
   const VERSION_URL = "./version.json";
   let serviceWorkerRegistration = null;
   let reloadStarted = false;
@@ -6574,6 +6426,6 @@ const TIMER_WHISTLE_AUDIO = "data:audio/mpeg;base64,SUQzBAAAAAAAI1RTU0UAAAAPAAAD
 })();
 </script>
 
-<div class="install-hint">SpVgg Erdweg U11 (<a href="./U11-Coach-Versionshistory.md" target="_blank" rel="noopener noreferrer" class="footer-version-link" aria-label="Versionshistory">V1.235</a> by Mike)<br><span id="appVersionStatus" aria-live="polite">Versionsprüfung wird gestartet …</span></div>
+<div class="install-hint">SpVgg Erdweg U11 (<a href="./U11-Coach-Versionshistory.md" target="_blank" rel="noopener noreferrer" class="footer-version-link" aria-label="Versionshistory">V1.236</a> by Mike)<br><span id="appVersionStatus" aria-live="polite">Versionsprüfung wird gestartet …</span></div>
 </body>
 </html>
