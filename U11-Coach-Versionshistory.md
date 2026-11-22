@@ -1,3 +1,14 @@
+## V1.239
+- Ligatabelle anhand des neuen BFV-Screenshots vom 22.11.2026 vollständig aktualisiert.
+- SpVgg Erdweg U11 steht nach 9 Spielen mit 5 Siegen, 1 Unentschieden, 3 Niederlagen, 31:32 Toren, -1 Tordifferenz und 16 Punkten auf Platz 5.
+- Alle zehn Mannschaften und Tabellenwerte wurden entsprechend dem Screenshot aktualisiert.
+- Versionsanzeige, Versionsdatei und Service-Worker-Cache auf **V1.239** aktualisiert.
+
+## V1.238
+- Neues Heim-Punktspiel vom 22.11.2026 gegen VfL Egenburg U11 in die Spielhistorie aufgenommen.
+- Ergebnis aus Sicht der SpVgg Erdweg: 4:2.
+- Versionsanzeige, Versionsdatei und Service-Worker-Cache auf **V1.238** aktualisiert.
+
 ## V1.237
 - Ligatabelle anhand des vom Trainer am 16.11.2026 bereitgestellten BFV-Screenshots aktualisiert.
 - (SG) Vierkirchen/Petershausen U11: 8 Spiele, 4 Siege, 0 Unentschieden, 4 Niederlagen, 28:38 Tore, -10 Tordifferenz, 12 Punkte.
