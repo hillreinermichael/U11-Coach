@@ -1173,10 +1173,6 @@ color:#fff;
           <strong>Aufstellung</strong>
           <span>Spieler, Formation und Auswechslungen</span>
         </button>
-        <button type="button" class="start-choice" id="matchdaySubPlanBtn">
-          <strong>Wechselplanung</strong>
-          <span>4 Viertel vor dem Spiel planen</span>
-        </button>
         <button type="button" class="start-choice" id="matchdayAutoSubPlanBtn">
           <strong>autom. Wechselplanung</strong>
           <span>Alle vier Viertel automatisch berechnen</span>
@@ -1598,19 +1594,6 @@ color:#fff;
     <div id="resultsBody"></div>
   </div>
 
-  </div>
-
-  <div id="substitutionPlanMode" class="mode-section" style="display:none;">
-    <button type="button" class="mode-back" data-back="matchdayHub">← Spieltag</button>
-    <div class="card">
-      <h2>Wechselplanung</h2>
-      <div class="subplan-actions">
-        <button type="button" class="timer-action secondary" id="subPlanImportQ1Btn">1. Viertel aus Aufstellung übernehmen</button>
-        <button type="button" class="timer-action secondary" id="subPlanResetBtn">Wechselplanung zurücksetzen</button>
-      </div>
-      <div id="subPlanStatus" class="subplan-empty-note"></div>
-      <div id="subPlanGrid" class="subplan-grid"></div>
-    </div>
   </div>
 
   <div id="autoSubstitutionPlanMode" class="mode-section" style="display:none;">
@@ -3851,14 +3834,12 @@ function pickRandomTraining(list, unit){
   const checklistMode = document.getElementById("checklistMode");
   const teamsMode = document.getElementById("teamsMode");
   const trainingStrengthGroupsMode = document.getElementById("trainingStrengthGroupsMode");
-  const substitutionPlanMode = document.getElementById("substitutionPlanMode");
   const autoSubstitutionPlanMode = document.getElementById("autoSubstitutionPlanMode");
   const ligaMode = document.getElementById("ligaMode");
   const startMatchdayBtn = document.getElementById("startMatchdayBtn");
   const matchdayLineupBtn = document.getElementById("matchdayLineupBtn");
   const matchdayChecklistBtn = document.getElementById("matchdayChecklistBtn");
   const matchdayWarmupBtn = document.getElementById("matchdayWarmupBtn");
-  const matchdaySubPlanBtn = document.getElementById("matchdaySubPlanBtn");
   const matchdayAutoSubPlanBtn = document.getElementById("matchdayAutoSubPlanBtn");
   const startTrainingBtn = document.getElementById("startTrainingBtn");
   const trainingUnitsBtn = document.getElementById("trainingUnitsBtn");
@@ -4033,14 +4014,12 @@ function renderMode(mode, options = {}){
     checklistMode.style.display = mode === "checklist" ? "block" : "none";
     teamsMode.style.display = mode === "teams" ? "block" : "none";
     trainingStrengthGroupsMode.style.display = mode === "trainingStrengthGroups" ? "block" : "none";
-    substitutionPlanMode.style.display = mode === "substitutionPlan" ? "block" : "none";
     autoSubstitutionPlanMode.style.display = mode === "autoSubstitutionPlan" ? "block" : "none";
     ligaMode.style.display = mode === "liga" ? "block" : "none";
     if(mode === "matchHistory") renderMatchHistory();
     if(mode === "checklist") renderChecklist();
     if(mode === "teams") renderTeamPlayerSelection();
     if(mode === "trainingStrengthGroups") renderStrengthGroupPlayerSelection();
-    if(mode === "substitutionPlan") renderSubstitutionPlan();
     if(mode === "autoSubstitutionPlan"){
       if(options.fromHistory && window.u11AutoSubstitutionPlan){
         renderAutoSubstitutionPlan(window.u11AutoSubstitutionPlan);
@@ -4066,7 +4045,6 @@ function renderMode(mode, options = {}){
     checklistMode.style.display = "none";
     teamsMode.style.display = "none";
     trainingStrengthGroupsMode.style.display = "none";
-    substitutionPlanMode.style.display = "none";
     autoSubstitutionPlanMode.style.display = "none";
     ligaMode.style.display = "none";
     window.scrollTo({top:0, behavior:"smooth"});
@@ -4078,7 +4056,6 @@ function renderMode(mode, options = {}){
   const APP_NAV_MODES = new Set([
     "startMenu", "trainingHub", "trainingWarmup", "matchdayHub", "lineup",
     "training", "timer", "matchHistory", "playerRoster", "injuries",
-    "checklist", "teams", "trainingStrengthGroups", "substitutionPlan",
     "autoSubstitutionPlan", "liga"
   ]);
   let currentAppMode = "startMenu";
@@ -4216,7 +4193,6 @@ function renderMode(mode, options = {}){
   startMatchdayBtn.addEventListener("click", () => showMode("matchdayHub"));
   matchdayLineupBtn.addEventListener("click", () => showMode("lineup"));
   matchdayChecklistBtn.addEventListener("click", () => showMode("checklist"));
-  matchdaySubPlanBtn?.addEventListener("click", () => showMode("substitutionPlan"));
   matchdayAutoSubPlanBtn?.addEventListener("click", () => showMode("autoSubstitutionPlan"));
   matchdayWarmupBtn.addEventListener("click", () => {
     window.warmupReturnMode = "matchdayHub";
@@ -4399,53 +4375,10 @@ const TIMER_WHISTLE_AUDIO = "data:audio/mpeg;base64,SUQzBAAAAAAAI1RTU0UAAAAPAAAD
     calculateTrainingGroups(trainingChildCount.value);
   }
 
-  /* ===================== Wechselplanung ===================== */
-  const SUBPLAN_STORAGE_KEY = "u11coach_substitution_plan_v1";
   let subPlanPlayerContext = null;
 
   function cloneAssignment(assign){
     return Object.assign({}, assign || {});
-  }
-
-  function loadSubstitutionPlan(){
-    try{
-      const raw = localStorage.getItem(SUBPLAN_STORAGE_KEY);
-      const parsed = JSON.parse(raw || "null");
-      if(parsed && Array.isArray(parsed.quarters) && parsed.quarters.length === 4){
-        return {
-          formation: parsed.formation || "2-2-2",
-          quarters: parsed.quarters.map(cloneAssignment)
-        };
-      }
-    }catch(e){}
-    return null;
-  }
-
-  function saveSubstitutionPlan(){
-    try{ localStorage.setItem(SUBPLAN_STORAGE_KEY, JSON.stringify(window.u11SubstitutionPlan)); }catch(e){}
-  }
-
-  function getSubPlanAvailablePlayers(){
-    const state = window.u11CurrentLineup;
-    if(state && Array.isArray(state.available) && state.available.length) return state.available.slice();
-    return Object.keys(PLAYERS).filter(p => !GROUP_ONLY_PLAYERS.has(p) && attendance[p]);
-  }
-
-  function initializeSubstitutionPlan(forceFromLineup=false){
-    const current = window.u11CurrentLineup;
-    const existing = loadSubstitutionPlan();
-    if(existing && !forceFromLineup){
-      window.u11SubstitutionPlan = existing;
-      return;
-    }
-
-    const formation = current?.formation || formationSelect.value || "2-2-2";
-    const q1 = current?.assignment ? cloneAssignment(current.assignment) : {};
-    window.u11SubstitutionPlan = {
-      formation,
-      quarters:[cloneAssignment(q1), cloneAssignment(q1), cloneAssignment(q1), cloneAssignment(q1)]
-    };
-    saveSubstitutionPlan();
   }
 
   function subPlanDrawPitch(svg, assign, formation, quarterIndex, interactive=true, planType="manual"){
@@ -4504,50 +4437,6 @@ const TIMER_WHISTLE_AUDIO = "data:audio/mpeg;base64,SUQzBAAAAAAAI1RTU0UAAAAPAAAD
       }
       svg.appendChild(g);
     }
-  }
-
-  function renderSubstitutionPlan(){
-    const grid = document.getElementById("subPlanGrid");
-    const status = document.getElementById("subPlanStatus");
-    if(!grid || !status) return;
-
-    if(!window.u11SubstitutionPlan) initializeSubstitutionPlan(false);
-    const plan = window.u11SubstitutionPlan;
-    const available = getSubPlanAvailablePlayers();
-    const formation = plan.formation || "2-2-2";
-
-    status.textContent = available.length
-      ? `Formation ${formation}. Spieler anklicken, um Positionen zu besetzen, zu ersetzen oder untereinander zu tauschen.`
-      : "Bitte zuerst auf der Aufstellungsseite anwesende Spieler auswählen und eine Aufstellung berechnen.";
-
-    grid.innerHTML = "";
-    plan.quarters.forEach((assign, q) => {
-      const card = document.createElement("div");
-      card.className = "subplan-card";
-
-      const h = document.createElement("h3");
-      h.textContent = `${q+1}. Viertel · 15 Minuten`;
-      card.appendChild(h);
-
-      const wrap = document.createElement("div");
-      wrap.className = "subplan-pitch-wrap";
-      const svg = document.createElementNS(SVGNS, "svg");
-      svg.classList.add("pitch", "subplan-pitch");
-      wrap.appendChild(svg);
-      card.appendChild(wrap);
-
-      const bench = document.createElement("div");
-      bench.className = "subplan-bench";
-      const playing = new Set(Object.values(assign || {}).filter(Boolean));
-      const onBench = available
-        .filter(p => !playing.has(p))
-        .sort((a,b)=>displayName(a).localeCompare(displayName(b),"de"));
-      bench.innerHTML = `<strong>Bank:</strong> ${onBench.length ? onBench.map(p=>displayName(p)).join(", ") : "keine"}`;
-      card.appendChild(bench);
-
-      grid.appendChild(card);
-      subPlanDrawPitch(svg, assign, formation, q);
-    });
   }
 
   /* ===================== Automatische Wechselplanung ===================== */
@@ -5329,14 +5218,6 @@ const TIMER_WHISTLE_AUDIO = "data:audio/mpeg;base64,SUQzBAAAAAAAI1RTU0UAAAAPAAAD
     if(event.target.id === "subPlanPlayerOverlay"){
       closeAppOverlay(event.currentTarget);
     }
-  });
-  document.getElementById("subPlanImportQ1Btn")?.addEventListener("click", () => {
-    initializeSubstitutionPlan(true);
-    renderSubstitutionPlan();
-  });
-  document.getElementById("subPlanResetBtn")?.addEventListener("click", () => {
-    initializeSubstitutionPlan(true);
-    renderSubstitutionPlan();
   });
 
   const swapOverlay = document.getElementById("swapOverlay");
@@ -6267,7 +6148,7 @@ const TIMER_WHISTLE_AUDIO = "data:audio/mpeg;base64,SUQzBAAAAAAAI1RTU0UAAAAPAAAD
 
 <script>
 (() => {
-  const APP_VERSION = "1.240";
+  const APP_VERSION = "1.241";
   const VERSION_URL = "./version.json";
   let serviceWorkerRegistration = null;
   let reloadStarted = false;
@@ -6427,6 +6308,6 @@ const TIMER_WHISTLE_AUDIO = "data:audio/mpeg;base64,SUQzBAAAAAAAI1RTU0UAAAAPAAAD
 })();
 </script>
 
-<div class="install-hint">SpVgg Erdweg U11 (<a href="./U11-Coach-Versionshistory.md" target="_blank" rel="noopener noreferrer" class="footer-version-link" aria-label="Versionshistory">V1.240</a> by Mike)<br><span id="appVersionStatus" aria-live="polite">Versionsprüfung wird gestartet …</span></div>
+<div class="install-hint">SpVgg Erdweg U11 (<a href="./U11-Coach-Versionshistory.md" target="_blank" rel="noopener noreferrer" class="footer-version-link" aria-label="Versionshistory">V1.241</a> by Mike)<br><span id="appVersionStatus" aria-live="polite">Versionsprüfung wird gestartet …</span></div>
 </body>
 </html>

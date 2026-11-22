@@ -1,3 +1,9 @@
+## V1.241
+- Die separate Kachel und Seite **„Wechselplanung“** (manuelle Planung) aus dem Spieltagsbereich entfernt.
+- Die **automatische Wechselplanung** bleibt als einzige Wechselplanungsseite erhalten und weiterhin manuell bearbeitbar.
+- Die gemeinsame Spielerauswahl zur Bearbeitung der Positionen in der automatischen Wechselplanung bleibt erhalten.
+- Versionsanzeige, Versionsdatei und Service-Worker-Cache auf **V1.241** aktualisiert.
+
 ## V1.239
 - Ligatabelle anhand des neuen BFV-Screenshots vom 22.11.2026 vollständig aktualisiert.
 - SpVgg Erdweg U11 steht nach 9 Spielen mit 5 Siegen, 1 Unentschieden, 3 Niederlagen, 31:32 Toren, -1 Tordifferenz und 16 Punkten auf Platz 5.
