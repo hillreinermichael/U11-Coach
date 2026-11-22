@@ -1263,3 +1263,8 @@ zusätzlich in der App
 - In der Aktivierung ist jetzt die Passfolge A–F mit anschließendem Hütchenslalom und Torschuss auswählbar; die vom Trainer bereitgestellte Grafik wird direkt in der Übungsbeschreibung angezeigt.
 - In Spielphase 1 ist jetzt die Spielform „Vom 1 gegen 0 zum 6 gegen 6“ auswählbar, bei der sich die Spielerzahl schrittweise um jeweils einen Spieler erhöht.
 - Zwischenblock und Spielphase 2 bleiben vorerst ohne hinterlegte Übungen.
+
+
+## V1.240
+- Fehler in der Versionsprüfung behoben: Die intern verglichene App-Version entsprach nicht der veröffentlichten Version und löste dadurch dauerhaft einen Update-Hinweis aus.
+- Interne App-Version, Fußzeilenanzeige, version.json und Service-Worker-Cache auf V1.240 synchronisiert.
