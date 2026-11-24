@@ -1,3 +1,8 @@
+## V1.242
+- Fehler in der Browser-Navigation behoben: Die internen Bereiche **Spielgruppen** (`teams`) und **Trainingsgruppen** (`trainingStrengthGroups`) sind wieder als gültige Navigationsziele registriert.
+- Beide Bereiche lassen sich wieder über die Kacheln unter „Training“ öffnen; die vorhandenen Auswahl-, Berechnungs- und Zurück-Funktionen bleiben erhalten.
+- Versionsanzeige, Versionsdatei und Service-Worker-Cache auf **V1.242** aktualisiert.
+
 ## V1.241
 - Die separate Kachel und Seite **„Wechselplanung“** (manuelle Planung) aus dem Spieltagsbereich entfernt.
 - Die **automatische Wechselplanung** bleibt als einzige Wechselplanungsseite erhalten und weiterhin manuell bearbeitbar.
