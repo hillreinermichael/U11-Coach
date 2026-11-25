@@ -1866,6 +1866,15 @@ color:#fff;
 <script src="https://cdn.jsdelivr.net/npm/xlsx@0.18.5/dist/xlsx.full.min.js"></script>
 <script>
 /* ===================== Daten ===================== */
+/* Spieler, die die Mannschaft verlassen haben, sind global von Auswahl und Berechnungen ausgeschlossen. */
+const INACTIVE_PLAYER_NAMES = new Set(["johannes suppmair", "suppmair"]);
+function isInactivePlayerName(name){
+  const normalized = String(name ?? "").normalize("NFD")
+    .replace(/[\u0300-\u036f]/g, "")
+    .trim().toLowerCase().replace(/\s+/g, " ");
+  return INACTIVE_PLAYER_NAMES.has(normalized) || normalized.endsWith(" suppmair");
+}
+
 /* Jedes Spieler-Objekt hat nun positionsbezogene Bewertungen (ratings: {TW, AB, MF, ST}) */
 const DEFAULT_PLAYERS = {
   "Bastian": {
@@ -1943,11 +1952,6 @@ const DEFAULT_PLAYERS = {
     body: 2, stamina: 3,
     positions: []
   },
-  "Johannes Suppmair": {
-    ratings: {TW: 1, AB: 3, MF: 2, ST: 3, SM: 1},
-    body: 3, stamina: 2,
-    positions: []
-  },
   "Tamino": {
     ratings: {TW: 1, AB: 4, MF: 3, ST: 3, SM: 1},
     body: 2, stamina: 2,
@@ -2002,7 +2006,7 @@ async function loadPlayersFromExcel(){
     const updated = {};
     for(const row of valueRows){
       const name = String(row["Spieler"] ?? "").trim();
-      if(!name) continue;
+      if(!name || isInactivePlayerName(name)) continue;
 
       const fallback = DEFAULT_PLAYERS[name] || {
         ratings: {TW: 5, AB: 5, MF: 5, ST: 5, SM: 5},
@@ -2278,7 +2282,6 @@ const PREFERRED_SIDE = {
   "Noah":"egal",
   "Maxim":"egal",
   "Ali":"egal",
-  "Johannes Suppmair":"egal",
   "Tamino":"egal",
   "Neuer Spieler":"egal"
 };
@@ -2396,8 +2399,7 @@ const DISPLAY_NAME_OVERRIDES = {
   "Maximilian Mätzig": "Mätzig",
   "Lucas Stegmair": "Stegi",
   "Lukas Bühling": "Bühling",
-  "Lukas Kreitmair": "Kreitmair",
-  "Johannes Suppmair": "Suppmair"
+  "Lukas Kreitmair": "Kreitmair"
 };
 
 function displayName(p){
@@ -3878,7 +3880,6 @@ function pickRandomTraining(list, unit){
   const ROSTER_CORE_BENCH = [
     "Ali",
     "Daniel",
-    "Johannes Suppmair",
     "Kenan",
     "Kristof",
     "Maxim"
@@ -6148,7 +6149,7 @@ const TIMER_WHISTLE_AUDIO = "data:audio/mpeg;base64,SUQzBAAAAAAAI1RTU0UAAAAPAAAD
 
 <script>
 (() => {
-  const APP_VERSION = "1.242";
+  const APP_VERSION = "1.243";
   const VERSION_URL = "./version.json";
   let serviceWorkerRegistration = null;
   let reloadStarted = false;
@@ -6308,6 +6309,6 @@ const TIMER_WHISTLE_AUDIO = "data:audio/mpeg;base64,SUQzBAAAAAAAI1RTU0UAAAAPAAAD
 })();
 </script>
 
-<div class="install-hint">SpVgg Erdweg U11 (<a href="./U11-Coach-Versionshistory.md" target="_blank" rel="noopener noreferrer" class="footer-version-link" aria-label="Versionshistory">V1.242</a> by Mike)<br><span id="appVersionStatus" aria-live="polite">Versionsprüfung wird gestartet …</span></div>
+<div class="install-hint">SpVgg Erdweg U11 (<a href="./U11-Coach-Versionshistory.md" target="_blank" rel="noopener noreferrer" class="footer-version-link" aria-label="Versionshistory">V1.243</a> by Mike)<br><span id="appVersionStatus" aria-live="polite">Versionsprüfung wird gestartet …</span></div>
 </body>
 </html>

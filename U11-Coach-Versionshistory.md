@@ -1,3 +1,9 @@
+## V1.243
+- Johannes Suppmair aus dem Fallback-Spielerdatensatz, den Positions-/Seitenpräferenzen, den Anzeige-Namensregeln und der bevorzugten Ersatzliste entfernt.
+- Zusätzliche globale Ausschlussprüfung: Der Spieler wird auch dann nicht importiert oder in Auswahl und Berechnungen aufgenommen, falls ein alter Excel-Stand ihn noch enthält.
+- Die Excel-Datei bleibt unverändert und weiterhin die zentrale Quelle für aktive Spielerdaten.
+- Versionsanzeige, Versionsdatei und Service-Worker-Cache auf **V1.243** aktualisiert.
+
 ## V1.242
 - Fehler in der Browser-Navigation behoben: Die internen Bereiche **Spielgruppen** (`teams`) und **Trainingsgruppen** (`trainingStrengthGroups`) sind wieder als gültige Navigationsziele registriert.
 - Beide Bereiche lassen sich wieder über die Kacheln unter „Training“ öffnen; die vorhandenen Auswahl-, Berechnungs- und Zurück-Funktionen bleiben erhalten.
