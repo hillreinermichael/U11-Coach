@@ -1,3 +1,10 @@
+## V1.244
+- Die in `Spielerwerte.xlsx` hinterlegten Spielernamen sind jetzt die verbindlichen Anzeigenamen in der gesamten PWA.
+- Die gekürzten Excel-Namen (z. B. `Lukas B.`, `Lukas K.`, `Lucas S.` und `Maximilian M.`) werden auf die bisherigen internen Spieler-IDs abgebildet. Dadurch bleiben Aufstellungsregeln, Positionsbewertungen, Wechselplanung und gespeicherte Daten erhalten.
+- Die Zuordnung wird auch für Positionsprioritäten, Trikotnummern und die Spielerkader-Übersicht verwendet; neue Excel-Spieler wie Jonas und Florian bleiben automatisch verfügbar.
+- Die Excel-Datei bleibt unverändert und weiterhin die zentrale Quelle für Spieleranzeigen und Spielerdaten.
+- Versionsanzeige, Versionsdatei und Service-Worker-Cache auf **V1.244** aktualisiert.
+
 ## V1.243
 - Johannes Suppmair aus dem Fallback-Spielerdatensatz, den Positions-/Seitenpräferenzen, den Anzeige-Namensregeln und der bevorzugten Ersatzliste entfernt.
 - Zusätzliche globale Ausschlussprüfung: Der Spieler wird auch dann nicht importiert oder in Auswahl und Berechnungen aufgenommen, falls ein alter Excel-Stand ihn noch enthält.

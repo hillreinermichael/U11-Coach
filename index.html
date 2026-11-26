@@ -1967,6 +1967,42 @@ const DEFAULT_PLAYERS = {
 const PLAYER_VALUE_SOURCE_NOTE = "Spielerwerte aus der Excel-Datei werden intern für Bewertung, Aufstellung, Positionsstärke und Berechnungen verwendet und in der Spielerkader-Ansicht nicht angezeigt";
 const PLAYER_EXCEL_URL = "https://raw.githubusercontent.com/hillreinermichael/U11-Coach/main/Spielerwerte.xlsx";
 const PLAYER_EXCEL_FIELDS = ["Torwart","Abwehr","Mittelfeld","Sturm","Spielmacher","Ausdauer","Körper"];
+
+// Die Excel-Namen sind die verbindlichen Anzeigenamen in der gesamten PWA.
+// Intern bleiben stabile Spieler-IDs erhalten, damit bestehende Regeln,
+// Aufstellungslogik und gespeicherte Daten unverändert weiterarbeiten.
+const EXCEL_PLAYER_NAME_TO_ID = {
+  "Bastian": "Bastian",
+  "Lukas B.": "Lukas Bühling",
+  "Frederik": "Frederik",
+  "Lukas K.": "Lukas Kreitmair",
+  "Emin": "Emin",
+  "Maximilia R.": "Maximilian Rohbeck",
+  "Ludwig": "Ludwig",
+  "Maximilian M.": "Maximilian Mätzig",
+  "Lucas S.": "Lucas Stegmair",
+  "Noah": "Noah",
+  "Daniel": "Daniel",
+  "Kenny": "Kenny",
+  "Kristof": "Kristof",
+  "Maxim": "Maxim",
+  "Ali": "Ali",
+  "Tamino": "Tamino",
+  "Jonas": "Jonas",
+  "Florian": "Florian",
+  // Ältere Excel-Bezeichnungen bleiben aus Kompatibilitätsgründen lesbar.
+  "Lukas Bühling": "Lukas Bühling",
+  "Lukas Kreitmair": "Lukas Kreitmair",
+  "Maximilian Rohbeck": "Maximilian Rohbeck",
+  "Maximilian Mätzig": "Maximilian Mätzig",
+  "Lucas Stegmair": "Lucas Stegmair",
+  "Kenan": "Kenny"
+};
+let PLAYER_DISPLAY_NAMES = {};
+function internalPlayerName(name){
+  const raw = String(name ?? "").trim();
+  return EXCEL_PLAYER_NAME_TO_ID[raw] || raw;
+}
 let PLAYER_SQUAD_STATUS = null;
 
 function normalizeSquadFlag(value){
@@ -1975,7 +2011,7 @@ function normalizeSquadFlag(value){
 }
 
 function playerIsInSquad(name){
-  const dataName = ROSTER_DATA_NAMES[name] || name;
+  const dataName = internalPlayerName(ROSTER_DATA_NAMES[name] || name);
 
   // Solange die Excel-Kaderliste noch nicht geladen wurde, nichts anzeigen.
   // Sobald das Blatt „Spielerkader“ geladen ist, gilt es als alleinige Quelle:
@@ -2004,9 +2040,12 @@ async function loadPlayersFromExcel(){
     // müssen daher nicht mehr zusätzlich im HTML hinterlegt werden.
     const excelPlayers = {};
     const updated = {};
+    PLAYER_DISPLAY_NAMES = {};
     for(const row of valueRows){
-      const name = String(row["Spieler"] ?? "").trim();
-      if(!name || isInactivePlayerName(name)) continue;
+      const excelName = String(row["Spieler"] ?? "").trim();
+      if(!excelName || isInactivePlayerName(excelName)) continue;
+      const name = internalPlayerName(excelName);
+      PLAYER_DISPLAY_NAMES[name] = excelName;
 
       const fallback = DEFAULT_PLAYERS[name] || {
         ratings: {TW: 5, AB: 5, MF: 5, ST: 5, SM: 5},
@@ -2098,8 +2137,10 @@ async function loadPlayersFromExcel(){
 
         for(let i=headerIndex+1;i<matrix.length;i++){
           const row = matrix[i] || [];
-          const name = String(playerCol >= 0 ? (row[playerCol] ?? "") : "").trim();
-          if(!name || !PLAYERS[name]) continue;
+          const excelName = String(playerCol >= 0 ? (row[playerCol] ?? "") : "").trim();
+          if(!excelName) continue;
+          const name = internalPlayerName(excelName);
+          if(!PLAYERS[name]) continue;
 
           const ordered = [p1Col,p2Col,p3Col]
             .filter(index => index >= 0)
@@ -2153,9 +2194,11 @@ async function loadPlayersFromExcel(){
 
         for(let i=headerIndex+1;i<matrix.length;i++){
           const row = matrix[i] || [];
-          const name = String(playerCol >= 0 ? (row[playerCol] ?? "") : "").trim();
-          if(!name) continue;
+          const excelName = String(playerCol >= 0 ? (row[playerCol] ?? "") : "").trim();
+          if(!excelName) continue;
+          const name = internalPlayerName(excelName);
           const jersey = String(jerseyCol >= 0 ? (row[jerseyCol] ?? "") : "").trim();
+          jerseys[excelName] = jersey;
           jerseys[name] = jersey;
         }
       }else{
@@ -2171,26 +2214,18 @@ async function loadPlayersFromExcel(){
     JERSEY_NUMBERS = {};
     for(const [excelName, jersey] of Object.entries(jerseys)){
       if(!jersey) continue;
+      const internalName = internalPlayerName(excelName);
+      const aliases = new Set([excelName, internalName, displayName(internalName)]);
 
-      const aliases = new Set([excelName]);
-
-      // Vollständiger interner Spielername und seine gekürzte Anzeigeform.
-      if(PLAYERS[excelName]){
-        aliases.add(excelName);
-        aliases.add(displayName(excelName));
-      }
-
-      // Sonderfälle mit abweichendem Anzeigenamen, z. B. Kenny -> Kenan.
+      // Rückwärtskompatibilität für den früheren Anzeigenamen „Kenan“.
       for(const [alias, dataName] of Object.entries(ROSTER_DATA_NAMES || {})){
-        if(dataName === excelName){
+        if(dataName === internalName){
           aliases.add(alias);
           aliases.add(displayName(alias));
         }
       }
 
-      for(const alias of aliases){
-        JERSEY_NUMBERS[alias] = jersey;
-      }
+      for(const alias of aliases) JERSEY_NUMBERS[alias] = jersey;
     }
 
     // Sheet 4: Spielerkader
@@ -2222,9 +2257,11 @@ async function loadPlayersFromExcel(){
 
         for(let i=headerIndex+1;i<matrix.length;i++){
           const row = matrix[i] || [];
-          const name = String(playerCol >= 0 ? (row[playerCol] ?? "") : "").trim();
-          if(!name) continue;
+          const excelName = String(playerCol >= 0 ? (row[playerCol] ?? "") : "").trim();
+          if(!excelName) continue;
+          const name = internalPlayerName(excelName);
           const inSquad = normalizeSquadFlag(squadCol >= 0 ? row[squadCol] : "");
+          status[excelName] = inSquad;
           status[name] = inSquad;
 
           const dataName = ROSTER_DATA_NAMES[name];
@@ -2395,15 +2432,17 @@ function canPlay(p, slot){
 }
 
 const DISPLAY_NAME_OVERRIDES = {
-  "Maximilian Rohbeck": "Rohbeck",
-  "Maximilian Mätzig": "Mätzig",
-  "Lucas Stegmair": "Stegi",
-  "Lukas Bühling": "Bühling",
-  "Lukas Kreitmair": "Kreitmair"
+  "Maximilian Rohbeck": "Maximilia R.",
+  "Maximilian Mätzig": "Maximilian M.",
+  "Lucas Stegmair": "Lucas S.",
+  "Lukas Bühling": "Lukas B.",
+  "Lukas Kreitmair": "Lukas K.",
+  "Kenan": "Kenny"
 };
 
 function displayName(p){
   if(!p) return "";
+  if(PLAYER_DISPLAY_NAMES[p]) return PLAYER_DISPLAY_NAMES[p];
   if(DISPLAY_NAME_OVERRIDES[p]) return DISPLAY_NAME_OVERRIDES[p];
   const parts = String(p).trim().split(/\s+/);
   // Bei diesen Spielern wird bewusst nur der Vorname angezeigt.
@@ -3880,7 +3919,7 @@ function pickRandomTraining(list, unit){
   const ROSTER_CORE_BENCH = [
     "Ali",
     "Daniel",
-    "Kenan",
+    "Kenny",
     "Kristof",
     "Maxim"
   ];
@@ -4528,7 +4567,7 @@ const TIMER_WHISTLE_AUDIO = "data:audio/mpeg;base64,SUQzBAAAAAAAI1RTU0UAAAAPAAAD
         goalkeeper[3] = "Maximilian Rohbeck";
         if(!startingField.includes("Maximilian Rohbeck")) fixedField[1].push("Maximilian Rohbeck");
         if(!startingField.includes("Maximilian Mätzig")) fixedField[2].push("Maximilian Mätzig");
-        notes.push("Mätzig: 1.–2. Viertel im Tor; Rohbeck: 3.–4. Viertel im Tor");
+        notes.push(`${displayName("Maximilian Mätzig")}: 1.–2. Viertel im Tor; ${displayName("Maximilian Rohbeck")}: 3.–4. Viertel im Tor`);
       }else{
         goalkeeper[1] = "Maximilian Rohbeck";
         goalkeeper[2] = "Maximilian Mätzig";
@@ -4536,13 +4575,13 @@ const TIMER_WHISTLE_AUDIO = "data:audio/mpeg;base64,SUQzBAAAAAAAI1RTU0UAAAAPAAAD
         if(!startingField.includes("Maximilian Mätzig")) fixedField[1].push("Maximilian Mätzig");
         if(!startingField.includes("Maximilian Rohbeck")) fixedField[2].push("Maximilian Rohbeck");
         if(startingGoalkeeper === "Maximilian Rohbeck"){
-          notes.push("Rohbeck: 1.–2. Viertel im Tor; Mätzig: 3.–4. Viertel im Tor");
+          notes.push(`${displayName("Maximilian Rohbeck")}: 1.–2. Viertel im Tor; ${displayName("Maximilian Mätzig")}: 3.–4. Viertel im Tor`);
         }else{
-          notes.push(`${displayName(startingGoalkeeper)} bleibt im 1. Viertel im Tor; danach übernehmen Rohbeck und Mätzig`);
+          notes.push(`${displayName(startingGoalkeeper)} bleibt im 1. Viertel im Tor; danach übernehmen ${displayName("Maximilian Rohbeck")} und ${displayName("Maximilian Mätzig")}`);
         }
       }
       specialGoalkeeperRule = true;
-      notes.push("Rohbeck und Mätzig erhalten zusätzlich ein Feldspieler-Viertel, sofern sie nicht bereits in der Ausgangsaufstellung als Feldspieler eingesetzt sind");
+      notes.push(`${displayName("Maximilian Rohbeck")} und ${displayName("Maximilian Mätzig")} erhalten zusätzlich ein Feldspieler-Viertel, sofern sie nicht bereits in der Ausgangsaufstellung als Feldspieler eingesetzt sind`);
     } else if(hasRohbeck || hasMaetzig){
       const primary = hasRohbeck ? "Maximilian Rohbeck" : "Maximilian Mätzig";
       const otherKeepers = available
@@ -4991,7 +5030,7 @@ const TIMER_WHISTLE_AUDIO = "data:audio/mpeg;base64,SUQzBAAAAAAAI1RTU0UAAAAPAAAD
     if(plan.available.includes("Maximilian Rohbeck") && plan.available.includes("Maximilian Mätzig")){
       const mätzigHasRest = plan.quarters.some(assignment => !Object.values(assignment).includes("Maximilian Mätzig"));
       if(count >= 8 && !mätzigHasRest){
-        warnings.push("Mätzig konnte trotz anwesender Torwartbesetzung kein Pausenviertel erhalten.");
+        warnings.push(`${displayName("Maximilian Mätzig")} konnte trotz anwesender Torwartbesetzung kein Pausenviertel erhalten.`);
       }
       // Rohbeck darf bewusst alle vier Viertel spielen, wenn dadurch die
       // Feldspieler ihre Pausen erhalten können.
@@ -6149,7 +6188,7 @@ const TIMER_WHISTLE_AUDIO = "data:audio/mpeg;base64,SUQzBAAAAAAAI1RTU0UAAAAPAAAD
 
 <script>
 (() => {
-  const APP_VERSION = "1.243";
+  const APP_VERSION = "1.244";
   const VERSION_URL = "./version.json";
   let serviceWorkerRegistration = null;
   let reloadStarted = false;
@@ -6309,6 +6348,6 @@ const TIMER_WHISTLE_AUDIO = "data:audio/mpeg;base64,SUQzBAAAAAAAI1RTU0UAAAAPAAAD
 })();
 </script>
 
-<div class="install-hint">SpVgg Erdweg U11 (<a href="./U11-Coach-Versionshistory.md" target="_blank" rel="noopener noreferrer" class="footer-version-link" aria-label="Versionshistory">V1.243</a> by Mike)<br><span id="appVersionStatus" aria-live="polite">Versionsprüfung wird gestartet …</span></div>
+<div class="install-hint">SpVgg Erdweg U11 (<a href="./U11-Coach-Versionshistory.md" target="_blank" rel="noopener noreferrer" class="footer-version-link" aria-label="Versionshistory">V1.244</a> by Mike)<br><span id="appVersionStatus" aria-live="polite">Versionsprüfung wird gestartet …</span></div>
 </body>
 </html>
