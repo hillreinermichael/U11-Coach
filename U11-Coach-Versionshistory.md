@@ -1,3 +1,10 @@
+## V1.245
+- Neue Startseiten-Kachel **„Nikolausturnier 2026“** ergänzt.
+- Eigene Turnierseite mit den fest vorgegebenen Mannschaften **Team Rot** und **Team Gelb** hinzugefügt.
+- Beide Teams zeigen den jeweiligen Torwart separat sowie alle sieben Feldspieler in der angegebenen Reihenfolge.
+- Die Teamzusammenstellung ist statisch und verändert weder den Spielerkader noch die Trainings- oder Wechselplanung.
+- Versionsanzeige, Versionsdatei und Service-Worker-Cache auf **V1.245** aktualisiert.
+
 ## V1.244
 - Die in `Spielerwerte.xlsx` hinterlegten Spielernamen sind jetzt die verbindlichen Anzeigenamen in der gesamten PWA.
 - Die gekürzten Excel-Namen (z. B. `Lukas B.`, `Lukas K.`, `Lucas S.` und `Maximilian M.`) werden auf die bisherigen internen Spieler-IDs abgebildet. Dadurch bleiben Aufstellungsregeln, Positionsbewertungen, Wechselplanung und gespeicherte Daten erhalten.
@@ -1292,3 +1299,7 @@ zusätzlich in der App
 ## V1.240
 - Fehler in der Versionsprüfung behoben: Die intern verglichene App-Version entsprach nicht der veröffentlichten Version und löste dadurch dauerhaft einen Update-Hinweis aus.
 - Interne App-Version, Fußzeilenanzeige, version.json und Service-Worker-Cache auf V1.240 synchronisiert.
+
+## V1.246
+- Unterhalb der beiden Mannschaftslisten auf der Seite „Nikolausturnier 2026“ einen Link zum myTMAN-Turnierplan ergänzt.
+- Der Link öffnet den Turnierplan in einem neuen Browser-Tab.
