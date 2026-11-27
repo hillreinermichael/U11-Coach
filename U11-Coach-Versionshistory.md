@@ -1,3 +1,10 @@
+## V1.252
+- In der Nikolausturnier-Übersicht werden bei den beiden Torhütern keine Angaben zur besten oder bevorzugten Position mehr angezeigt.
+- Versionsanzeige, Versionsdatei und Service-Worker-Cache auf **V1.252** aktualisiert.
+
+## V1.251
+- Nikolausturnier: Trainerzuordnung ergänzt – Team I: Johannes, Team II: Mike.
+
 ## V1.250
 - Die Beschreibung der Startseiten-Kachel **„Nikolausturnier 2026“** verwendet jetzt die offiziellen Mannschaftsnamen **SpVgg Erdweg U11 (I)** und **SpVgg Erdweg U11 (II)** statt „Team Rot“ und „Team Gelb“.
 - Die internen Teamfarben und die bestehenden Mannschaftsaufstellungen bleiben unverändert.
