@@ -1,3 +1,8 @@
+## V1.247
+- Unterhalb der Teamaufstellungen auf der Seite **„Nikolausturnier 2026“** wird jetzt der U11-Spielplan aus den bereitgestellten Hin- und Rückrunden-Screenshots angezeigt.
+- Alle U10-Begegnungen wurden ausgelassen. Aufgeführt sind die U11-Spiele mit Spielnummer, Beginnzeit und Begegnung; die beiden Erdweg-Mannschaften sind hervorgehoben.
+- Versionsanzeige, Versionsdatei und Service-Worker-Cache auf **V1.247** aktualisiert.
+
 ## V1.245
 - Neue Startseiten-Kachel **„Nikolausturnier 2026“** ergänzt.
 - Eigene Turnierseite mit den fest vorgegebenen Mannschaften **Team Rot** und **Team Gelb** hinzugefügt.

@@ -1031,6 +1031,17 @@ color:#fff;
   .nikolaus-plan-link-wrap{margin-top:16px;text-align:center;}
   .nikolaus-plan-link{display:inline-flex;align-items:center;justify-content:center;min-height:44px;padding:11px 18px;border-radius:9px;background:var(--erdweg-red);color:#fff;font-size:13px;font-weight:800;text-decoration:none;text-align:center;}
   .nikolaus-plan-link:focus-visible{outline:3px solid #222;outline-offset:3px;}
+  .nikolaus-schedule{margin-top:24px;padding-top:18px;border-top:1px solid var(--line);}
+  .nikolaus-schedule h3{margin:0 0 6px;font-size:19px;font-weight:900;color:var(--erdweg-black);}
+  .nikolaus-schedule-note{margin:0 0 16px;color:var(--ink-soft);font-size:12px;line-height:1.5;}
+  .nikolaus-schedule h4{margin:16px 0 8px;font-size:15px;font-weight:900;color:var(--erdweg-black);}
+  .nikolaus-schedule-table-wrap{width:100%;overflow-x:auto;border:1px solid var(--line);border-radius:10px;}
+  .nikolaus-schedule-table{width:100%;border-collapse:collapse;font-size:13px;}
+  .nikolaus-schedule-table th,.nikolaus-schedule-table td{padding:10px 11px;text-align:left;border-bottom:1px solid var(--line);vertical-align:middle;}
+  .nikolaus-schedule-table th{background:#f6f6f6;font-weight:900;color:var(--ink-soft);white-space:nowrap;}
+  .nikolaus-schedule-table tbody tr:last-child td{border-bottom:0;}
+  .nikolaus-schedule-table td:first-child,.nikolaus-schedule-table td:nth-child(2){white-space:nowrap;width:1%;}
+  .nikolaus-schedule-table td strong{color:var(--erdweg-red);}
   @media(max-width:390px){.nikolaus-player-list{grid-template-columns:1fr;}}
 </style>
 </head>
@@ -1596,6 +1607,38 @@ color:#fff;
       <div class="nikolaus-plan-link-wrap">
         <a class="nikolaus-plan-link" href="https://mytman.io/turnierplan/?turnier_id=12894" target="_blank" rel="noopener noreferrer">Turnierplan auf myTMAN öffnen ↗</a>
       </div>
+      <section class="nikolaus-schedule" aria-labelledby="nikolausScheduleTitle">
+        <h3 id="nikolausScheduleTitle">Spielplan der U11</h3>
+        <p class="nikolaus-schedule-note">Alle U11-Begegnungen aus Hin- und Rückrunde. Spiele der U10 sind nicht aufgeführt.</p>
+        <h4>Hinrunde</h4>
+        <div class="nikolaus-schedule-table-wrap">
+          <table class="nikolaus-schedule-table">
+            <thead><tr><th>Nr.</th><th>Beginn</th><th>Begegnung</th></tr></thead>
+            <tbody>
+              <tr><td>2</td><td>13:54</td><td>SG Niederroth/Arnbach U11 – <strong>SpVgg Erdweg U11 (I)</strong></td></tr>
+              <tr><td>4</td><td>14:12</td><td><strong>SpVgg Erdweg U11 (II)</strong> – SV Odelzhausen U11</td></tr>
+              <tr><td>6</td><td>14:30</td><td><strong>SpVgg Erdweg U11 (I)</strong> – SV Odelzhausen U11</td></tr>
+              <tr><td>8</td><td>14:48</td><td>SG Niederroth/Arnbach U11 – <strong>SpVgg Erdweg U11 (II)</strong></td></tr>
+              <tr><td>10</td><td>15:06</td><td><strong>SpVgg Erdweg U11 (I)</strong> – <strong>SpVgg Erdweg U11 (II)</strong></td></tr>
+              <tr><td>12</td><td>15:24</td><td>SV Odelzhausen U11 – SG Niederroth/Arnbach U11</td></tr>
+            </tbody>
+          </table>
+        </div>
+        <h4>Rückrunde</h4>
+        <div class="nikolaus-schedule-table-wrap">
+          <table class="nikolaus-schedule-table">
+            <thead><tr><th>Nr.</th><th>Beginn</th><th>Begegnung</th></tr></thead>
+            <tbody>
+              <tr><td>14</td><td>15:42</td><td><strong>SpVgg Erdweg U11 (I)</strong> – SG Niederroth/Arnbach U11</td></tr>
+              <tr><td>16</td><td>16:00</td><td>SV Odelzhausen U11 – <strong>SpVgg Erdweg U11 (II)</strong></td></tr>
+              <tr><td>18</td><td>16:18</td><td>SV Odelzhausen U11 – <strong>SpVgg Erdweg U11 (I)</strong></td></tr>
+              <tr><td>20</td><td>16:36</td><td><strong>SpVgg Erdweg U11 (II)</strong> – SG Niederroth/Arnbach U11</td></tr>
+              <tr><td>22</td><td>16:54</td><td><strong>SpVgg Erdweg U11 (II)</strong> – <strong>SpVgg Erdweg U11 (I)</strong></td></tr>
+              <tr><td>24</td><td>17:12</td><td>SG Niederroth/Arnbach U11 – SV Odelzhausen U11</td></tr>
+            </tbody>
+          </table>
+        </div>
+      </section>
     </div>
   </div>
 
@@ -6269,7 +6312,7 @@ const TIMER_WHISTLE_AUDIO = "data:audio/mpeg;base64,SUQzBAAAAAAAI1RTU0UAAAAPAAAD
 
 <script>
 (() => {
-  const APP_VERSION = "1.246";
+  const APP_VERSION = "1.247";
   const VERSION_URL = "./version.json";
   let serviceWorkerRegistration = null;
   let reloadStarted = false;
@@ -6429,6 +6472,6 @@ const TIMER_WHISTLE_AUDIO = "data:audio/mpeg;base64,SUQzBAAAAAAAI1RTU0UAAAAPAAAD
 })();
 </script>
 
-<div class="install-hint">SpVgg Erdweg U11 (<a href="./U11-Coach-Versionshistory.md" target="_blank" rel="noopener noreferrer" class="footer-version-link" aria-label="Versionshistory">V1.246</a> by Mike)<br><span id="appVersionStatus" aria-live="polite">Versionsprüfung wird gestartet …</span></div>
+<div class="install-hint">SpVgg Erdweg U11 (<a href="./U11-Coach-Versionshistory.md" target="_blank" rel="noopener noreferrer" class="footer-version-link" aria-label="Versionshistory">V1.247</a> by Mike)<br><span id="appVersionStatus" aria-live="polite">Versionsprüfung wird gestartet …</span></div>
 </body>
 </html>
