@@ -1023,11 +1023,15 @@ color:#fff;
   .nikolaus-team-yellow .nikolaus-team-heading{background:#e8bd24;}
   .nikolaus-team-yellow .nikolaus-team-heading h3,.nikolaus-team-yellow .nikolaus-team-heading span{color:#222;}
   .nikolaus-goalkeeper{display:flex;align-items:center;justify-content:space-between;gap:12px;padding:12px 14px;background:#f7f7f7;border-bottom:1px solid var(--line);}
-  .nikolaus-goalkeeper span,.nikolaus-roster-label{font-size:10px;letter-spacing:.07em;font-weight:900;color:var(--ink-soft);}
-  .nikolaus-goalkeeper strong{font-size:15px;color:var(--erdweg-black);text-align:right;}
+  .nikolaus-goalkeeper-label,.nikolaus-roster-label{font-size:10px;letter-spacing:.07em;font-weight:900;color:var(--ink-soft);}
+  .nikolaus-goalkeeper-meta{display:flex;flex-direction:column;align-items:flex-end;gap:3px;text-align:right;}
+  .nikolaus-goalkeeper strong{font-size:15px;color:var(--erdweg-black);}
+  .nikolaus-goalkeeper small{font-size:11px;line-height:1.35;color:var(--ink-soft);}
   .nikolaus-roster-label{padding:12px 14px 5px;}
   .nikolaus-player-list{margin:0;padding:2px 14px 12px 38px;display:grid;grid-template-columns:1fr 1fr;gap:5px 16px;}
-  .nikolaus-player-list li{padding:5px 2px;font-size:14px;font-weight:700;color:var(--erdweg-black);}
+  .nikolaus-player-list li{display:flex;align-items:center;justify-content:space-between;gap:8px;min-width:0;padding:5px 2px;font-size:14px;font-weight:700;color:var(--erdweg-black);}
+  .nikolaus-player-name{min-width:0;}
+  .nikolaus-position-tag{flex:none;padding:3px 7px;border-radius:999px;background:#f0f1f3;color:#454545;font-size:10px;font-weight:800;line-height:1.25;white-space:nowrap;}
   .nikolaus-plan-link-wrap{margin-top:16px;text-align:center;}
   .nikolaus-plan-link{display:inline-flex;align-items:center;justify-content:center;min-height:44px;padding:11px 18px;border-radius:9px;background:var(--erdweg-red);color:#fff;font-size:13px;font-weight:800;text-decoration:none;text-align:center;}
   .nikolaus-plan-link:focus-visible{outline:3px solid #222;outline-offset:3px;}
@@ -1565,42 +1569,48 @@ color:#fff;
       <div class="nikolaus-teams">
         <section class="nikolaus-team nikolaus-team-red" aria-labelledby="nikolausTeamRedTitle">
           <div class="nikolaus-team-heading">
-            <h3 id="nikolausTeamRedTitle">Team Rot</h3>
+            <h3 id="nikolausTeamRedTitle">SpVgg Erdweg U11 (I)</h3>
             <span>8 Spieler</span>
           </div>
           <div class="nikolaus-goalkeeper">
-            <span>TORWART</span>
-            <strong>Maximilian M.</strong>
+            <span class="nikolaus-goalkeeper-label">TORWART</span>
+            <div class="nikolaus-goalkeeper-meta">
+              <strong>Maximilian M.</strong>
+              <small>Beste Feldposition: Abwehr</small>
+            </div>
           </div>
-          <div class="nikolaus-roster-label">FELDSPIELER</div>
+          <div class="nikolaus-roster-label">FELDSPIELER · BESTE POSITION</div>
           <ol class="nikolaus-player-list">
-            <li>Florian</li>
-            <li>Lukas B.</li>
-            <li>Maxim</li>
-            <li>Tamino</li>
-            <li>Frederik</li>
-            <li>Lucas S.</li>
-            <li>Noah</li>
+            <li><span class="nikolaus-player-name">Florian</span><span class="nikolaus-position-tag">Abwehr</span></li>
+            <li><span class="nikolaus-player-name">Lukas B.</span><span class="nikolaus-position-tag">Mittelfeld</span></li>
+            <li><span class="nikolaus-player-name">Maxim</span><span class="nikolaus-position-tag">Sturm</span></li>
+            <li><span class="nikolaus-player-name">Tamino</span><span class="nikolaus-position-tag">Abwehr</span></li>
+            <li><span class="nikolaus-player-name">Frederik</span><span class="nikolaus-position-tag">Mittelfeld</span></li>
+            <li><span class="nikolaus-player-name">Lucas S.</span><span class="nikolaus-position-tag">Abwehr</span></li>
+            <li><span class="nikolaus-player-name">Noah</span><span class="nikolaus-position-tag">Sturm</span></li>
           </ol>
         </section>
         <section class="nikolaus-team nikolaus-team-yellow" aria-labelledby="nikolausTeamYellowTitle">
           <div class="nikolaus-team-heading">
-            <h3 id="nikolausTeamYellowTitle">Team Gelb</h3>
+            <h3 id="nikolausTeamYellowTitle">SpVgg Erdweg U11 (II)</h3>
             <span>8 Spieler</span>
           </div>
           <div class="nikolaus-goalkeeper">
-            <span>TORWART</span>
-            <strong>Maximilian R.</strong>
+            <span class="nikolaus-goalkeeper-label">TORWART</span>
+            <div class="nikolaus-goalkeeper-meta">
+              <strong>Maximilian R.</strong>
+              <small>Bevorzugte Position: Torwart</small>
+            </div>
           </div>
-          <div class="nikolaus-roster-label">FELDSPIELER</div>
+          <div class="nikolaus-roster-label">FELDSPIELER · BESTE POSITION</div>
           <ol class="nikolaus-player-list">
-            <li>Jonas</li>
-            <li>Kristof</li>
-            <li>Bastian</li>
-            <li>Ali</li>
-            <li>Ludwig</li>
-            <li>Emin</li>
-            <li>Lukas K.</li>
+            <li><span class="nikolaus-player-name">Jonas</span><span class="nikolaus-position-tag">Abwehr / Mittelfeld</span></li>
+            <li><span class="nikolaus-player-name">Kristof</span><span class="nikolaus-position-tag">Mittelfeld</span></li>
+            <li><span class="nikolaus-player-name">Bastian</span><span class="nikolaus-position-tag">Abwehr</span></li>
+            <li><span class="nikolaus-player-name">Ali</span><span class="nikolaus-position-tag">Sturm</span></li>
+            <li><span class="nikolaus-player-name">Ludwig</span><span class="nikolaus-position-tag">Sturm</span></li>
+            <li><span class="nikolaus-player-name">Emin</span><span class="nikolaus-position-tag">Mittelfeld</span></li>
+            <li><span class="nikolaus-player-name">Lukas K.</span><span class="nikolaus-position-tag">Abwehr</span></li>
           </ol>
         </section>
       </div>
@@ -1609,8 +1619,7 @@ color:#fff;
       </div>
       <section class="nikolaus-schedule" aria-labelledby="nikolausScheduleTitle">
         <h3 id="nikolausScheduleTitle">Spielplan der U11</h3>
-        <p class="nikolaus-schedule-note">Alle U11-Begegnungen aus Hin- und Rückrunde. Spiele der U10 sind nicht aufgeführt.</p>
-        <h4>Hinrunde</h4>
+                <h4>Hinrunde</h4>
         <div class="nikolaus-schedule-table-wrap">
           <table class="nikolaus-schedule-table">
             <thead><tr><th>Nr.</th><th>Beginn</th><th>Begegnung</th></tr></thead>
@@ -6312,7 +6321,7 @@ const TIMER_WHISTLE_AUDIO = "data:audio/mpeg;base64,SUQzBAAAAAAAI1RTU0UAAAAPAAAD
 
 <script>
 (() => {
-  const APP_VERSION = "1.247";
+  const APP_VERSION = "1.249";
   const VERSION_URL = "./version.json";
   let serviceWorkerRegistration = null;
   let reloadStarted = false;
@@ -6472,6 +6481,6 @@ const TIMER_WHISTLE_AUDIO = "data:audio/mpeg;base64,SUQzBAAAAAAAI1RTU0UAAAAPAAAD
 })();
 </script>
 
-<div class="install-hint">SpVgg Erdweg U11 (<a href="./U11-Coach-Versionshistory.md" target="_blank" rel="noopener noreferrer" class="footer-version-link" aria-label="Versionshistory">V1.247</a> by Mike)<br><span id="appVersionStatus" aria-live="polite">Versionsprüfung wird gestartet …</span></div>
+<div class="install-hint">SpVgg Erdweg U11 (<a href="./U11-Coach-Versionshistory.md" target="_blank" rel="noopener noreferrer" class="footer-version-link" aria-label="Versionshistory">V1.249</a> by Mike)<br><span id="appVersionStatus" aria-live="polite">Versionsprüfung wird gestartet …</span></div>
 </body>
 </html>

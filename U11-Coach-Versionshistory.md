@@ -1,3 +1,13 @@
+## V1.249
+- Die Mannschaftsbezeichnungen auf der Seite **„Nikolausturnier 2026“** auf **SpVgg Erdweg U11 (I)** und **SpVgg Erdweg U11 (II)** geändert; die Zuordnung zu den bisherigen roten und gelben Teamkarten bleibt bestehen.
+- Bei allen Spielern werden die bevorzugten Positionen angezeigt. Für Spieler ohne hinterlegte Positionspriorität wird die höchste Positionsbewertung verwendet; bei Gleichstand werden beide Positionen genannt.
+- Beim Torwart Maximilian M. wird zusätzlich seine beste Feldposition **Abwehr** ausgewiesen, da er im Turnier als Torwart eingesetzt wird.
+- Versionsanzeige, Versionsdatei und Service-Worker-Cache auf **V1.249** aktualisiert.
+
+## V1.248
+- Den erklärenden Hinweistext unterhalb des U11-Spielplans auf der Seite **„Nikolausturnier 2026“** entfernt.
+- Versionsanzeige, Versionsdatei und Service-Worker-Cache auf **V1.248** aktualisiert.
+
 ## V1.247
 - Unterhalb der Teamaufstellungen auf der Seite **„Nikolausturnier 2026“** wird jetzt der U11-Spielplan aus den bereitgestellten Hin- und Rückrunden-Screenshots angezeigt.
 - Alle U10-Begegnungen wurden ausgelassen. Aufgeführt sind die U11-Spiele mit Spielnummer, Beginnzeit und Begegnung; die beiden Erdweg-Mannschaften sind hervorgehoben.
