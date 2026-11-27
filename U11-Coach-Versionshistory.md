@@ -1,3 +1,8 @@
+## V1.250
+- Die Beschreibung der Startseiten-Kachel **„Nikolausturnier 2026“** verwendet jetzt die offiziellen Mannschaftsnamen **SpVgg Erdweg U11 (I)** und **SpVgg Erdweg U11 (II)** statt „Team Rot“ und „Team Gelb“.
+- Die internen Teamfarben und die bestehenden Mannschaftsaufstellungen bleiben unverändert.
+- Versionsanzeige, Versionsdatei und Service-Worker-Cache auf **V1.250** aktualisiert.
+
 ## V1.249
 - Die Mannschaftsbezeichnungen auf der Seite **„Nikolausturnier 2026“** auf **SpVgg Erdweg U11 (I)** und **SpVgg Erdweg U11 (II)** geändert; die Zuordnung zu den bisherigen roten und gelben Teamkarten bleibt bestehen.
 - Bei allen Spielern werden die bevorzugten Positionen angezeigt. Für Spieler ohne hinterlegte Positionspriorität wird die höchste Positionsbewertung verwendet; bei Gleichstand werden beide Positionen genannt.
